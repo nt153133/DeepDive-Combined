@@ -122,7 +122,7 @@ namespace Deep.TaskManager.Actions
 
                     if (Core.Me.HasAura(Auras.Lust))
                     {
-                        await Common.CancelAura(Auras.Lust);
+                        await Tasks.Coroutines.Common.CancelAura(Auras.Lust);
                     }
                     Logger.Verbose("Attempting to interact with: {0} ({1} / 3)", Target.Name, tries + 1);
 
