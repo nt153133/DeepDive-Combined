@@ -32,7 +32,8 @@ namespace Deep.Helpers
 
         public static DDInventoryItem GetInventoryItem(Pomander pom)
         {
-            return Director.DeepDungeonInventory[(byte)pom - 1];
+            return Director.DeepDungeonInventory[(byte) pom - 1];
+            //return Director.DeepDungeonInventory[(byte) Constants.PomanderInventorySlot(pom)];
         }
 
         public static bool IsCasting => Core.Me.IsCasting;

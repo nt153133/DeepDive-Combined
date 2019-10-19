@@ -30,9 +30,9 @@ namespace Deep.TaskManager.Actions
             //we are inside POTD
             if (Constants.InDeepDungeon || Constants.InExitLevel) return false;
 
-            if (WorldManager.ZoneId != Constants.SouthShroudZoneId ||
-               GameObjectManager.GetObjectByNPCId(Constants.CaptainNpcId) == null ||
-               GameObjectManager.GetObjectByNPCId(Constants.CaptainNpcId).Distance2D(Core.Me.Location) > 35)
+            if (WorldManager.ZoneId != Constants.EntranceZoneId ||
+               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null ||
+               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 35)
             {
                 if (Core.Me.IsCasting)
                 {
@@ -50,9 +50,9 @@ namespace Deep.TaskManager.Actions
                 return true;
 
             }
-            if (GameObjectManager.GetObjectByNPCId(Constants.CaptainNpcId) == null || GameObjectManager.GetObjectByNPCId(Constants.CaptainNpcId).Distance2D(Core.Me.Location) > 4f)
+            if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null || GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 4f)
             {
-                return await CommonTasks.MoveAndStop(new MoveToParameters(Constants.CaptainNpcPosition, "Moving toward NPC"), 4f, true);
+                return await CommonTasks.MoveAndStop(new MoveToParameters(Constants.EntranceNpcPosition, "Moving toward NPC"), 4f, true);
             }
             return false;
         }

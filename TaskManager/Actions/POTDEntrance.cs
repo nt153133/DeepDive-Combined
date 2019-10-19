@@ -53,7 +53,7 @@ namespace Deep.TaskManager.Actions
 
         public void Tick()
         {
-            if (WorldManager.ZoneId != Constants.SouthShroudZoneId && (!DungeonQueue.IsFinished || _error))
+            if (WorldManager.ZoneId != Constants.EntranceZoneId && (!DungeonQueue.IsFinished || _error))
             {
                 _error = false;
                 DungeonQueue.Stop();
@@ -72,7 +72,7 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (WorldManager.ZoneId != Constants.SouthShroudZoneId) return false;
+            if (WorldManager.ZoneId != Constants.EntranceZoneId) return false;
             if(Settings.Instance.Stop)
             {
                 TreeRoot.Stop("Stop Requested");
@@ -131,9 +131,9 @@ namespace Deep.TaskManager.Actions
 
         private async Task OpenMenu()
         {
-            Logger.Verbose("Attempting to interact with: {0}", DataManager.GetLocalizedNPCName((int)Constants.CaptainNpcId));
+            Logger.Verbose("Attempting to interact with: {0}", DataManager.GetLocalizedNPCName((int)Constants.EntranceNpcId));
 
-            GameObjectManager.GetObjectByNPCId(Constants.CaptainNpcId).Interact();
+            GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Interact();
             await Coroutine.Yield();
             //wait while false
             await Coroutine.Wait(3000, () => HasWindowOpen || Talk.DialogOpen);

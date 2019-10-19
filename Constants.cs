@@ -36,7 +36,7 @@ namespace Deep
     /// <summary>
     ///     Notable mobs in Deep Dungeon
     /// </summary>
-    internal static class Mobs
+    internal  static partial class Mobs
     {
         internal static uint PalaceHornet = 4981;
         internal static uint PalaceSlime = 4990;
@@ -206,10 +206,11 @@ namespace Deep
 
     internal static partial class Constants
     {
-        internal static Vector3 CaptainNpcPosition = new Vector3(187.5486f, 7.238432f, -39.26154f);
-        internal static uint CaptainNpcId = 1017323;
+        
+        internal static Vector3 EntranceNpcPosition = new Vector3(187.5486f, 7.238432f, -39.26154f);
+        internal static uint EntranceNpcId = 1017323;
 
-        internal static uint SouthShroudZoneId = 153;
+        internal static uint EntranceZoneId = 153;
 
         //570 is staging.
         //561 - 565 are 1-50
@@ -309,15 +310,15 @@ namespace Deep
 
         internal static Dictionary<uint, uint> Maps;
 
-        internal static uint[] TrapIds = new uint[]
+        internal static uint[] TrapIds =
         {
             2007182,
             2007183,
             2007184,
             2007185,
-            2007186
+            2007186,
+            2009504
         };
-
 
         internal static HashSet<uint> PotionIds = new HashSet<uint>();
         internal static Dictionary<uint, Potion> Pots { get; private set; }

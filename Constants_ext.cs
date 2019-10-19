@@ -4,6 +4,7 @@ using System.IO;
 using Deep.DungeonDefinition;
 using Deep.DungeonDefinition.Base;
 using Deep.Properties;
+using ff14bot.Directors;
 using Newtonsoft.Json;
 
 namespace Deep
@@ -68,6 +69,11 @@ namespace Deep
             {10, 90},
             {11, 100}
         };
+        
+        public static int PomanderInventorySlot(Pomander p)
+        {
+            return SelectedDungeon.PomanderMapping[(int)p];
+        }
     }
 
     public enum DeepDungeonType
