@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Clio.Utilities;
 using ff14bot.Objects;
 
 namespace Deep.DungeonDefinition.Base
@@ -18,6 +19,7 @@ namespace Deep.DungeonDefinition.Base
 
         uint EntranceAetheryte { get; }
         uint CaptainNpcId { get; }
+        Vector3 CaptainNpcPosition { get; }
         uint[] DeepDungeonRawIds { get; }
         string GetDDType();
 

@@ -191,7 +191,7 @@ namespace Deep.Providers
 
             if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && (obj.NpcId == EntityNames.Hidden))
                 weight += 5;
-            else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.FloorExit && PartyManager.IsInParty)
+            else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.OfPassage && PartyManager.IsInParty)
                 weight -= 10;
 
             return weight;

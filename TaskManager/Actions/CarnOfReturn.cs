@@ -44,7 +44,7 @@ namespace Deep.TaskManager.Actions
                 return false;
             }
 
-            var unit = GameObjectManager.GetObjectByNPCId(EntityNames.CairnofReturn);
+            var unit = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
             if (unit == null)
             {
                 Logger.Warn("Carn of return could not be found at this location");
@@ -109,7 +109,7 @@ namespace Deep.TaskManager.Actions
 
             if(location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
-                var ret = GameObjectManager.GetObjectByNPCId(EntityNames.CairnofReturn);
+                var ret = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
                 if(ret != null)
                 {
                     Level = DeepDungeonManager.Level;

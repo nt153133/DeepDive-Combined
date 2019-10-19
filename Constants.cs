@@ -58,13 +58,14 @@ namespace Deep
         internal static uint Hidden = 2007542;
         internal static uint BandedCoffer = 2007543;
 
-        internal static uint FloorExit = 2007188;
+        internal static uint OfPassage = 2007188;
+        internal static uint OfReturn = 2007187;
+        
         internal static uint BossExit = 2005809;
-
         internal static uint LobbyExit = 2006016;
         internal static uint LobbyEntrance = 2006012;
 
-        internal static uint CairnofReturn = 2007187;
+        
 
         #region Pets
 
@@ -312,10 +313,10 @@ namespace Deep
 
         #endregion
 
-        internal static uint[] Exits = { EntityNames.FloorExit, EntityNames.BossExit, EntityNames.LobbyExit};
+        internal static uint[] Exits = { EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
 
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
-        internal static uint[] IgnoreEntity = {5402, EntityNames.FloorExit, EntityNames.CairnofReturn, EntityNames.LobbyEntrance, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda, EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook, EntityNames.Bishop };
+        internal static uint[] IgnoreEntity = {5402, EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda, EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook, EntityNames.Bishop };
 
         internal static uint MapVersion = 4;
 

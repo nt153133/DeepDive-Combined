@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Buddy.Service.Client;
+using Clio.Utilities;
 using ff14bot.Objects;
 
 namespace Deep.DungeonDefinition.Base
@@ -21,6 +23,7 @@ namespace Deep.DungeonDefinition.Base
         // DataManager.AetheryteCache.Values.FirstOrDefault(i => i.Id == EntranceAetheryte);
         public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
         public uint CaptainNpcId => (uint) Npc.NpcId;
+        public Vector3 CaptainNpcPosition => Npc.LocationVector;
         public uint[] DeepDungeonRawIds { get; }
 
         public virtual string DisplayName => NameWithoutArticle;

@@ -69,7 +69,7 @@ namespace Deep.TaskManager.Actions
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
                
-                var ret = GameObjectManager.GetObjectByNPCId(EntityNames.FloorExit);
+                var ret = GameObjectManager.GetObjectByNPCId(EntityNames.OfPassage);
                 if (ret != null)
                 {
                     Level = DeepDungeonManager.Level;

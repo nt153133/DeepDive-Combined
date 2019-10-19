@@ -52,6 +52,22 @@ namespace Deep
                     return DeepDungeonType.Unknown;
             }
         }
+        
+        internal static Dictionary<int, int> Percent = new Dictionary<int, int>
+        {
+            {0, 0},
+            {1, 9},
+            {2, 18},
+            {3, 27},
+            {4, 36},
+            {5, 45},
+            {6, 54},
+            {7, 63},
+            {8, 72},
+            {9, 81},
+            {10, 90},
+            {11, 100}
+        };
     }
 
     public enum DeepDungeonType
@@ -61,4 +77,6 @@ namespace Deep
         HoH,
         Unknown
     }
+    
+    
 }
