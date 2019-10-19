@@ -4,7 +4,7 @@
 {
     public class HeavenOnHigh : DeepDungeonDecorator
     {
-        public HeavenOnHigh(Base.DeepDungeon deep) :base(deep)
+        public HeavenOnHigh(Base.DeepDungeonData deep) :base(deep)
         {
             
         }

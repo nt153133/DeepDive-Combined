@@ -4,7 +4,7 @@
     {
         public override string DisplayName => base.DisplayName + "-Quick";
         
-        public PalaceOfTheDeadQuick(Base.DeepDungeon deepDungeon) : base(deepDungeon)
+        public PalaceOfTheDeadQuick(Base.DeepDungeonData deepDungeon) : base(deepDungeon)
         {
             
         }

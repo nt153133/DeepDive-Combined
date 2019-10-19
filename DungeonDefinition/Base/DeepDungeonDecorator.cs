@@ -25,7 +25,7 @@ namespace Deep.DungeonDefinition.Base
 
         public virtual string DisplayName => NameWithoutArticle;
 
-        protected DeepDungeonDecorator(DeepDungeon deepDungeon)
+        protected DeepDungeonDecorator(DeepDungeonData deepDungeon)
         {
             Index = deepDungeon.Index;
             Name = deepDungeon.Name;

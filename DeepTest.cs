@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
  using Deep;
  using Deep.DungeonDefinition.Base;
- using DeepDungeon = Deep.DungeonDefinition.Base.DeepDungeon;
 
 
  namespace FileTest
@@ -19,8 +18,7 @@ using System.Windows.Forms;
         private void button1_Click(object sender, EventArgs e)
         {
             Constants.LoadList();
-            Constants.LoadTypeList();
-            comboBox1.DataSource = Constants.deepListType;
+            comboBox1.DataSource = Constants.DeepListType;
             comboBox1.DisplayMember = "DisplayName";
             //comboBox1.ValueMember = "DungeonType";
         }
@@ -28,7 +26,7 @@ using System.Windows.Forms;
         private void changelevel(object sender, EventArgs e)
         {
             //Logger.Verbose("Changing the selected floor to run");
-            Constants.selectedDungeon = (DeepDungeon) comboBox1.SelectedItem;
+            //Constants.SelectedDungeon = (DeepDungeon) comboBox1.SelectedItem;
         }
 
         private void button2_Click(object sender, EventArgs e)

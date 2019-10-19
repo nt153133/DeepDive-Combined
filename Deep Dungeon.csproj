@@ -99,7 +99,7 @@
     <Compile Include="Constants_ext.cs" />
     <Compile Include="DeepTest.cs" />
     <Compile Include="DeepTest.Designer.cs" />
-    <Compile Include="DungeonDefinition\Base\DeepDungeon.cs" />
+    <Compile Include="DungeonDefinition\Base\DeepDungeonData.cs" />
     <Compile Include="DungeonDefinition\Base\DeepDungeonDecorator.cs" />
     <Compile Include="DungeonDefinition\Base\EntranceNpc.cs" />
     <Compile Include="DungeonDefinition\Base\IDeepDungeon.cs" />

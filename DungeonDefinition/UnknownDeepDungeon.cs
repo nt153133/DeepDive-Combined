@@ -4,7 +4,7 @@
 {
     public class UnknownDeepDungeon : DeepDungeonDecorator
     {
-        public UnknownDeepDungeon(Base.DeepDungeon deepDungeon) : base(deepDungeon)
+        public UnknownDeepDungeon(Base.DeepDungeonData deepDungeon) : base(deepDungeon)
         {
             
         }

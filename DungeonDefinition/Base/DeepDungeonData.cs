@@ -1,32 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ff14bot.Objects;
 using Newtonsoft.Json;
 
 namespace Deep.DungeonDefinition.Base
 {
-    public class DeepDungeon 
+    public class DeepDungeonData
     {
-        public int Index { get; set; }
-        public string Name { get; }
-        public string NameWithoutArticle { get; }
-        public int ContentFinderId { get; }
-        public Dictionary<int, int> PomanderMapping { get; }
-        public int LobbyId { get; }
-        public int UnlockQuest { get; }
-        public EntranceNpc Npc { get; }
-        
-        public List<FloorSetting> Floors { get; } = new List<FloorSetting>();
-        //public ushort EntranceZone => (ushort) Npc.MapId;
-
-        [JsonIgnore]
-        public string DisplayName => Name;
-        [JsonIgnore]
-        public int DungeonType
-        {
-            get => Index;
-        }
-
-        public DeepDungeon(int index, string name, int contentFinderId)
+        public DeepDungeonData(int index, string name, int contentFinderId)
         {
             Index = index;
             Name = name;
@@ -34,7 +15,8 @@ namespace Deep.DungeonDefinition.Base
         }
 
         [JsonConstructor]
-        public DeepDungeon(int index, string name, string nameWithoutArticle, int contentFinderId, Dictionary<int, int> pomanderMapping, int lobbyId, int unlockQuest, EntranceNpc npc)
+        public DeepDungeonData(int index, string name, string nameWithoutArticle, int contentFinderId,
+            Dictionary<int, int> pomanderMapping, int lobbyId, int unlockQuest, EntranceNpc npc)
         {
             Index = index;
             Name = name;
@@ -46,6 +28,16 @@ namespace Deep.DungeonDefinition.Base
             Npc = npc;
         }
 
+        public int Index { get; set; }
+        public string Name { get; }
+        public string NameWithoutArticle { get; }
+        public int ContentFinderId { get; }
+        public Dictionary<int, int> PomanderMapping { get; }
+        public int LobbyId { get; }
+        public int UnlockQuest { get; }
+        public EntranceNpc Npc { get; }
+        public List<FloorSetting> Floors { get; } = new List<FloorSetting>();
+
         public override string ToString()
         {
             var output =
@@ -53,33 +45,22 @@ namespace Deep.DungeonDefinition.Base
                 $"Lobby: {LobbyId}\n" +
                 $"UnlockQuest: {UnlockQuest}\n" +
                 $"{Npc}";
-                    
+
             return output;
         }
-
-        public List<GameObject> GetObjectsByWeight()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string GetDDType()
-        {
-            return "DeepDungeon";
-        }
-
     }
 
     public class FloorSetting
     {
-        public string Name;
-        public int InstanceId;
         public int ContentFinderId;
+
+        public int End;
+        public int InstanceId;
         public int MapId;
+        public string Name;
         public int QuestId;
 
         public int Start;
-
-        public int End;
         //public string QuestName;
 
         public FloorSetting(string name, int instanceId, int mapId, int questId)
@@ -91,7 +72,8 @@ namespace Deep.DungeonDefinition.Base
         }
 
         [JsonConstructor]
-        public FloorSetting(string name, int instanceId, int contentFinderId, int mapId, int questId, int start, int end)
+        public FloorSetting(string name, int instanceId, int contentFinderId, int mapId, int questId, int start,
+            int end)
         {
             Name = name;
             InstanceId = instanceId;
@@ -110,9 +92,7 @@ namespace Deep.DungeonDefinition.Base
         public override bool Equals(object obj)
         {
             if (obj != null && obj.GetType() == typeof(FloorSetting))
-            {
-                return ((FloorSetting) obj).InstanceId == this.InstanceId;
-            }
+                return ((FloorSetting) obj).InstanceId == InstanceId;
             return base.Equals(obj);
         }
 

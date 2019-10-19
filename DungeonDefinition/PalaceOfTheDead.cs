@@ -6,7 +6,7 @@
     {
         //public override string DisplayName => Name;
         
-        public PalaceOfTheDead(Base.DeepDungeon deepDungeon) : base(deepDungeon)
+        public PalaceOfTheDead(Base.DeepDungeonData deepDungeon) : base(deepDungeon)
         {
             
         }
