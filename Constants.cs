@@ -101,6 +101,7 @@ namespace Deep
         internal static uint Chicken = 1102;
         internal static uint Imp = 1103;
 
+
         internal static uint Lust = 565;
         internal static uint Rage = 565;
 
@@ -108,6 +109,8 @@ namespace Deep
         internal static uint Strength = 687;
 
         internal static uint Sustain = 184;
+
+        internal const uint Odder = 1546;
 
         #region Floor Debuffs
 

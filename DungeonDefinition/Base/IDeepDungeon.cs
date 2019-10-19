@@ -17,6 +17,15 @@ namespace Deep.DungeonDefinition.Base
         List<FloorSetting> Floors { get; }
         string DisplayName { get; }
 
+        uint OfPassage { get; }
+        uint OfReturn { get; }
+        
+        uint BossExit { get; }
+        uint LobbyExit { get; }
+        uint LobbyEntrance { get; }
+        
+        Dictionary<uint, uint> WallMapData { get; }
+        
         uint EntranceAetheryte { get; }
         uint CaptainNpcId { get; }
         Vector3 CaptainNpcPosition { get; }
