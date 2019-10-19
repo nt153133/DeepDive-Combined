@@ -353,6 +353,15 @@ namespace Deep.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {&quot;7350862&quot;:[{&quot;X&quot;:-352.0957,&quot;Y&quot;:5.27548361,&quot;Z&quot;:225.96875},{&quot;X&quot;:-356.9492,&quot;Y&quot;:-0.09747314,&quot;Z&quot;:225.6719},{&quot;X&quot;:-347.2422,&quot;Y&quot;:10.64844,&quot;Z&quot;:226.2656}],&quot;7350897&quot;:[{&quot;X&quot;:-370.03125,&quot;Y&quot;:5.27548361,&quot;Z&quot;:244.0957},{&quot;X&quot;:-370.3281,&quot;Y&quot;:-0.09747314,&quot;Z&quot;:239.2422},{&quot;X&quot;:-369.7344,&quot;Y&quot;:10.64844,&quot;Z&quot;:248.9492}],&quot;7350899&quot;:[{&quot;X&quot;:-351.9043,&quot;Y&quot;:5.27548361,&quot;Z&quot;:262.03125},{&quot;X&quot;:-356.7578,&quot;Y&quot;:-0.09747314,&quot;Z&quot;:261.7344},{&quot;X&quot;:-347.0508,&quot;Y&quot;:10.64844,&quot;Z&quot;:262.3281}],&quot;7350900&quot;:[{&quot;X&quot;:-364.0957,&quot;Y&quot;:5.27548361,&quot;Z&quot;:281.96875},{&quot;X&quot;:-368.9492,&quot;Y&quot;:-0.0 [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string _770 {
+            get {
+                return ResourceManager.GetString("_770", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;6434642&quot;: [
         ///    {
@@ -444,7 +453,7 @@ namespace Deep.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ﻿[
+        ///   Looks up a localized string similar to [
         ///  {
         ///    &quot;Index&quot;: 1,
         ///    &quot;Name&quot;: &quot;the Palace of the Dead&quot;,
@@ -472,7 +481,7 @@ namespace Deep.Properties {
         ///    &quot;UnlockQuest&quot;: 67092,
         ///    &quot;Npc&quot;: {
         ///      &quot;Location&quot;: [
-        /// [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DeepDungeonData {
             get {

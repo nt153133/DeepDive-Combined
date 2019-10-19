@@ -123,6 +123,9 @@ namespace Deep.Providers
                 case 9:
                     text = Resources._9;
                     break;
+                case 770:
+                    text = Resources._770;
+                    break;
                 default:
                     text = "";
                     break;

@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,17 +27,14 @@ using ff14bot.RemoteAgents;
 
 namespace Deep
 {
-    
     public static class PoiTypes
     {
-
         public const int ExplorePOI = 9;
         public const int UseCarnOfReturn = 10;
-
     }
 
     /// <summary>
-    /// Notable mobs in Deep Dungeon
+    ///     Notable mobs in Deep Dungeon
     /// </summary>
     internal static class Mobs
     {
@@ -45,7 +43,7 @@ namespace Deep
     }
 
     /// <summary>
-    /// Various entity Ids present in Deep Dungeon
+    ///     Various entity Ids present in Deep Dungeon
     /// </summary>
     internal static class EntityNames
     {
@@ -60,12 +58,11 @@ namespace Deep
 
         internal static uint OfPassage = 2007188;
         internal static uint OfReturn = 2007187;
-        
+
         internal static uint BossExit = 2005809;
         internal static uint LobbyExit = 2006016;
         internal static uint LobbyEntrance = 2006012;
 
-        
 
         #region Pets
 
@@ -95,6 +92,7 @@ namespace Deep
 
     internal static class Auras
     {
+        internal const uint Odder = 1546;
         internal static uint Frog = 1101;
         internal static uint Toad = 439;
         internal static uint Toad2 = 441;
@@ -110,7 +108,15 @@ namespace Deep
 
         internal static uint Sustain = 184;
 
-        internal const uint Odder = 1546;
+        public static uint Enervation = 546;
+        public static uint Pacification = 620;
+        public static uint Silence = 7;
+
+
+        public static uint[] Poisons =
+        {
+            18, 275, 559, 560, 686, 801
+        };
 
         #region Floor Debuffs
 
@@ -127,15 +133,6 @@ namespace Deep
         internal static uint NoAutoHeal = 1097;
 
         #endregion
-
-        public static uint Enervation = 546;
-        public static uint Pacification = 620;
-        public static uint Silence = 7;
-
-
-        public static uint[] Poisons = {
-            18, 275, 559, 560, 686, 801
-        };
     }
 
     internal static class Spells
@@ -155,20 +152,20 @@ namespace Deep
 
     internal class Potion
     {
-        [JsonProperty("Id")]
-        public uint Id;
-        
-        [JsonProperty("Level")]
-        public uint Level;
-        
-        [JsonProperty("Rate")]
-        public float[] Rate;
-        
-        [JsonProperty("Max")]
-        public uint[] Max;
+        private float[] HPs;
+
+        [JsonProperty("Id")] public uint Id;
+
+        private Item[] ItemData;
+
+        [JsonProperty("Level")] public uint Level;
+
+        [JsonProperty("Max")] public uint[] Max;
+
+        [JsonProperty("Rate")] public float[] Rate;
 
         public float RecoverMax => Core.Me.MaxHealth * Rate[1];
-        public uint Recovery => (uint)Math.Min(RecoverMax, Max[1]);
+        public uint Recovery => (uint) Math.Min(RecoverMax, Max[1]);
 
         public float LevelScore => Max[1] / RecoverMax;
 
@@ -187,11 +184,8 @@ namespace Deep
 
 
             //Logger.Info($"{ItemData[hq ? 1 : 0]}  has a effective HPS of {effectiveMax / cooldown}");
-            return  effectiveMax / cooldown;
+            return effectiveMax / cooldown;
         }
-
-        private Item[] ItemData;
-        private float[] HPs;
 
         internal void Setup()
         {
@@ -203,49 +197,68 @@ namespace Deep
 
             HPs = new[]
             {
-                Max[0] / (float)ItemData[0].Cooldown,
-                Max[1] / (float)ItemData[1].Cooldown,
+                Max[0] / (float) ItemData[0].Cooldown,
+                Max[1] / (float) ItemData[1].Cooldown,
             };
-
         }
     }
 
 
     internal static partial class Constants
     {
+        internal static Vector3 CaptainNpcPosition = new Vector3(187.5486f, 7.238432f, -39.26154f);
+        internal static uint CaptainNpcId = 1017323;
+
+        internal static uint SouthShroudZoneId = 153;
+
+        //570 is staging.
+        //561 - 565 are 1-50
+        //593 - 607 are 51-200
+        internal static uint[] DeepDungeonRawIds;
+
+        internal static uint[] Exits = {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
+
+        //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
+        internal static uint[] IgnoreEntity =
+        {
+            5402, EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance, 2002872,
+            EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
+            EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook,
+            EntityNames.Bishop
+        };
+
+        internal static uint MapVersion = 4;
+
+        internal static Language Lang;
+
         static Constants()
         {
             Maps = new Dictionary<uint, uint>
-                    {
-                        //mapid - wall file
-                      {561, 1 },
-                      {562, 2},
-                      {563, 3},
-                      {564, 4},
-                      {565, 4},
-                      {593, 5},
-                      {594, 5},
-                      {595, 5},
-                      {596, 6},
-                      {597, 6},
-                      {598, 6},
-                      {599, 8},
-                      {600, 8},
-                      {601, 9},
-                      {602, 9},
-                      {603, 7},
-                      {604, 7},
-                      {605, 7},
-                      {606, 7},
-                      {607, 7}
-                    };
+            {
+                //mapid - wall file
+                {561, 1},
+                {562, 2},
+                {563, 3},
+                {564, 4},
+                {565, 4},
+                {593, 5},
+                {594, 5},
+                {595, 5},
+                {596, 6},
+                {597, 6},
+                {598, 6},
+                {599, 8},
+                {600, 8},
+                {601, 9},
+                {602, 9},
+                {603, 7},
+                {604, 7},
+                {605, 7},
+                {606, 7},
+                {607, 7}
+            };
 
             DeepDungeonRawIds = Maps.Keys.ToArray();
-
-
-
-
-
 
 
             Pots = loadResource<Potion[]>(Resources.pots).ToDictionary(r => r.Id, r => r);
@@ -254,15 +267,15 @@ namespace Deep
                 PotionIds.Add(pot.Key);
                 pot.Value.Setup();
             }
-
         }
+
         /// <summary>
-        /// returns true if we are in any of the Deep Dungeon areas.
+        ///     returns true if we are in any of the Deep Dungeon areas.
         /// </summary>
         internal static bool InDeepDungeon => DeepDungeonRawIds.Contains(WorldManager.ZoneId);
 
         /// <summary>
-        /// Pull range (minimum of 8)
+        ///     Pull range (minimum of 8)
         /// </summary>
         internal static float ModifiedCombatReach
         {
@@ -274,56 +287,6 @@ namespace Deep
             }
         }
 
-        internal static Vector3 CaptainNpcPosition = new Vector3(187.5486f, 7.238432f, -39.26154f);
-        internal static uint CaptainNpcId = 1017323;
-
-        internal static uint SouthShroudZoneId = 153;
-
-        //570 is staging.
-        //561 - 565 are 1-50
-        //593 - 607 are 51-200
-        internal static uint[] DeepDungeonRawIds;
-
-        #region DataAsResource
-
-        internal static Dictionary<uint, uint> Maps;
-
-        internal static uint[] TrapIds = new uint[] {
-  2007182,
-  2007183,
-  2007184,
-  2007185,
-  2007186
-};
-
-       
-
-        internal static HashSet<uint> PotionIds = new HashSet<uint>();
-        internal static Dictionary<uint,Potion> Pots { get; private set; }
-
-        public static bool InExitLevel => WorldManager.ZoneId == 570;
-
-        /// <summary>
-        /// loads a json resource file
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private static T loadResource<T>(string text)
-        {
-            return JsonConvert.DeserializeObject<T>(text);
-        }
-
-        #endregion
-
-        internal static uint[] Exits = { EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
-
-        //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
-        internal static uint[] IgnoreEntity = {5402, EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda, EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook, EntityNames.Bishop };
-
-        internal static uint MapVersion = 4;
-
-        internal static Language Lang;
         //cn = 3
         //64 = 2
         //32 = 1
@@ -334,11 +297,44 @@ namespace Deep
 
         public static void INIT()
         {
-            var field = (Language)(typeof(DataManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic).First(i => i.FieldType == typeof(Language)).GetValue(null));
+            var field = (Language) typeof(DataManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
+                .First(i => i.FieldType == typeof(Language)).GetValue(null);
 
             Lang = field;
 
             OffsetManager.Init();
         }
+
+        #region DataAsResource
+
+        internal static Dictionary<uint, uint> Maps;
+
+        internal static uint[] TrapIds = new uint[]
+        {
+            2007182,
+            2007183,
+            2007184,
+            2007185,
+            2007186
+        };
+
+
+        internal static HashSet<uint> PotionIds = new HashSet<uint>();
+        internal static Dictionary<uint, Potion> Pots { get; private set; }
+
+        public static bool InExitLevel => WorldManager.ZoneId == 570;
+
+        /// <summary>
+        ///     loads a json resource file
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private static T loadResource<T>(string text)
+        {
+            return JsonConvert.DeserializeObject<T>(text);
+        }
+
+        #endregion
     }
 }

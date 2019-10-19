@@ -168,6 +168,7 @@
     <Compile Include="Enums\SaveSlot.cs" />
     <Compile Include="Windows\DeepDungeonMenu.cs" />
     <Compile Include="Windows\DeepDungeonSaveData.cs" />
+    <EmbeddedResource Include="Resources\Walls\770.json" />
     <EmbeddedResource Include="Resources\DeepDungeons.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

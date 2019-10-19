@@ -31,7 +31,7 @@
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {
             //mapid - wall file
-            {770, 1}, //1-10
+            {770, 770}, //1-10
             {771, 0}, //11-20
             {772, 0}, //21-30
             {773, 0}, //41-50
