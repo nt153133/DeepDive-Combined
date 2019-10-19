@@ -96,6 +96,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants_ext.cs" />
+    <Compile Include="DeepTest.cs" />
+    <Compile Include="DeepTest.Designer.cs" />
+    <Compile Include="DungeonDefinition\Base\DeepDungeon.cs" />
+    <Compile Include="DungeonDefinition\Base\DeepDungeonDecorator.cs" />
+    <Compile Include="DungeonDefinition\Base\EntranceNpc.cs" />
+    <Compile Include="DungeonDefinition\Base\IDeepDungeon.cs" />
+    <Compile Include="DungeonDefinition\HeavenOnHigh.cs" />
+    <Compile Include="DungeonDefinition\PalaceOfTheDead-Quick.cs" />
+    <Compile Include="DungeonDefinition\PalaceOfTheDead.cs" />
+    <Compile Include="DungeonDefinition\UnknownDeepDungeon.cs" />
     <Compile Include="Forms\Converter\EnumerateExtension.cs" />
     <Compile Include="Forms\Converter\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Forms\SettingsForm.cs">
@@ -157,6 +168,9 @@
     <Compile Include="Enums\SaveSlot.cs" />
     <Compile Include="Windows\DeepDungeonMenu.cs" />
     <Compile Include="Windows\DeepDungeonSaveData.cs" />
+    <EmbeddedResource Include="Resources\DeepDungeons.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>

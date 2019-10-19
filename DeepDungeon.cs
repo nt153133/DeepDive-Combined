@@ -38,6 +38,7 @@ using ff14bot.Overlay3D;
 using Deep.TaskManager;
 using Deep.TaskManager.Actions;
 using ff14bot.Helpers;
+using FileTest;
 
 namespace Deep
 {
@@ -136,6 +137,10 @@ namespace Deep
         public override Composite Root => _root;
 
         private Composite _root;
+
+        private bool ShowDebug = true;
+        private DeepTest _debug;
+
         //private DDServiceNavigationProvider serviceProvider = new DDServiceNavigationProvider();
         public override void Pulse()
         {
@@ -241,6 +246,26 @@ namespace Deep
             StopPlz = false;
             
             SetupSettings();
+            
+            if (ShowDebug)
+            {
+                if (_debug == null)
+
+                    try
+                    {
+                        Thread Messagethread = new Thread(new ThreadStart(delegate()
+                        {
+                            _debug = new DeepTest();
+                            _debug.ShowDialog();
+                        }));
+                        Messagethread.SetApartmentState(ApartmentState.STA);
+                        Messagethread.Start();
+
+                        //DeepTracker._debug = _debug;
+                    }
+                    catch (Exception)
+                    { }
+            }
             
 
             _root =

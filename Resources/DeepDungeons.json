@@ -1,0 +1,350 @@
+﻿[
+  {
+    "Index": 1,
+    "Name": "the Palace of the Dead",
+    "NameWithoutArticle": "Palace of the Dead",
+    "ContentFinderId": 174,
+    "PomanderMapping": {
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 3,
+      "5": 4,
+      "6": 5,
+      "7": 6,
+      "8": 7,
+      "9": 8,
+      "10": 9,
+      "11": 10,
+      "12": 11,
+      "13": 12,
+      "14": 13,
+      "15": 14,
+      "16": 15
+    },
+    "LobbyId": 570,
+    "UnlockQuest": 67092,
+    "Npc": {
+      "Location": [
+        187.548584,
+        7.238432,
+        -39.2615356
+      ],
+      "NpcId": 1017323,
+      "Name": "Wood Wailer Expeditionary Captain",
+      "MapId": 153,
+      "AetheryteId": 5
+    },
+    "Floors": [
+      {
+        "Name": "the Palace of the Dead (Floors 1-10)",
+        "InstanceId": 60001,
+        "ContentFinderId": 174,
+        "MapId": 561,
+        "QuestId": 67092,
+        "Start": 1,
+        "End": 10
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 11-20)",
+        "InstanceId": 60002,
+        "ContentFinderId": 175,
+        "MapId": 562,
+        "QuestId": 67092,
+        "Start": 11,
+        "End": 20
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 21-30)",
+        "InstanceId": 60003,
+        "ContentFinderId": 176,
+        "MapId": 563,
+        "QuestId": 67092,
+        "Start": 21,
+        "End": 30
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 31-40)",
+        "InstanceId": 60004,
+        "ContentFinderId": 177,
+        "MapId": 564,
+        "QuestId": 67092,
+        "Start": 31,
+        "End": 40
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 41-50)",
+        "InstanceId": 60005,
+        "ContentFinderId": 178,
+        "MapId": 565,
+        "QuestId": 67092,
+        "Start": 41,
+        "End": 50
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 51-60)",
+        "InstanceId": 60006,
+        "ContentFinderId": 204,
+        "MapId": 593,
+        "QuestId": 67923,
+        "Start": 51,
+        "End": 60
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 61-70)",
+        "InstanceId": 60007,
+        "ContentFinderId": 205,
+        "MapId": 594,
+        "QuestId": 67923,
+        "Start": 61,
+        "End": 70
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 71-80)",
+        "InstanceId": 60008,
+        "ContentFinderId": 206,
+        "MapId": 595,
+        "QuestId": 67923,
+        "Start": 71,
+        "End": 80
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 81-90)",
+        "InstanceId": 60009,
+        "ContentFinderId": 207,
+        "MapId": 596,
+        "QuestId": 67923,
+        "Start": 81,
+        "End": 90
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 91-100)",
+        "InstanceId": 60010,
+        "ContentFinderId": 208,
+        "MapId": 597,
+        "QuestId": 67923,
+        "Start": 91,
+        "End": 100
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 101-110)",
+        "InstanceId": 60011,
+        "ContentFinderId": 209,
+        "MapId": 598,
+        "QuestId": 67923,
+        "Start": 101,
+        "End": 110
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 111-120)",
+        "InstanceId": 60012,
+        "ContentFinderId": 210,
+        "MapId": 599,
+        "QuestId": 67923,
+        "Start": 111,
+        "End": 120
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 121-130)",
+        "InstanceId": 60013,
+        "ContentFinderId": 211,
+        "MapId": 600,
+        "QuestId": 67923,
+        "Start": 121,
+        "End": 130
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 131-140)",
+        "InstanceId": 60014,
+        "ContentFinderId": 212,
+        "MapId": 601,
+        "QuestId": 67923,
+        "Start": 131,
+        "End": 140
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 141-150)",
+        "InstanceId": 60015,
+        "ContentFinderId": 213,
+        "MapId": 602,
+        "QuestId": 67923,
+        "Start": 141,
+        "End": 150
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 151-160)",
+        "InstanceId": 60016,
+        "ContentFinderId": 214,
+        "MapId": 603,
+        "QuestId": 67923,
+        "Start": 151,
+        "End": 160
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 161-170)",
+        "InstanceId": 60017,
+        "ContentFinderId": 215,
+        "MapId": 604,
+        "QuestId": 67923,
+        "Start": 161,
+        "End": 170
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 171-180)",
+        "InstanceId": 60018,
+        "ContentFinderId": 216,
+        "MapId": 605,
+        "QuestId": 67923,
+        "Start": 171,
+        "End": 180
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 181-190)",
+        "InstanceId": 60019,
+        "ContentFinderId": 217,
+        "MapId": 606,
+        "QuestId": 67923,
+        "Start": 181,
+        "End": 190
+      },
+      {
+        "Name": "the Palace of the Dead (Floors 191-200)",
+        "InstanceId": 60020,
+        "ContentFinderId": 218,
+        "MapId": 607,
+        "QuestId": 67923,
+        "Start": 191,
+        "End": 200
+      }
+    ]
+  },
+  {
+    "Index": 2,
+    "Name": "Heaven-on-High",
+    "NameWithoutArticle": "Heaven-on-High",
+    "ContentFinderId": 540,
+    "PomanderMapping": {
+      "1": 0,
+      "2": 1,
+      "3": 2,
+      "4": 3,
+      "5": 4,
+      "6": 5,
+      "7": 6,
+      "8": 7,
+      "9": 8,
+      "10": 9,
+      "11": 10,
+      "17": 11,
+      "18": 12,
+      "14": 13,
+      "15": 14,
+      "19": 15
+    },
+    "LobbyId": 780,
+    "UnlockQuest": 68667,
+    "Npc": {
+      "Location": [
+        -2.02948,
+        3.005981,
+        -611.3528
+      ],
+      "NpcId": 1025846,
+      "Name": "Kyusei",
+      "MapId": 613,
+      "AetheryteId": 106
+    },
+    "Floors": [
+      {
+        "Name": "Heaven-on-High  (Floors 1-10)",
+        "InstanceId": 60021,
+        "ContentFinderId": 540,
+        "MapId": 770,
+        "QuestId": 68667,
+        "Start": 1,
+        "End": 10
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 11-20)",
+        "InstanceId": 60022,
+        "ContentFinderId": 541,
+        "MapId": 771,
+        "QuestId": 68667,
+        "Start": 11,
+        "End": 20
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 21-30)",
+        "InstanceId": 60023,
+        "ContentFinderId": 542,
+        "MapId": 772,
+        "QuestId": 68667,
+        "Start": 21,
+        "End": 30
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 31-40)",
+        "InstanceId": 60024,
+        "ContentFinderId": 543,
+        "MapId": 782,
+        "QuestId": 68668,
+        "Start": 31,
+        "End": 40
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 41-50)",
+        "InstanceId": 60025,
+        "ContentFinderId": 544,
+        "MapId": 773,
+        "QuestId": 68668,
+        "Start": 41,
+        "End": 50
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 51-60)",
+        "InstanceId": 60026,
+        "ContentFinderId": 545,
+        "MapId": 783,
+        "QuestId": 68668,
+        "Start": 51,
+        "End": 60
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 61-70)",
+        "InstanceId": 60027,
+        "ContentFinderId": 546,
+        "MapId": 774,
+        "QuestId": 68668,
+        "Start": 61,
+        "End": 70
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 71-80)",
+        "InstanceId": 60028,
+        "ContentFinderId": 547,
+        "MapId": 784,
+        "QuestId": 68668,
+        "Start": 71,
+        "End": 80
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 81-90)",
+        "InstanceId": 60029,
+        "ContentFinderId": 548,
+        "MapId": 775,
+        "QuestId": 68668,
+        "Start": 81,
+        "End": 90
+      },
+      {
+        "Name": "Heaven-on-High  (Floors 91-100)",
+        "InstanceId": 60030,
+        "ContentFinderId": 549,
+        "MapId": 785,
+        "QuestId": 68668,
+        "Start": 91,
+        "End": 100
+      }
+    ]
+  }
+]
