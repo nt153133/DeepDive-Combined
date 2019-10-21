@@ -17,7 +17,7 @@ using System.Windows.Forms;
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Constants.LoadList();
+           // Constants.LoadList();
             comboBox1.DataSource = Constants.DeepListType;
             comboBox1.DisplayMember = "DisplayName";
             //comboBox1.ValueMember = "DungeonType";

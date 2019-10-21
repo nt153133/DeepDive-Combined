@@ -81,7 +81,7 @@ namespace Deep.TaskManager.Actions
 
             if(ContentsFinderConfirm.IsOpen)
             {
-                Logger.Warn($"Entering POTD - Currently a Level {Core.Me.ClassLevel} {Core.Me.CurrentJob}");
+                Logger.Warn($"Entering {Constants.SelectedDungeon.GetDDType()} - Currently a Level {Core.Me.ClassLevel} {Core.Me.CurrentJob}");
                 ContentsFinderConfirm.Commence();
 
                 await Coroutine.Wait(TimeSpan.FromMinutes(2), () => QuestLogManager.InCutscene || NowLoading.IsVisible);
@@ -162,7 +162,7 @@ namespace Deep.TaskManager.Actions
 
             try
             {
-                if (!PartyManager.IsInParty && !Settings.Instance.SoloStop)
+                if (!PartyManager.IsInParty)
                 {
                     Logger.Warn("You are solo, Setting the bot to do 1-10.");
                     stop = Settings.Instance.FloorSettings[0];

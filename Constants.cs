@@ -56,12 +56,12 @@ namespace Deep
         internal static uint Hidden = 2007542;
         internal static uint BandedCoffer = 2007543;
 
-        internal static uint OfPassage = 2007188;
-        internal static uint OfReturn = 2007187;
+        internal static uint OfPassage => Constants.SelectedDungeon.OfPassage;
+        internal static uint OfReturn => Constants.SelectedDungeon.OfReturn;
 
-        internal static uint BossExit = 2005809;
-        internal static uint LobbyExit = 2006016;
-        internal static uint LobbyEntrance = 2006012;
+        internal static uint BossExit => Constants.SelectedDungeon.BossExit;
+        internal static uint LobbyExit => Constants.SelectedDungeon.LobbyExit;
+        internal static uint LobbyEntrance => Constants.SelectedDungeon.LobbyEntrance;
 
 
         #region Pets
@@ -206,23 +206,28 @@ namespace Deep
 
     internal static partial class Constants
     {
-        
-        internal static Vector3 EntranceNpcPosition = new Vector3(187.5486f, 7.238432f, -39.26154f);
-        internal static uint EntranceNpcId = 1017323;
 
-        internal static uint EntranceZoneId = 153;
+        internal static Vector3 EntranceNpcPosition => SelectedDungeon.CaptainNpcPosition; //new Vector3(187.5486f, 7.238432f, -39.26154f);
+        internal static uint EntranceNpcId => SelectedDungeon.CaptainNpcId; //;
+
+        //internal static uint EntranceZoneId = SelectedDungeon.EntranceAetheryte;//153;
+        internal static uint AetheryteId => SelectedDungeon.EntranceAetheryte;
+        
+        internal static AetheryteResult EntranceZone => DataManager.AetheryteCache[AetheryteId];
+        internal static uint EntranceZoneId => EntranceZone.ZoneId;
 
         //570 is staging.
         //561 - 565 are 1-50
         //593 - 607 are 51-200
-        internal static uint[] DeepDungeonRawIds;
+        internal static uint[] DeepDungeonRawIds => Constants.SelectedDungeon.DeepDungeonRawIds;
 
-        internal static uint[] Exits = {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
+        internal static uint[] Exits => new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
+        //{SelectedDungeon.LobbyExit, SelectedDungeon.BossExit, SelectedDungeon.OfPassage};
 
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
         internal static uint[] IgnoreEntity =
         {
-            5402, EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance, 2002872,
+            5402,  2002872,
             EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
             EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook,
             EntityNames.Bishop
@@ -234,6 +239,7 @@ namespace Deep
 
         static Constants()
         {
+            /*
             Maps = new Dictionary<uint, uint>
             {
                 //mapid - wall file
@@ -258,8 +264,8 @@ namespace Deep
                 {606, 7},
                 {607, 7}
             };
-
-            DeepDungeonRawIds = Maps.Keys.ToArray();
+*/
+            //DeepDungeonRawIds = Maps.Keys.ToArray();
 
 
             Pots = loadResource<Potion[]>(Resources.pots).ToDictionary(r => r.Id, r => r);
@@ -308,7 +314,7 @@ namespace Deep
 
         #region DataAsResource
 
-        internal static Dictionary<uint, uint> Maps;
+        internal static Dictionary<uint, uint> Maps => Constants.SelectedDungeon.WallMapData;
 
         internal static uint[] TrapIds =
         {
@@ -323,7 +329,7 @@ namespace Deep
         internal static HashSet<uint> PotionIds = new HashSet<uint>();
         internal static Dictionary<uint, Potion> Pots { get; private set; }
 
-        public static bool InExitLevel => WorldManager.ZoneId == 570;
+        public static bool InExitLevel => WorldManager.ZoneId == SelectedDungeon.LobbyId;
 
         /// <summary>
         ///     loads a json resource file

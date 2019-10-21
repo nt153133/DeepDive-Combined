@@ -32,29 +32,36 @@ namespace Deep.TaskManager.Actions
 
             if (WorldManager.ZoneId != Constants.EntranceZoneId ||
                GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null ||
-               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 35)
+               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 110)
             {
                 if (Core.Me.IsCasting)
                 {
-                    await Coroutine.Sleep(500);
+                    await Coroutine.Sleep(1000);
                     return true;
                 }
 
-                if (!WorldManager.TeleportById(5))
+                if (!WorldManager.TeleportById(Constants.EntranceZone.Id))
                 {
-                    Logger.Error("We can't get to Quarrymill. something is very wrong...");
+                    Logger.Error($"We can't get to {Constants.EntranceZone.CurrentLocaleAethernetName}. something is very wrong...");
                     TreeRoot.Stop();
                     return false;
                 }
-                await Coroutine.Sleep(1000);
+                await Coroutine.Sleep(5000);
                 return true;
 
             }
-            if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null || GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 4f)
-            {
-                return await CommonTasks.MoveAndStop(new MoveToParameters(Constants.EntranceNpcPosition, "Moving toward NPC"), 4f, true);
-            }
-            return false;
+
+            if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) != null &&
+                !(Constants.EntranceNpcPosition.Distance2D(Core.Me.Location) > 5f)) return false;
+            Logger.Verbose("at Move");
+
+            if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) != null)
+                return await CommonTasks.MoveAndStop(
+                    new MoveToParameters(GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Location,
+                        "Moving toward NPC"), 5f, true);
+
+            return await CommonTasks.MoveAndStop(
+                new MoveToParameters(Constants.EntranceNpcPosition, "Moving toward NPC"), 5f, true);
         }
 
         public void Tick()

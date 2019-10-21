@@ -144,6 +144,9 @@ namespace Deep
         //private DDServiceNavigationProvider serviceProvider = new DDServiceNavigationProvider();
         public override void Pulse()
         {
+            if (Constants.SelectedDungeon == null)
+                return;
+            
             if (Constants.InDeepDungeon)
             {
                 //force a pulse on the director if we are hitting "start" inside of the dungeon
@@ -159,11 +162,16 @@ namespace Deep
         public override void Start()
         {
             Poi.Current = null;
+            Constants.LoadList();
+            Constants.SelectedDungeon = Constants.DeepListType.First();
+            Logger.Info(Constants.SelectedDungeon.ToString());
             //setup navigation manager
             Navigator.NavigationProvider = new DDNavigationProvider(new ServiceNavigationProvider());
             Navigator.PlayerMover = new SlideMover();
 
             TreeHooks.Instance.ClearAll();
+            
+            
 
             _tasks = new TaskManagerProvider();
 
@@ -354,6 +362,8 @@ namespace Deep
                 if (!Constants.IgnoreEntity.Contains(EntityNames.SilverCoffer))
                     Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
             }
+            Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+           
             Settings.Instance.Dump();
 
         }

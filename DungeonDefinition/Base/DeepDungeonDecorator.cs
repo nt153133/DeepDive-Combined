@@ -26,7 +26,11 @@ namespace Deep.DungeonDefinition.Base
         public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
         public uint CaptainNpcId => (uint) Npc.NpcId;
         public Vector3 CaptainNpcPosition => Npc.LocationVector;
-        public uint[] DeepDungeonRawIds { get; }
+        public uint[] DeepDungeonRawIds
+        {
+            get { return Floors.Select(i => (uint) i.MapId).ToArray(); }
+        }
+
 
         public virtual string DisplayName => NameWithoutArticle;
         public virtual uint OfPassage { get; }
@@ -50,7 +54,7 @@ namespace Deep.DungeonDefinition.Base
             UnlockQuest = deepDungeon.UnlockQuest;
             Npc = deepDungeon.Npc;
             Floors = deepDungeon.Floors;
-            DeepDungeonRawIds = GetRawMapIds();
+            //DeepDungeonRawIds = GetRawMapIds();
         }
 
         public List<FloorSetting> Floors { get; }
