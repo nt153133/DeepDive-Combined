@@ -170,14 +170,15 @@ namespace Deep
         public float LevelScore => Max[1] / RecoverMax;
 
 
-        public float EffectiveMax(float playerMaxHeath, bool hq)
+        public float EffectiveMax(float playerMaxHealth, bool hq)
         {
-            return playerMaxHeath * Rate[hq ? 1 : 0];
+            var index = hq ? 1 : 0;
+            return Math.Min(playerMaxHealth * Rate[index], Max[index]);
         }
 
-        public float EffectiveHPS(float playerMaxHeath, bool hq)
+        public float EffectiveHPS(float playerMaxHealth, bool hq)
         {
-            var effectiveMax = EffectiveMax(playerMaxHeath, hq);
+            var effectiveMax = EffectiveMax(playerMaxHealth, hq);
             float cooldown = ItemData[hq ? 1 : 0].Cooldown;
             if (hq)
                 cooldown = cooldown * .89f;
