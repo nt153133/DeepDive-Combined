@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +16,12 @@ using Buddy.Coroutines;
 using Clio.Utilities.Helpers;
 using Deep.Enums;
 using Deep.Helpers;
-using Deep.Logging;
-using Deep.Memory;
-using Deep.Providers;
+using Deep.Helpers.Logging;
 using ff14bot;
-using ff14bot.Behavior;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using ff14bot.Navigation;
-using ff14bot.Objects;
 
-namespace Deep.Tasks.Coroutines
+namespace Deep.Tasks
 {
     internal class Common
     {

@@ -7,7 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-using Deep.Logging;
+
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Managers;
@@ -23,8 +23,8 @@ using Deep.Memory;
 using Deep.Enums;
 using ff14bot.Navigation;
 using Buddy.Coroutines;
+using Deep.Helpers.Logging;
 using ff14bot.Objects;
-using Deep.Tasks.Coroutines;
 using Deep.Providers;
 using ff14bot.Helpers;
 using ff14bot.Enums;
@@ -72,7 +72,7 @@ namespace Deep.TaskManager.Actions
                 if (await Rest())
                 {
                     await CommonTasks.StopMoving("Resting");
-                    await Tasks.Coroutines.Common.UsePots();
+                    await Tasks.Common.UsePots();
                     return true;
                 }
                 if (await PreCombatBuff())
@@ -171,18 +171,18 @@ namespace Deep.TaskManager.Actions
                         i.TargetCharacter == Core.Me) &&
                 Core.Me.CurrentHealthPercent < 90)
             {
-                if (await Tasks.Coroutines.Common.UsePots(true))
+                if (await Tasks.Common.UsePots(true))
                     return true;
             }
 
             if (Core.Me.InRealCombat())
             {
-                if (await Tasks.Coroutines.Common.UseSustain())
+                if (await Tasks.Common.UseSustain())
                     return true;
 
                 if (Settings.Instance.UseAntidote)
                 {
-                    if (Core.Me.HasAnyAura(Auras.Poisons) && await Tasks.Coroutines.Common.UseItemById(Items.Antidote))
+                    if (Core.Me.HasAnyAura(Auras.Poisons) && await Tasks.Common.UseItemById(Items.Antidote))
                         return true;
                 }
 
@@ -215,7 +215,7 @@ namespace Deep.TaskManager.Actions
                     if ((Core.Target as Character)?.GetAuraById(714)?.Value == 5 && player.ClassLevel > 30 ||
                         player.CurrentHealthPercent < 65)
                     {
-                        await Tasks.Coroutines.Common.CancelAura(Auras.Lust);
+                        await Tasks.Common.CancelAura(Auras.Lust);
                         ActionManager.StopCasting();
                         return true;
                     }
@@ -244,9 +244,9 @@ namespace Deep.TaskManager.Actions
             }
 
             // ReSharper disable once RedundantCheckBeforeAssignment
-            if (Tasks.Coroutines.Common.PomanderState != ItemState.None)
+            if (Tasks.Common.PomanderState != ItemState.None)
             {
-                Tasks.Coroutines.Common.PomanderState = ItemState.None;
+                Tasks.Common.PomanderState = ItemState.None;
             }
             return false;
         }
@@ -317,7 +317,7 @@ namespace Deep.TaskManager.Actions
                     (!PartyManager.IsInParty || PartyManager.IsPartyLeader)
                         );
                 await CommonTasks.StopMoving("Use Pomander");
-                var res = await Tasks.Coroutines.Common.UsePomander(Pomander.Witching);
+                var res = await Tasks.Common.UsePomander(Pomander.Witching);
 
                 await Coroutine.Yield();
                 return res;
@@ -341,7 +341,7 @@ namespace Deep.TaskManager.Actions
 
         internal async Task<bool> Heal()
         {
-            if (await Tasks.Coroutines.Common.UsePots())
+            if (await Tasks.Common.UsePots())
                 return true;
 
 

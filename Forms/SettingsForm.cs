@@ -7,11 +7,12 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-using Deep.Logging;
+
 using Deep.Providers;
 using Deep.Structure;
 using System;
 using System.Windows.Forms;
+using Deep.Helpers.Logging;
 
 namespace Deep.Forms
 {

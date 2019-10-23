@@ -9,7 +9,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Buddy.Coroutines;
 using Clio.Utilities;
-using Deep.Logging;
 using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;

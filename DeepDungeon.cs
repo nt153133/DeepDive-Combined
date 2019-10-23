@@ -16,7 +16,6 @@ using System.Windows;
 using Buddy.Coroutines;
 using Deep.Forms;
 using Deep.Helpers;
-using Deep.Logging;
 using Deep.Providers;
 using Deep.Tasks;
 using ff14bot.Behavior;
@@ -30,15 +29,15 @@ using ff14bot.RemoteWindows;
 using Action = TreeSharp.Action;
 using ff14bot.Pathing.Service_Navigation;
 using ff14bot.Enums;
-using Deep.Tasks.Coroutines;
 using ff14bot.AClasses;
 using System.Windows.Controls;
+using Deep.Helpers.Logging;
 using Decorator = TreeSharp.Decorator;
 using ff14bot.Overlay3D;
 using Deep.TaskManager;
 using Deep.TaskManager.Actions;
 using ff14bot.Helpers;
-using FileTest;
+
 
 namespace Deep
 {
@@ -63,6 +62,9 @@ namespace Deep
           
             if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
                 Logger.Warn("Settings are empty?");
+            
+            Constants.LoadList();
+            Constants.SelectedDungeon = Constants.DeepListType.First();
 
             Task.Factory.StartNew(() =>
             {
@@ -82,7 +84,8 @@ namespace Deep
 
         #region BotBase Stuff
 
-        private SettingsForm _settings;
+        //private SettingsForm _settings;
+        private DungeonSlection _settings;
         private static Version v = new Version(1, 3, 3);
 
         public override void OnButtonPress()
@@ -96,7 +99,7 @@ namespace Deep
                 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-CN");
 #endif
 
-                _settings = new SettingsForm
+                _settings = new DungeonSlection
                 {
                     Text = "DeepDive v" + v //title
                 };
@@ -139,7 +142,7 @@ namespace Deep
         private Composite _root;
 
         private bool ShowDebug = true;
-        private DeepTest _debug;
+        private DungeonSlection _debug;
 
         //private DDServiceNavigationProvider serviceProvider = new DDServiceNavigationProvider();
         public override void Pulse()
@@ -162,8 +165,7 @@ namespace Deep
         public override void Start()
         {
             Poi.Current = null;
-            Constants.LoadList();
-            Constants.SelectedDungeon = Constants.DeepListType.First();
+            
             Logger.Info(Constants.SelectedDungeon.ToString());
             //setup navigation manager
             Navigator.NavigationProvider = new DDNavigationProvider(new ServiceNavigationProvider());
@@ -240,22 +242,26 @@ namespace Deep
                 return;
             }
 
+            
 
-
-            if (!ConditionParser.IsQuestCompleted(67092))
+            if (!ConditionParser.IsQuestCompleted(Constants.SelectedDungeon.UnlockQuest))
             {
-                Logger.Error("You must complete \"The House That Death Built\" to run this base.");
+                Logger.Error($"You must complete \"{DataManager.GetLocalizedQuestName(Constants.SelectedDungeon.UnlockQuest)}\" to run this base.");
                 Logger.Error(
                     "Please switch to \"Order Bot\" and run the profile: \\BotBases\\DeepDive\\Profiles\\PotD_Unlock.xml");
                 _root = new ActionAlwaysFail();
                 return;
+            }
+            else
+            {
+                Logger.Error($"Quest {Constants.SelectedDungeon.UnlockQuest} - \"{DataManager.GetLocalizedQuestName(Constants.SelectedDungeon.UnlockQuest)}\" to run this base.");
             }
 
             StopPlz = false;
             
             SetupSettings();
             
-            if (ShowDebug)
+            if (false)
             {
                 if (_debug == null)
 
@@ -263,7 +269,7 @@ namespace Deep
                     {
                         Thread Messagethread = new Thread(new ThreadStart(delegate()
                         {
-                            _debug = new DeepTest();
+                            _debug = new DungeonSlection();
                             _debug.ShowDialog();
                         }));
                         Messagethread.SetApartmentState(ApartmentState.STA);

@@ -7,11 +7,11 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Diagnostics;
-using Deep.Logging;
 
-namespace Deep.Helpers
+namespace Deep.Helpers.Logging
 {
     [DebuggerStepThrough]
     internal class PerformanceLogger : IDisposable

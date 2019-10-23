@@ -9,7 +9,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Clio.Utilities;
 using Clio.Utilities.Helpers;
-using Deep.Logging;
 using Deep.Providers;
 using ff14bot;
 using ff14bot.Behavior;
@@ -20,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {

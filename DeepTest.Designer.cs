@@ -1,6 +1,6 @@
 ﻿﻿using System.ComponentModel;
 
-namespace FileTest
+namespace Deep
 {
     partial class DeepTest
     {

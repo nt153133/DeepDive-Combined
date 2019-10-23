@@ -16,7 +16,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Logging;
 using Deep.Memory;
 using ff14bot;
 using ff14bot.Enums;

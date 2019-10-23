@@ -14,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Clio.Utilities;
-using Deep.Logging;
 using Deep.Memory;
 using Deep.Properties;
 using ff14bot;
@@ -33,6 +32,7 @@ using System.Drawing;
 using ff14bot.Helpers;
 using ff14bot.ServiceClient;
 using Deep.Helpers;
+using Deep.Helpers.Logging;
 
 namespace Deep.Providers
 {

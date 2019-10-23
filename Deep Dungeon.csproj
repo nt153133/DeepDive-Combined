@@ -109,6 +109,12 @@
     <Compile Include="DungeonDefinition\UnknownDeepDungeon.cs" />
     <Compile Include="Forms\Converter\EnumerateExtension.cs" />
     <Compile Include="Forms\Converter\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Forms\DungeonSlection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DungeonSlection.Designer.cs">
+      <DependentUpon>DungeonSlection.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,13 +167,15 @@
     <Compile Include="Helpers\Logging\Logger.cs" />
     <Compile Include="Helpers\Logging\LoggerNameAttribute.cs" />
     <Compile Include="DeepDungeon.cs" />
-    <Compile Include="Structure\DDInventoryItem.cs" />
     <Compile Include="Structure\FloorSettings.cs" />
     <Compile Include="Providers\DDNavigationProvider.cs" />
     <Compile Include="Providers\DDCombatTargetingProvider.cs" />
     <Compile Include="Enums\SaveSlot.cs" />
     <Compile Include="Windows\DeepDungeonMenu.cs" />
     <Compile Include="Windows\DeepDungeonSaveData.cs" />
+    <EmbeddedResource Include="Forms\DungeonSlection.resx">
+      <DependentUpon>DungeonSlection.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Walls\770.json" />
     <EmbeddedResource Include="Resources\DeepDungeons.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

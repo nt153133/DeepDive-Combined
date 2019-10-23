@@ -9,7 +9,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Buddy.Coroutines;
 using Clio.Utilities.Helpers;
-using Deep.Logging;
 using Deep.Memory;
 using Deep.Structure;
 using Deep.Windows;
@@ -26,6 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
@@ -42,6 +42,7 @@ namespace Deep.TaskManager.Actions
         private static uint UseSaveSlot => (uint)Settings.Instance.SaveSlot;
 
         private FloorSetting _targetFloor;
+        private DungeonDefinition.Base.FloorSetting _bettertargetFloor;
 
         private AgentDeepDungeonSaveData Sd => Constants.GetSaveInterface();
 
@@ -158,19 +159,21 @@ namespace Deep.TaskManager.Actions
         /// <returns></returns>
         public bool GetFloorStatus(byte[] apLevels, DeepDungeonSaveState[] sdSaveStates)
         {
-            var stop = Settings.Instance.SelectedLevel;
+            var stop = Settings.Instance.BetterSelectedLevel;//Settings.Instance.SelectedLevel;
 
             try
             {
                 if (!PartyManager.IsInParty)
                 {
                     Logger.Warn("You are solo, Setting the bot to do 1-10.");
-                    stop = Settings.Instance.FloorSettings[0];
+                    stop = Constants.SelectedDungeon.Floors[0];  //Settings.Instance.FloorSettings[0];
                 }
 
-                _targetFloor = stop;
+                //_targetFloor = stop;
+                _bettertargetFloor = stop;
 
-                Logger.Verbose("Going to floor: {0}", _targetFloor.LevelMax);
+                //Logger.Verbose("Going to floor: {0}", _targetFloor.LevelMax);
+                Logger.Verbose("Going to floor: {0}", _bettertargetFloor.End);
 
             }
             catch (Exception)
@@ -179,9 +182,12 @@ namespace Deep.TaskManager.Actions
                 _targetFloor = new FloorSetting { LevelMax = 10 };
             }
 
-            Logger.Verbose("Starting Level {0}", _targetFloor.LevelMax - 9);
+            //Logger.Verbose("Starting Level {0}", _targetFloor.LevelMax - 9);
+            Logger.Verbose("Starting Level {0}", _bettertargetFloor.Start);
 
-            var lm = _targetFloor.LevelMax < sdSaveStates[UseSaveSlot].Floor;
+            //var lm = _targetFloor.LevelMax < sdSaveStates[UseSaveSlot].Floor;
+            var lm = _bettertargetFloor.End < sdSaveStates[UseSaveSlot].Floor;
+            
             var notfixed = !sdSaveStates[UseSaveSlot].FixedParty;
             var cjChanged = sdSaveStates[UseSaveSlot].Class != Core.Me.CurrentJob;
             var partyData = sdSaveStates[UseSaveSlot].PartyMembers.ToList();
@@ -217,7 +223,8 @@ namespace Deep.TaskManager.Actions
 
 
             if (saved && lm)
-                Logger.Verbose("Resetting save data: Level Max ({0}) is Less than floor value: {1}", _targetFloor.LevelMax, sdSaveStates[UseSaveSlot].Floor);
+                Logger.Verbose("Resetting save data: Level Max ({0}) is Less than floor value: {1}", _bettertargetFloor.End, sdSaveStates[UseSaveSlot].Floor);
+                //Logger.Verbose("Resetting save data: Level Max ({0}) is Less than floor value: {1}", _targetFloor.LevelMax, sdSaveStates[UseSaveSlot].Floor);
             if (saved && notfixed)
                 Logger.Verbose("Resetting save data: Our class/job has changed from: {0} to {1}", sdSaveStates[UseSaveSlot].Class, Core.Me.CurrentJob);
             if (saved && partySize)

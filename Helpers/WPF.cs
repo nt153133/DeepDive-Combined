@@ -8,7 +8,6 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Clio.Utilities;
-using Deep.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using Deep.Helpers.Logging;
 
 namespace Deep.Helpers
 {

@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Deep.Enums;
-using Deep.Logging;
 using Deep.Structure;
 using ff14bot;
 using ff14bot.Helpers;
@@ -22,6 +21,7 @@ using ff14bot.Managers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Configuration;
+using Deep.Helpers.Logging;
 
 namespace Deep
 {
@@ -130,7 +130,7 @@ namespace Deep
                 Save();
             }
         }
-
+        
         private bool _verboseLogging;
         [Setting]
         [Description("enables verbose logging")]
@@ -183,7 +183,7 @@ namespace Deep
         [Setting]
         [Description("open traps")]
         [JsonProperty("OpenTraps")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [Category("Chests")]
         public bool OpenTraps
         {
@@ -230,6 +230,7 @@ namespace Deep
         [Setting]
         [Description("go for the hoard when we are prioritizing the exit")]
         [JsonProperty("GoForTheHoard")]
+        [DefaultValue(false)]
         [Category("Chests")]
         public bool GoForTheHoard
         {
@@ -241,6 +242,7 @@ namespace Deep
         [Setting]
         [Description("Save Pomander of Strength")]
         [JsonProperty("SaveStr")]
+        [DefaultValue(true)]
         [Category("Pots & Pomanders")]
         public bool SaveStr
         {
@@ -252,6 +254,7 @@ namespace Deep
         [Setting]
         [Description("Save Pomander of Steel")]
         [JsonProperty("SaveSteel")]
+        [DefaultValue(true)]
         [Category("Pots & Pomanders")]
         public bool SaveSteel
         {
@@ -370,6 +373,19 @@ namespace Deep
             }
         }
 
+        private DungeonDefinition.Base.FloorSetting _BetterSelectedLevel;
+        [Browsable(false)]
+        [JsonProperty("BetterSelectedLevel")]
+        public DungeonDefinition.Base.FloorSetting BetterSelectedLevel
+        {
+            get => _BetterSelectedLevel;
+            set
+            {
+                _BetterSelectedLevel = value;
+                Save();
+            }
+        }
+        
         #region Dump
 
 

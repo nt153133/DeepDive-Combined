@@ -8,7 +8,6 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Deep.Helpers;
-using Deep.Logging;
 using ff14bot;
 using ff14bot.Managers;
 using ff14bot.Navigation;
@@ -17,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
@@ -45,7 +45,7 @@ namespace Deep.TaskManager.Actions
 
             if (Core.Me.HasAura(Auras.Silence) && Settings.Instance.UseEchoDrops)
             {
-                if (await Tasks.Coroutines.Common.UseItemById(Items.EchoDrops))
+                if (await Tasks.Common.UseItemById(Items.EchoDrops))
                     return true;
             }
             Navigator.Clear();

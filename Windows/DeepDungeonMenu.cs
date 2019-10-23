@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Buddy.Coroutines;
 using ff14bot.Managers;
 using Deep.Helpers;
-using Deep.Logging;
+using Deep.Helpers.Logging;
 
 
 namespace Deep.Windows

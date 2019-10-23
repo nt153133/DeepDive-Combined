@@ -10,7 +10,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using Buddy.Coroutines;
 using Deep.Enums;
 using Deep.Helpers;
-using Deep.Logging;
 using Deep.Memory;
 using ff14bot;
 using ff14bot.Directors;
@@ -20,7 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Deep.Tasks.Coroutines.Common;
+using Deep.Helpers.Logging;
+using static Deep.Tasks.Common;
 
 namespace Deep.TaskManager.Actions
 {

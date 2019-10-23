@@ -8,7 +8,6 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 using Buddy.Coroutines;
-using Deep.Logging;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Managers;
@@ -18,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deep.Helpers.Logging;
+using ff14bot.NeoProfiles;
 
 namespace Deep.TaskManager.Actions
 {
@@ -40,6 +41,13 @@ namespace Deep.TaskManager.Actions
                     return true;
                 }
 
+                if (!ConditionParser.HasAetheryte(Constants.EntranceZone.Id))
+                {
+                    Logger.Error($"We can't get to {Constants.EntranceZone.CurrentLocaleAethernetName}. You don't have that Aetheryte so do something about it...");
+                    TreeRoot.Stop();
+                    return false;
+                }
+                
                 if (!WorldManager.TeleportById(Constants.EntranceZone.Id))
                 {
                     Logger.Error($"We can't get to {Constants.EntranceZone.CurrentLocaleAethernetName}. something is very wrong...");

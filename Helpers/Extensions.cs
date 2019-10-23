@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Deep.Helpers;
-using Deep.Logging;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;

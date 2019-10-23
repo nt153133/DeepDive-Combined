@@ -10,7 +10,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using Buddy.Coroutines;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Logging;
 using Deep.Memory;
 using ff14bot;
 using ff14bot.Behavior;
@@ -23,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
@@ -77,7 +77,7 @@ namespace Deep.TaskManager.Actions
 
             if (Core.Me.HasAura(Auras.Lust))
             {
-                await Tasks.Coroutines.Common.CancelAura(Auras.Lust);
+                await Tasks.Common.CancelAura(Auras.Lust);
             }
             Logger.Verbose("Attempting to interact with: {0}", unit.Name);
             unit.Target();

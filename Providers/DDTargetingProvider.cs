@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Logging;
+using Deep.Helpers.Logging;
 using Deep.Memory;
 using Deep.Tasks;
 using ff14bot;

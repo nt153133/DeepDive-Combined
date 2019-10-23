@@ -6,13 +6,14 @@ using System.Windows.Forms;
  using Deep.DungeonDefinition.Base;
 
 
- namespace FileTest
+ namespace Deep
 {
     public partial class DeepTest : Form
     {
         public DeepTest()
         {
             InitializeComponent();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -49,6 +50,7 @@ using System.Windows.Forms;
             richTextBox1.Text = selected.ToString();
 
             listBox2.Items.Clear();
+            
             foreach (var floor in (selected as IDeepDungeon).Floors)
             {
                 listBox2.Items.Add(floor);
