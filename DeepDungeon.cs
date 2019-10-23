@@ -85,7 +85,7 @@ namespace Deep
         #region BotBase Stuff
 
         //private SettingsForm _settings;
-        private DungeonSlection _settings;
+        private DungeonSelection _settings;
         private static Version v = new Version(1, 3, 3);
 
         public override void OnButtonPress()
@@ -99,7 +99,7 @@ namespace Deep
                 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-CN");
 #endif
 
-                _settings = new DungeonSlection
+                _settings = new DungeonSelection
                 {
                     Text = "DeepDive v" + v //title
                 };
@@ -142,7 +142,7 @@ namespace Deep
         private Composite _root;
 
         private bool ShowDebug = true;
-        private DungeonSlection _debug;
+        private DungeonSelection _debug;
 
         //private DDServiceNavigationProvider serviceProvider = new DDServiceNavigationProvider();
         public override void Pulse()
@@ -269,7 +269,7 @@ namespace Deep
                     {
                         Thread Messagethread = new Thread(new ThreadStart(delegate()
                         {
-                            _debug = new DungeonSlection();
+                            _debug = new DungeonSelection();
                             _debug.ShowDialog();
                         }));
                         Messagethread.SetApartmentState(ApartmentState.STA);

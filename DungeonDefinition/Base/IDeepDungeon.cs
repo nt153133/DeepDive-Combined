@@ -30,6 +30,7 @@ namespace Deep.DungeonDefinition.Base
         uint CaptainNpcId { get; }
         Vector3 CaptainNpcPosition { get; }
         uint[] DeepDungeonRawIds { get; }
+        uint CheckPointLevel { get; }
         string GetDDType();
 
         List<GameObject> GetObjectsByWeight();

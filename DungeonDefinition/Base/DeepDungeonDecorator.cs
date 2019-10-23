@@ -2,6 +2,7 @@
 using System.Linq;
 using Buddy.Service.Client;
 using Clio.Utilities;
+using ff14bot.Managers;
 using ff14bot.Objects;
 
 namespace Deep.DungeonDefinition.Base
@@ -20,9 +21,6 @@ namespace Deep.DungeonDefinition.Base
 
         //DeepDive Used Properties
         
-        // DataManager.AetheryteCache.Values.FirstOrDefault(i => i.Id == EntranceAetheryte);
-        //public uint EntranceAetheryte { get; }
-        
         public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
         public uint CaptainNpcId => (uint) Npc.NpcId;
         public Vector3 CaptainNpcPosition => Npc.LocationVector;
@@ -32,7 +30,7 @@ namespace Deep.DungeonDefinition.Base
         }
 
 
-        public virtual string DisplayName => NameWithoutArticle;
+        public virtual string DisplayName { get; }
         public virtual uint OfPassage { get; }
         public virtual uint OfReturn { get; }
         public virtual uint BossExit { get; }
@@ -41,7 +39,9 @@ namespace Deep.DungeonDefinition.Base
         public virtual uint LobbyEntrance { get; }
 
         public virtual Dictionary<uint, uint> WallMapData { get; }
-    
+
+        public virtual uint CheckPointLevel { get; }
+
 
         protected DeepDungeonDecorator(DeepDungeonData deepDungeon)
         {
@@ -54,6 +54,7 @@ namespace Deep.DungeonDefinition.Base
             UnlockQuest = deepDungeon.UnlockQuest;
             Npc = deepDungeon.Npc;
             Floors = deepDungeon.Floors;
+            DisplayName = DataManager.ZoneNameResults[(uint) LobbyId].CurrentLocaleName;
             //DeepDungeonRawIds = GetRawMapIds();
         }
 

@@ -10,6 +10,7 @@
         private const uint _BossExit = 2005809;
         private const uint _LobbyExit = 2006016; //Exit
         private const uint _LobbyEntrance = 2006012; //Entry Point
+        private const uint _checkPointLevel = 51;
 
         //public override string DisplayName => Name;
         
@@ -20,6 +21,7 @@
             LobbyExit = _LobbyExit;
             OfPassage = _CairnOfPassage;
             LobbyEntrance = _LobbyEntrance;
+            CheckPointLevel = _checkPointLevel;
         }
 
         public override uint LobbyEntrance { get; }
@@ -30,6 +32,8 @@
 
         public override uint BossExit { get; }
         public override uint LobbyExit { get; }
+        
+        public override uint CheckPointLevel { get; }
 
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {

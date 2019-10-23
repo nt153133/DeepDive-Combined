@@ -10,6 +10,7 @@
         private const uint _BossExit = 2005809;
         private const uint _LobbyExit = 2009523;
         private const uint _LobbyEntrance = 2009524;
+        private const uint _checkPointLevel = 11;
         
         public HeavenOnHigh(Base.DeepDungeonData deep) :base(deep)
         {
@@ -18,6 +19,7 @@
             LobbyExit = _LobbyExit;
             OfPassage = _BeaconOfPassage;
             LobbyEntrance = _LobbyEntrance;
+            CheckPointLevel = _checkPointLevel;
         }
         
         public override uint OfPassage { get; }
@@ -27,6 +29,7 @@
         public override uint BossExit { get; }
         public override uint LobbyExit { get; }
         public override uint LobbyEntrance { get; }
+        public override uint CheckPointLevel { get; }
         
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {

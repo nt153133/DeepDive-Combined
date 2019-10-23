@@ -109,11 +109,11 @@
     <Compile Include="DungeonDefinition\UnknownDeepDungeon.cs" />
     <Compile Include="Forms\Converter\EnumerateExtension.cs" />
     <Compile Include="Forms\Converter\LocalizedDescriptionAttribute.cs" />
-    <Compile Include="Forms\DungeonSlection.cs">
+    <Compile Include="Forms\DungeonSelection.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\DungeonSlection.Designer.cs">
-      <DependentUpon>DungeonSlection.cs</DependentUpon>
+      <DependentUpon>DungeonSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
@@ -174,7 +174,7 @@
     <Compile Include="Windows\DeepDungeonMenu.cs" />
     <Compile Include="Windows\DeepDungeonSaveData.cs" />
     <EmbeddedResource Include="Forms\DungeonSlection.resx">
-      <DependentUpon>DungeonSlection.cs</DependentUpon>
+      <DependentUpon>DungeonSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Walls\770.json" />
     <EmbeddedResource Include="Resources\DeepDungeons.json">
