@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Deep.DungeonDefinition;
 using Deep.DungeonDefinition.Base;
@@ -8,7 +7,6 @@ using Deep.Properties;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Objects;
-using Newtonsoft.Json;
 
 namespace Deep
 {
@@ -44,6 +42,7 @@ namespace Deep
                 }
         }
 
+        // ReSharper disable once InconsistentNaming
         internal static DeepDungeonType GetDDEnum(int index)
         {
             switch (index)
@@ -57,7 +56,7 @@ namespace Deep
             }
         }
         
-        internal static Dictionary<int, int> Percent = new Dictionary<int, int>
+        internal static readonly Dictionary<int, int> Percent = new Dictionary<int, int>
         {
             {0, 0},
             {1, 9},
@@ -107,7 +106,7 @@ namespace Deep
     internal static partial class Auras
     {
         internal const uint Haste = 1091; //Buff
-        internal const uint HPBoost = 1093; //Buff
+        internal const uint HpBoost = 1093; //Buff
     }
 
 }

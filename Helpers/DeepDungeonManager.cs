@@ -25,6 +25,7 @@ namespace Deep.Helpers
     /// </summary>
     public static class DeepDungeonManager
     {
+        public static bool HaveMainPomander = false;
         public static InstanceContentDirector Director => DirectorManager.ActiveDirector as InstanceContentDirector;
 
         public static bool BossFloor => Director != null && (Director.DeepDungeonLevel % 10 == 0);
@@ -32,8 +33,8 @@ namespace Deep.Helpers
 
         public static DDInventoryItem GetInventoryItem(Pomander pom)
         {
-            return Director.DeepDungeonInventory[(byte) pom - 1];
-            //return Director.DeepDungeonInventory[(byte) Constants.PomanderInventorySlot(pom)];
+            //return Director.DeepDungeonInventory[(byte) pom - 1];
+            return Director.DeepDungeonInventory[(byte) Constants.PomanderInventorySlot(pom)];
         }
 
         public static bool IsCasting => Core.Me.IsCasting;

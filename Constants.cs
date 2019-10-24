@@ -57,7 +57,6 @@ namespace Deep
 
         internal static uint OfPassage => Constants.SelectedDungeon.OfPassage;
         internal static uint OfReturn => Constants.SelectedDungeon.OfReturn;
-
         internal static uint BossExit => Constants.SelectedDungeon.BossExit;
         internal static uint LobbyExit => Constants.SelectedDungeon.LobbyExit;
         internal static uint LobbyEntrance => Constants.SelectedDungeon.LobbyEntrance;
@@ -207,22 +206,14 @@ namespace Deep
     internal static partial class Constants
     {
 
-        internal static Vector3 EntranceNpcPosition => SelectedDungeon.CaptainNpcPosition; //new Vector3(187.5486f, 7.238432f, -39.26154f);
-        internal static uint EntranceNpcId => SelectedDungeon.CaptainNpcId; //;
-
-        //internal static uint EntranceZoneId = SelectedDungeon.EntranceAetheryte;//153;
+        internal static Vector3 EntranceNpcPosition => SelectedDungeon.CaptainNpcPosition; 
+        internal static uint EntranceNpcId => SelectedDungeon.CaptainNpcId;
         internal static uint AetheryteId => SelectedDungeon.EntranceAetheryte;
-        
         internal static AetheryteResult EntranceZone => DataManager.AetheryteCache[AetheryteId];
         internal static uint EntranceZoneId => EntranceZone.ZoneId;
+        internal static IEnumerable<uint> DeepDungeonRawIds => SelectedDungeon.DeepDungeonRawIds;
 
-        //570 is staging.
-        //561 - 565 are 1-50
-        //593 - 607 are 51-200
-        internal static uint[] DeepDungeonRawIds => Constants.SelectedDungeon.DeepDungeonRawIds;
-
-        internal static uint[] Exits => new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
-        //{SelectedDungeon.LobbyExit, SelectedDungeon.BossExit, SelectedDungeon.OfPassage};
+        internal static IEnumerable<uint> Exits => new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
 
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
         internal static uint[] BaseIgnoreEntity =
@@ -288,7 +279,7 @@ namespace Deep
 
         internal static Dictionary<uint, uint> Maps => Constants.SelectedDungeon.WallMapData;
 
-        internal static uint[] TrapIds =
+        internal static readonly uint[] TrapIds =
         {
             2007182,
             2007183,
