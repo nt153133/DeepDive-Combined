@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Deep.DungeonDefinition.Base;
+using Deep.Helpers;
+using ff14bot.Directors;
+using ff14bot.Managers;
+using static Deep.Tasks.Common;
 
 namespace Deep.DungeonDefinition
 {
@@ -58,6 +63,30 @@ namespace Deep.DungeonDefinition
         {
             return baseList.Concat(_ignoreEntity).ToArray();
         }
+
+        public override async Task<bool> BuffMe()
+        {
+            if (CombatTargeting.Instance.LastEntities.Count() > 4) return await UsePomander(Pomander.Petrification);
+
+            if (DeepDungeonManager.GetInventoryItem(Pomander.Petrification).Count == 3)
+                return await UsePomander(Pomander.Petrification);
+
+            return false;
+        }
+
+        public override async Task<bool> BuffBoss()
+        {
+            return await UsePomander(Pomander.Frailty);;
+        }
+
+        public override async Task<bool> BuffCurrentFloor()
+        {
+            if (DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 1)
+                return await UsePomander(Pomander.Frailty);
+
+            return false;
+        }
+
 
         public override string GetDDType()
         {
