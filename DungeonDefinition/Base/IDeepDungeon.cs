@@ -47,6 +47,8 @@ namespace Deep.DungeonDefinition.Base
         uint[] GetIgnoreEntity(uint[] baseList);
 
         List<GameObject> GetObjectsByWeight();
+        float Sort(GameObject obj);
+        bool Filter(GameObject obj);
         
         string GetDDType();
     }

@@ -25,7 +25,6 @@ namespace Deep.Helpers
     /// </summary>
     public static class DeepDungeonManager
     {
-        public static bool HaveMainPomander = false;
         public static InstanceContentDirector Director => DirectorManager.ActiveDirector as InstanceContentDirector;
 
         public static bool BossFloor => Director != null && (Director.DeepDungeonLevel % 10 == 0);

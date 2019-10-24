@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Clio.Utilities;
 using Deep.DungeonDefinition.Base;
 using Deep.Helpers;
+using Deep.TaskManager.Actions;
+using ff14bot;
 using ff14bot.Directors;
+using ff14bot.Enums;
+using ff14bot.Helpers;
 using ff14bot.Managers;
+using ff14bot.Objects;
 using static Deep.Tasks.Common;
 
 namespace Deep.DungeonDefinition

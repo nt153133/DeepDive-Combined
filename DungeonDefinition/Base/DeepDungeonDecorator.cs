@@ -3,6 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Service.Client;
 using Clio.Utilities;
+using Deep.Helpers;
+using ff14bot.Enums;
+using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Objects;
 
@@ -68,11 +71,6 @@ namespace Deep.DungeonDefinition.Base
             return baseList;
         }
 
-        public virtual List<GameObject> GetObjectsByWeight()
-        {
-            return null;
-        }
-
         public virtual string GetDDType()
         {
             return "Unknown";
@@ -83,6 +81,58 @@ namespace Deep.DungeonDefinition.Base
             var test = Floors.Select(i => (uint) i.MapId);
 
             return test.ToArray();
+        }
+        
+        public virtual List<GameObject> GetObjectsByWeight()
+        {
+            return GameObjectManager.GameObjects
+                .Where(Filter)
+                .OrderByDescending(Sort)
+                .ToList();
+        }
+
+        public virtual float Sort(GameObject obj)
+        {
+            var weight = 100f;
+
+            weight -= obj.Distance2D();
+
+            if (obj.Type == GameObjectType.BattleNpc)
+            {
+                return weight / 2;
+            }
+
+            if (obj.NpcId == EntityNames.BandedCoffer)
+                weight += 500;
+
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && (obj.NpcId == EntityNames.Hidden))
+                weight += 5;
+            else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.OfPassage && PartyManager.IsInParty)
+                weight -= 10;
+
+            return weight;
+        }
+
+        public virtual bool Filter(GameObject obj)
+        {
+            if (obj.Location == Vector3.Zero)
+                return false;
+
+            
+            if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) || Constants.IgnoreEntity.Contains(obj.NpcId))
+                return false;
+
+
+            if (obj.Type == GameObjectType.BattleNpc)
+            {
+                if (DeepDungeonManager.PortalActive)
+                    return false;
+
+                var battleCharacter = (BattleCharacter) obj;
+                return !battleCharacter.IsDead;
+            }
+
+            return obj.Type == GameObjectType.EventObject || obj.Type == GameObjectType.Treasure || obj.Type == GameObjectType.BattleNpc;
         }
 
         public virtual async Task<bool> BuffMe()

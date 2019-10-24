@@ -41,7 +41,7 @@ namespace Deep.TaskManager.Actions
                 Logger.Warn("No activity was detected for {0} seconds. Adding target to the blacklist and trying again", MoveTimer.WaitTime.TotalSeconds);
                 if (Poi.Current.Unit != null)
                 {
-                    DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(3), "Navigation Error");
+                    DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
                 }
                 if(Poi.Current.Type != PoiType.None)
                     Poi.Clear("No activity detected");
