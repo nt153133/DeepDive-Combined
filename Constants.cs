@@ -29,7 +29,7 @@ namespace Deep
     public static class PoiTypes
     {
         public const int ExplorePOI = 9;
-        public const int UseCarnOfReturn = 10;
+        public const int UseCairnOfReturn = 10;
     }
 
     /// <summary>

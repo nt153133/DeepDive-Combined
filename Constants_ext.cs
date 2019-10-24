@@ -16,6 +16,26 @@ namespace Deep
 
         public static IDeepDungeon SelectedDungeon;
 
+        internal static readonly Dictionary<int, int> Percent = new Dictionary<int, int>
+        {
+            {0, 0},
+            {1, 9},
+            {2, 18},
+            {3, 27},
+            {4, 36},
+            {5, 45},
+            {6, 54},
+            {7, 63},
+            {8, 72},
+            {9, 81},
+            {10, 90},
+            {11, 100}
+        };
+
+        public static bool AuraTransformed => Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) ||
+                                              Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
+                                              Core.Me.HasAura(Auras.Odder);
+
         public static void LoadList()
         {
             var deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
@@ -43,7 +63,7 @@ namespace Deep
         }
 
         // ReSharper disable once InconsistentNaming
-        internal static DeepDungeonType GetDDEnum(int index)
+        private static DeepDungeonType GetDDEnum(int index)
         {
             switch (index)
             {
@@ -55,36 +75,16 @@ namespace Deep
                     return DeepDungeonType.Unknown;
             }
         }
-        
-        internal static readonly Dictionary<int, int> Percent = new Dictionary<int, int>
-        {
-            {0, 0},
-            {1, 9},
-            {2, 18},
-            {3, 27},
-            {4, 36},
-            {5, 45},
-            {6, 54},
-            {7, 63},
-            {8, 72},
-            {9, 81},
-            {10, 90},
-            {11, 100}
-        };
-        
+
         public static int PomanderInventorySlot(Pomander p)
         {
-            return SelectedDungeon.PomanderMapping[(int)p];
+            return SelectedDungeon.PomanderMapping[(int) p];
         }
-        
+
         public static bool IsExitObject(GameObject obj)
         {
             return Exits.Any(exit => obj.NpcId == exit);
         }
-        
-        public static bool AuraTransformed => Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) ||
-                                              Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
-                                              Core.Me.HasAura(Auras.Odder);
     }
 
     public enum DeepDungeonType
@@ -94,7 +94,7 @@ namespace Deep
         HoH,
         Unknown
     }
-    
+
     internal static partial class Mobs
     {
         internal const uint HeavenlyShark = 7272;
@@ -108,5 +108,4 @@ namespace Deep
         internal const uint Haste = 1091; //Buff
         internal const uint HpBoost = 1093; //Buff
     }
-
 }

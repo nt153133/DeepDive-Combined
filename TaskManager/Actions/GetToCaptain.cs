@@ -22,7 +22,7 @@ using ff14bot.NeoProfiles;
 
 namespace Deep.TaskManager.Actions
 {
-    class GetToCaptiain : ITask
+    class GetToCaptain : ITask
     {
         public string Name => "GetToCaptain";
 

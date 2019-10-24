@@ -26,16 +26,16 @@ using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
-    class CarnOfReturn : ITask
+    class CairnOfReturn : ITask
     {
-        public string Name => "CarnOfReturn";
+        public string Name => "CairnOfReturn";
 
         Poi Target => Poi.Current;
 
 
         public async Task<bool> Run()
         {
-            if (Target.Type != (PoiType)PoiTypes.UseCarnOfReturn)
+            if (Target.Type != (PoiType)PoiTypes.UseCairnOfReturn)
                 return false;
 
             //let the navigation task handle moving toward the object if we are too far away.
@@ -47,15 +47,15 @@ namespace Deep.TaskManager.Actions
             var unit = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
             if (unit == null)
             {
-                Logger.Warn("Carn of return could not be found at this location");
+                Logger.Warn("Cairn of return could not be found at this location");
                 location = Vector3.Zero;
-                Poi.Clear("Carn of Return could not be found");
+                Poi.Clear("Cairn of Return could not be found");
                 return true;
             }
 
             if (unit.Distance2D(Core.Me.Location) >= 3)
             {
-                await CommonTasks.MoveAndStop(new MoveToParameters(unit.Location, "Carn of Return"), 2.5f, true);
+                await CommonTasks.MoveAndStop(new MoveToParameters(unit.Location, "Cairn of Return"), 2.5f, true);
                 return true;
             }
 
@@ -94,7 +94,7 @@ namespace Deep.TaskManager.Actions
 
             await Coroutine.Sleep(500);
 
-            Poi.Clear("Used Carn Of Return");
+            Poi.Clear("Used Cairn Of Return");
             return true;
         }
 
@@ -117,15 +117,15 @@ namespace Deep.TaskManager.Actions
                 }
             }
 
-            //if we are in combat don't move toward the carn of return
-            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType)PoiTypes.UseCarnOfReturn))
+            //if we are in combat don't move toward the cairn of return
+            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType)PoiTypes.UseCairnOfReturn))
                 return;
 
 
             //party member is dead & we have the location of the cairn and it's active
             if (DeepDungeonManager.ReturnActive && PartyManager.AllMembers.Any(member => member.CurrentHealth == 0) && location != Vector3.Zero && Level == DeepDungeonManager.Level)
             {
-                Poi.Current = new Poi(location, (PoiType)PoiTypes.UseCarnOfReturn);
+                Poi.Current = new Poi(location, (PoiType)PoiTypes.UseCairnOfReturn);
             }
         }
     }

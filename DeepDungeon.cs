@@ -202,11 +202,11 @@ namespace Deep
             _tasks.Add(new CombatHandler());
             
             _tasks.Add(new LobbyHandler());
-            _tasks.Add(new GetToCaptiain());
+            _tasks.Add(new GetToCaptain());
             _tasks.Add(new POTDEntrance());
 
 
-            _tasks.Add(new CarnOfReturn());
+            _tasks.Add(new CairnOfReturn());
             _tasks.Add(new FloorExit());
             _tasks.Add(new Loot());
 
