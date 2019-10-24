@@ -32,23 +32,44 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (WorldManager.ZoneId != 570) return false;
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return false;
+
+            await Coroutine.Sleep(5000);
+
+            _target = GameObjectManager.GetObjectByNPCId(EntityNames.LobbyExit);
+
+            Navigator.Stop();
+            Navigator.Clear();
+
             TreeRoot.StatusText = "Lobby Room";
+
             if (_target == null || !_target.IsValid)
             {
-                Logger.Warn($"Unable to find Lobby Target");
+                Logger.Warn("Unable to find Lobby Target");
                 return false;
             }
-            if(!Navigator.InPosition(_target.Location, Core.Me.Location, 3))
+
+            // move closer plz
+            if (_target.Location.Distance2D(Core.Me.Location) >= 4.4)
             {
-                if (!await CommonTasks.MoveAndStop(new MoveToParameters(_target.Location, "Moving to Lobby Exit"), 3))
+                Logger.Verbose("target range" + _target.Location.Distance2D(Core.Me.Location));
+
+                Navigator.Stop();
+
+                Navigator.PlayerMover.MoveTowards(_target.Location);
+                while (_target.Location.Distance2D(Core.Me.Location) >= 4.4)
                 {
-                    Logger.Warn("Failed to move toward the exit?");
+                    Navigator.PlayerMover.MoveTowards(_target.Location);
+                    await Coroutine.Sleep(100);
                 }
-                return true;
+
+                //await Buddy.Coroutines.Coroutine.Sleep(1500); // (again, probably better to just wait until distance to destination is < 2.0f or something)
+                Navigator.PlayerMover.MoveStop();
             }
+
             _target.Interact();
-            await Coroutine.Wait(250, () => SelectYesno.IsOpen);
+            await Coroutine.Wait(500, () => SelectYesno.IsOpen);
+            await Coroutine.Sleep(1000);
             SelectYesno.ClickYes();
             return true;
         }
@@ -59,9 +80,9 @@ namespace Deep.TaskManager.Actions
             {
                 _target = null;
             }
-            if (WorldManager.ZoneId != 570) return;
-            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == EntityNames.LobbyExit)
-                       .OrderBy(i => i.Distance2D(Core.Me.Location)).FirstOrDefault();
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return;
+            
+            _target = GameObjectManager.GetObjectByNPCId(EntityNames.LobbyExit);
         }
     }
 }
