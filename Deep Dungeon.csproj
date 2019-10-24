@@ -140,7 +140,7 @@
     <Compile Include="TaskManager\Actions\CombatHandler.cs" />
     <Compile Include="TaskManager\Actions\DeathWindowHandler.cs" />
     <Compile Include="TaskManager\Actions\FloorExit.cs" />
-    <Compile Include="TaskManager\Actions\GetToCaptiain.cs" />
+    <Compile Include="TaskManager\Actions\GetToCaptain.cs" />
     <Compile Include="TaskManager\Actions\LoadingHandler.cs" />
     <Compile Include="TaskManager\Actions\LobbyHandler.cs" />
     <Compile Include="TaskManager\Actions\Loot.cs" />

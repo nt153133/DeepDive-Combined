@@ -37,8 +37,8 @@ namespace Deep
     /// </summary>
     internal  static partial class Mobs
     {
-        internal static uint PalaceHornet = 4981;
-        internal static uint PalaceSlime = 4990;
+        internal const uint PalaceHornet = 4981;
+        internal const uint PalaceSlime = 4990;
     }
 
     /// <summary>
@@ -46,14 +46,14 @@ namespace Deep
     /// </summary>
     internal static class EntityNames
     {
-        internal static uint TrapCoffer = 2005808;
-        internal static uint GoldCoffer = 2007358;
-        internal static uint SilverCoffer = 2007357;
+        internal const uint TrapCoffer = 2005808;
+        internal const uint GoldCoffer = 2007358;
+        internal const uint SilverCoffer = 2007357;
 
-        internal static uint[] MimicCoffer = {2006020, 2006022};
+        internal static readonly uint[] MimicCoffer = {2006020, 2006022};
 
-        internal static uint Hidden = 2007542;
-        internal static uint BandedCoffer = 2007543;
+        internal const uint Hidden = 2007542;
+        internal const uint BandedCoffer = 2007543;
 
         internal static uint OfPassage => Constants.SelectedDungeon.OfPassage;
         internal static uint OfReturn => Constants.SelectedDungeon.OfReturn;
@@ -64,88 +64,88 @@ namespace Deep
 
         #region Pets
 
-        internal static uint RubyCarby = 5478;
+        internal const uint RubyCarby = 5478;
 
-        internal static uint Garuda = 1404;
-        internal static uint TopazCarby = 1400;
-        internal static uint EmeraldCarby = 1401;
-        internal static uint Titan = 1403;
-        internal static uint Ifrit = 1402;
+        internal const uint Garuda = 1404;
+        internal const uint TopazCarby = 1400;
+        internal const uint EmeraldCarby = 1401;
+        internal const uint Titan = 1403;
+        internal const uint Ifrit = 1402;
 
-        internal static uint Eos = 1398;
-        internal static uint Selene = 1399;
+        internal const uint Eos = 1398;
+        internal const uint Selene = 1399;
 
-        internal static uint Rook = 3666;
-        internal static uint Bishop = 3667;
+        internal const uint Rook = 3666;
+        internal const uint Bishop = 3667;
 
         #endregion
     }
 
     internal static class Items
     {
-        internal static int Antidote = 4564;
-        internal static int EchoDrops = 4566;
+        internal const int Antidote = 4564;
+        internal const int EchoDrops = 4566;
         internal static int SustainingPotion => Constants.SelectedDungeon.SustainingPotion;
     }
 
     internal static partial class Auras
     {
         internal const uint Odder = 1546;
-        internal static uint Frog = 1101;
-        internal static uint Toad = 439;
-        internal static uint Toad2 = 441;
-        internal static uint Chicken = 1102;
-        internal static uint Imp = 1103;
+        internal const uint Frog = 1101;
+        internal const uint Toad = 439;
+        internal const uint Toad2 = 441;
+        internal const uint Chicken = 1102;
+        internal const uint Imp = 1103;
 
 
-        internal static uint Lust = 565;
-        internal static uint Rage = 565;
+        internal const uint Lust = 565;
+        internal const uint Rage = 565;
 
-        internal static uint Steel = 1100;
-        internal static uint Strength = 687;
+        internal const uint Steel = 1100;
+        internal const uint Strength = 687;
 
-        internal static uint Sustain = 184;
+        internal const uint Sustain = 184;
 
-        public static uint Enervation = 546;
-        public static uint Pacification = 620;
-        public static uint Silence = 7;
+        internal const uint Enervation = 546;
+        internal const uint Pacification = 620;
+        internal const uint Silence = 7;
 
 
-        public static uint[] Poisons =
+        public static readonly uint[] Poisons =
         {
             18, 275, 559, 560, 686, 801
         };
 
         #region Floor Debuffs
 
-        internal static uint Pox = 1087;
-        internal static uint Blind = 1088;
-        internal static uint HpDown = 1089;
-        internal static uint DamageDown = 1090;
-        internal static uint Amnesia = 1092;
+        internal const uint Pox = 1087;
+        internal const uint Blind = 1088;
+        internal const uint HpDown = 1089;
+        internal const uint DamageDown = 1090;
+        internal const uint Amnesia = 1092;
 
-        internal static uint ItemPenalty = 1094;
-        internal static uint SprintPenalty = 1095;
+        internal const uint ItemPenalty = 1094;
+        internal const uint SprintPenalty = 1095;
 
-        internal static uint KnockbackPenalty = 1096;
-        internal static uint NoAutoHeal = 1097;
+        internal const uint KnockbackPenalty = 1096;
+        internal const uint NoAutoHeal = 1097;
 
         #endregion
     }
 
     internal static class Spells
     {
-        internal static uint LustSpell = 6274;
-        internal static uint RageSpell = 6273;
-        internal static uint ResolutionSpell = 6871;
+        internal const uint LustSpell = 6274;
+        internal const uint RageSpell = 6273;
+        internal const uint ResolutionSpell = 6871;
     }
 
     internal static class WindowNames
     {
-        internal static string DDmenu = "DeepDungeonMenu";
-        internal static string DDsave = "DeepDungeonSaveData";
-        internal static string DDmap = "DeepDungeonMap";
-        internal static string DDStatus = "DeepDungeonStatus";
+        internal const string DDmenu = "DeepDungeonMenu";
+        internal const string DDsave = "DeepDungeonSaveData";
+        internal const string DDmap = "DeepDungeonMap";
+        internal const string DDStatus = "DeepDungeonStatus";
     }
 
     internal class Potion
