@@ -393,28 +393,37 @@ namespace Deep
         #endregion
         internal void Dump()
         {
-            Logger.Verbose("Save Steel: {0}", _saveSteel);
-            Logger.Verbose("Save Strength: {0}", _savestr);
+            _saveSteel = true;
+            _savestr = true;
+            _openMimics = false;
+            _openTraps = false;
+            _useSustain = true;
+            //Logger.Verbose("Save Steel: {0}", _saveSteel);
+            //Logger.Verbose("Save Strength: {0}", _savestr);
             Logger.Verbose("Go For Cache: {0}", _goFortheHoard);
-
             Logger.Verbose("Open Silver: {0}", _openSilver);
-            Logger.Verbose("Open Mimics: {0}", _openMimics);
-            Logger.Verbose("Open Traps: {0}", _openTraps);
-            Logger.Verbose("51: {0}", _startAt51);
+            //Logger.Verbose("Open Mimics: {0}", _openMimics);
+            //Logger.Verbose("Open Traps: {0}", _openTraps);
+            
             Logger.Verbose("Exit Priority: {0}", _GoExit);
-            Logger.Verbose("save slot: {0}", SaveSlot);
-            Logger.Verbose("Use Sustain Pot: {0}", UseSustain);
+            Logger.Verbose("Save slot: {0}", SaveSlot);
+            
+            //Logger.Verbose("Use Sustain Pot: {0}", UseSustain);
             
             Logger.Verbose("Combat Pull range: {0}", Constants.ModifiedCombatReach);
             Logger.Verbose("In Party: {0}", PartyManager.IsInParty);
+            //Logger.Verbose("StopSolo: {0}", SoloStop);
+            Logger.Verbose("Start at {1} : {0}", _startAt51, Constants.SelectedDungeon.CheckPointLevel);
+            Logger.Verbose($"Selected Dungeon: {Constants.SelectedDungeon.DisplayName}");
+            Logger.Verbose($"Selected Floor: {_BetterSelectedLevel.DisplayName}");
 
-            Logger.Verbose("StopSolo: {0}", SoloStop);
-
+            /*
             EnsureFloorSettings();
             foreach (var f in FloorSettings)
             {
                 Logger.Verbose(f.Display);
             }
+            */
         }
 
         internal List<FloorSetting> EnsureFloorSettings()

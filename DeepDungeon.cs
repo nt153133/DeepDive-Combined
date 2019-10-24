@@ -60,8 +60,8 @@ namespace Deep
         {
             //Captain = new GetToCaptain();
           
-            if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
-                Logger.Warn("Settings are empty?");
+           // if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
+           //     Logger.Warn("Settings are empty?");
             
             Constants.LoadList();
             Constants.SelectedDungeon = Constants.DeepListType.First();
@@ -165,6 +165,19 @@ namespace Deep
         public override void Start()
         {
             Poi.Current = null;
+
+            if (Constants.SelectedDungeon == null)
+            {
+                Logger.Error("No Selected Deep Dungeon: Something went really wrong");
+                _root = new ActionAlwaysFail();
+                return;
+            }
+            
+            if (Settings.Instance.BetterSelectedLevel == null)
+            {
+                Settings.Instance.BetterSelectedLevel = Constants.SelectedDungeon.Floors[0];
+                Logger.Error($"No floor selected, setting it to use [{Settings.Instance.BetterSelectedLevel.DisplayName}]");
+            }
             
             Logger.Info(Constants.SelectedDungeon.ToString());
             //setup navigation manager
@@ -173,8 +186,6 @@ namespace Deep
 
             TreeHooks.Instance.ClearAll();
             
-            
-
             _tasks = new TaskManagerProvider();
 
 
@@ -252,35 +263,22 @@ namespace Deep
                 _root = new ActionAlwaysFail();
                 return;
             }
+            
+            if (!ConditionParser.IsQuestCompleted(Settings.Instance.BetterSelectedLevel.QuestId))
+            {
+                Logger.Error($"You must complete \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this floor.");
+                Logger.Error("Complete the quest or change the floor selection");
+                _root = new ActionAlwaysFail();
+                return;
+            }
             else
             {
-                Logger.Error($"Quest {Constants.SelectedDungeon.UnlockQuest} - \"{DataManager.GetLocalizedQuestName(Constants.SelectedDungeon.UnlockQuest)}\" to run this base.");
+                Logger.Error($"Quest {Settings.Instance.BetterSelectedLevel.QuestId} - \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this base.");
             }
 
             StopPlz = false;
             
             SetupSettings();
-            
-            if (false)
-            {
-                if (_debug == null)
-
-                    try
-                    {
-                        Thread Messagethread = new Thread(new ThreadStart(delegate()
-                        {
-                            _debug = new DungeonSelection();
-                            _debug.ShowDialog();
-                        }));
-                        Messagethread.SetApartmentState(ApartmentState.STA);
-                        Messagethread.Start();
-
-                        //DeepTracker._debug = _debug;
-                    }
-                    catch (Exception)
-                    { }
-            }
-            
 
             _root =
                 new ActionRunCoroutine(async x =>
@@ -368,7 +366,10 @@ namespace Deep
                 if (!Constants.IgnoreEntity.Contains(EntityNames.SilverCoffer))
                     Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
             }
-            Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+            
+            //Add the current Dungeon's Ignores
+            if (!Constants.IgnoreEntity.Contains(EntityNames.OfPassage))
+                Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
            
             Settings.Instance.Dump();
 

@@ -9,40 +9,6 @@ namespace Deep.DungeonDefinition.Base
 {
     public abstract class DeepDungeonDecorator : IDeepDungeon
     {
-        public int Index { get; }
-        public string Name { get; }
-        public string NameWithoutArticle { get; }
-        public int ContentFinderId { get; }
-        public Dictionary<int, int> PomanderMapping { get; }
-        public int LobbyId { get; }
-        public int UnlockQuest { get; }
-        public EntranceNpc Npc { get; }
-
-
-        //DeepDive Used Properties
-        
-        public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
-        public uint CaptainNpcId => (uint) Npc.NpcId;
-        public Vector3 CaptainNpcPosition => Npc.LocationVector;
-        public uint[] DeepDungeonRawIds
-        {
-            get { return Floors.Select(i => (uint) i.MapId).ToArray(); }
-        }
-
-
-        public virtual string DisplayName { get; }
-        public virtual uint OfPassage { get; }
-        public virtual uint OfReturn { get; }
-        public virtual uint BossExit { get; }
-        public virtual uint LobbyExit { get; }
-        
-        public virtual uint LobbyEntrance { get; }
-
-        public virtual Dictionary<uint, uint> WallMapData { get; }
-
-        public virtual uint CheckPointLevel { get; }
-
-
         protected DeepDungeonDecorator(DeepDungeonData deepDungeon)
         {
             Index = deepDungeon.Index;
@@ -58,6 +24,40 @@ namespace Deep.DungeonDefinition.Base
             //DeepDungeonRawIds = GetRawMapIds();
         }
 
+        public int Index { get; }
+        public string Name { get; }
+        public string NameWithoutArticle { get; }
+        public int ContentFinderId { get; }
+        public Dictionary<int, int> PomanderMapping { get; }
+        public int LobbyId { get; }
+        public int UnlockQuest { get; }
+        public EntranceNpc Npc { get; }
+
+
+        //DeepDive Used Properties
+
+        public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
+        public uint CaptainNpcId => (uint) Npc.NpcId;
+        public Vector3 CaptainNpcPosition => Npc.LocationVector;
+
+        public uint[] DeepDungeonRawIds
+        {
+            get { return Floors.Select(i => (uint) i.MapId).ToArray(); }
+        }
+
+
+        public virtual string DisplayName { get; }
+        public virtual uint OfPassage { get; }
+        public virtual uint OfReturn { get; }
+        public virtual uint BossExit { get; }
+        public virtual uint LobbyExit { get; }
+
+        public virtual uint LobbyEntrance { get; }
+
+        public virtual Dictionary<uint, uint> WallMapData { get; }
+
+        public virtual uint CheckPointLevel { get; }
+
         public List<FloorSetting> Floors { get; }
 
         public virtual List<GameObject> GetObjectsByWeight()
@@ -65,15 +65,16 @@ namespace Deep.DungeonDefinition.Base
             return null;
         }
 
+        public virtual string GetDDType()
+        {
+            return "Unknown";
+        }
+
         protected virtual uint[] GetRawMapIds()
         {
             var test = Floors.Select(i => (uint) i.MapId);
 
             return test.ToArray();
-        }
-        public virtual string GetDDType()
-        {
-            return "Unknown";
         }
 
         public override string ToString()
@@ -83,9 +84,8 @@ namespace Deep.DungeonDefinition.Base
                 $"Lobby: {LobbyId}\n" +
                 $"UnlockQuest: {UnlockQuest}\n" +
                 $"{Npc}";
-                    
+
             return output;
         }
-
     }
 }

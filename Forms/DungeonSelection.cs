@@ -25,6 +25,14 @@ namespace Deep.Forms
             {
                 DungeonListCombo.SelectedItem = Constants.DeepListType[0];
             }
+            
+            FloorCombo.DataSource = Constants.SelectedDungeon.Floors;
+            FloorCombo.DisplayMember = "DisplayName";
+
+            if (Settings.Instance.BetterSelectedLevel != null)
+            {
+                FloorCombo.SelectedItem = Settings.Instance.BetterSelectedLevel;
+            }
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
 
@@ -40,7 +48,7 @@ namespace Deep.Forms
             Logger.Verbose("Changing the selected deep dungeon to run");
             Constants.SelectedDungeon = (IDeepDungeon) DungeonListCombo.SelectedItem;
             FloorCombo.DataSource = Constants.SelectedDungeon.Floors;
-            DungeonListCombo.DisplayMember = "DisplayName";
+            FloorCombo.DisplayMember = "DisplayName";
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
         }
         

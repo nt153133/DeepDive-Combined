@@ -1,7 +1,7 @@
-﻿﻿using System.Collections.Generic;
- using Deep.DungeonDefinition.Base;
+﻿using System.Collections.Generic;
+using Deep.DungeonDefinition.Base;
 
- namespace Deep.DungeonDefinition
+namespace Deep.DungeonDefinition
 {
     public class PalaceOfTheDead : DeepDungeonDecorator
     {
@@ -13,8 +13,8 @@
         private const uint _checkPointLevel = 51;
 
         //public override string DisplayName => Name;
-        
-        public PalaceOfTheDead(Base.DeepDungeonData deepDungeon) : base(deepDungeon)
+
+        public PalaceOfTheDead(DeepDungeonData deepDungeon) : base(deepDungeon)
         {
             BossExit = _BossExit;
             OfReturn = _CairnofReturn;
@@ -32,13 +32,13 @@
 
         public override uint BossExit { get; }
         public override uint LobbyExit { get; }
-        
+
         public override uint CheckPointLevel { get; }
 
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {
             //mapid - wall file
-            {561, 1 },
+            {561, 1},
             {562, 2},
             {563, 3},
             {564, 4},

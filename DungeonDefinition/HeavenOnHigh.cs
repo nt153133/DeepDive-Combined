@@ -1,7 +1,7 @@
-﻿﻿using System.Collections.Generic;
- using Deep.DungeonDefinition.Base;
+﻿using System.Collections.Generic;
+using Deep.DungeonDefinition.Base;
 
- namespace Deep.DungeonDefinition
+namespace Deep.DungeonDefinition
 {
     public class HeavenOnHigh : DeepDungeonDecorator
     {
@@ -10,9 +10,9 @@
         private const uint _BossExit = 2005809;
         private const uint _LobbyExit = 2009523;
         private const uint _LobbyEntrance = 2009524;
-        private const uint _checkPointLevel = 11;
-        
-        public HeavenOnHigh(Base.DeepDungeonData deep) :base(deep)
+        private const uint _checkPointLevel = 21;
+
+        public HeavenOnHigh(DeepDungeonData deep) : base(deep)
         {
             BossExit = _BossExit;
             OfReturn = _BeaconOfReturn;
@@ -21,7 +21,7 @@
             LobbyEntrance = _LobbyEntrance;
             CheckPointLevel = _checkPointLevel;
         }
-        
+
         public override uint OfPassage { get; }
 
         public override uint OfReturn { get; }
@@ -30,7 +30,7 @@
         public override uint LobbyExit { get; }
         public override uint LobbyEntrance { get; }
         public override uint CheckPointLevel { get; }
-        
+
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {
             //mapid - wall file
@@ -43,13 +43,12 @@
             {782, 0}, //31-40
             {783, 0}, //51-60
             {784, 0}, //71-80
-            {785, 0}  //91-100
+            {785, 0} //91-100
         };
 
         public override string GetDDType()
         {
             return "HoH";
         }
-        
     }
 }
