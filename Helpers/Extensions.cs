@@ -29,13 +29,18 @@ namespace Deep.Helpers
         /// <returns>Returns true when the player is using a tank job/class</returns>
         internal static bool IsTank(this ClassJobType type)
         {
-            if (type == ClassJobType.DarkKnight)
-                return true;
-            if (type == ClassJobType.Marauder || type == ClassJobType.Warrior)
-                return true;
-            if (type == ClassJobType.Gladiator || type == ClassJobType.Paladin)
-                return true;
-            return false;
+            switch (type)
+            {
+                case ClassJobType.DarkKnight:
+                case ClassJobType.Gunbreaker:
+                case ClassJobType.Marauder:
+                case ClassJobType.Warrior:
+                case ClassJobType.Gladiator:
+                case ClassJobType.Paladin:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -45,20 +50,22 @@ namespace Deep.Helpers
         /// <returns></returns>
         internal static bool IsHealer(this ClassJobType type)
         {
-            if (type == ClassJobType.Astrologian)
-                return true;
-            if (type == ClassJobType.Conjurer || type == ClassJobType.WhiteMage)
-                return true;
-            if (type == ClassJobType.Scholar)
-                return true;
-
-            return false;
+            switch (type)
+            {
+                case ClassJobType.Astrologian:
+                case ClassJobType.Conjurer:
+                case ClassJobType.WhiteMage:
+                case ClassJobType.Scholar:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         internal static bool IsCaster(this ClassJobType type)
         {
             return type.IsHealer() || type == ClassJobType.Arcanist || type == ClassJobType.BlackMage ||
-                   type == ClassJobType.Conjurer || type == ClassJobType.Summoner || type == ClassJobType.Thaumaturge;
+                   type == ClassJobType.Conjurer || type == ClassJobType.Summoner || type == ClassJobType.Thaumaturge || type == ClassJobType.RedMage;
         }
         /// <summary>
         /// is the job melee
@@ -67,34 +74,25 @@ namespace Deep.Helpers
         /// <returns></returns>
         internal static bool IsMelee(this ClassJobType type)
         {
-
-            if (type == ClassJobType.Gladiator || type == ClassJobType.Paladin)
+            switch (type)
             {
-                return true;
+                case ClassJobType.Gladiator:
+                case ClassJobType.Paladin:
+                case ClassJobType.Pugilist:
+                case ClassJobType.Monk:
+                case ClassJobType.Marauder:
+                case ClassJobType.Warrior:
+                case ClassJobType.Lancer:
+                case ClassJobType.Dragoon:
+                case ClassJobType.Rogue:
+                case ClassJobType.Ninja:
+                case ClassJobType.Dancer:
+                case ClassJobType.Samurai:
+                case ClassJobType.DarkKnight:
+                    return true;
+                default:
+                    return false;
             }
-            if (type == ClassJobType.Pugilist || type == ClassJobType.Monk)
-            {
-                return true;
-            }
-            if (type == ClassJobType.Marauder || type == ClassJobType.Warrior)
-            {
-                return true;
-            }
-            if (type == ClassJobType.Lancer || type == ClassJobType.Dragoon)
-            {
-                return true;
-            }
-
-            if (type == ClassJobType.Rogue || type == ClassJobType.Ninja)
-            {
-                return true;
-            }
-
-            if (type == ClassJobType.DarkKnight)
-            {
-                return true;
-            }
-            return false;
         }
 
         /// <summary>
