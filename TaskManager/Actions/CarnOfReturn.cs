@@ -122,8 +122,8 @@ namespace Deep.TaskManager.Actions
                 return;
 
 
-            //party member is dead & we have the location of the cor
-            if (PartyManager.AllMembers.Any(member => member.CurrentHealth == 0) && location != Vector3.Zero && Level == DeepDungeonManager.Level)
+            //party member is dead & we have the location of the cairn and it's active
+            if (DeepDungeonManager.ReturnActive && PartyManager.AllMembers.Any(member => member.CurrentHealth == 0) && location != Vector3.Zero && Level == DeepDungeonManager.Level)
             {
                 Poi.Current = new Poi(location, (PoiType)PoiTypes.UseCarnOfReturn);
             }
