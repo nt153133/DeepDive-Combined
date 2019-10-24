@@ -8,20 +8,11 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
-using Buddy.Coroutines;
-using Deep.Enums;
 using Deep.Helpers;
-using Deep.Memory;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Deep.Helpers.Logging;
-using ff14bot.Behavior;
 using static Deep.Tasks.Common;
 
 namespace Deep.TaskManager.Actions
@@ -34,6 +25,8 @@ namespace Deep.TaskManager.Actions
         ///     stores the floor # for the level we last removed traps from
         /// </summary>
         private int _trapPomanderUsageCheck = 0;
+
+        private int _intuitPomanderUsageCheck;
 
         private int PortalPercent => Constants.Percent[DeepDungeonManager.PortalStatus];
         public string Name => "Pomanders";
@@ -74,48 +67,10 @@ namespace Deep.TaskManager.Actions
             await UsePomander(Pomander.Strength, Auras.Strength);
             await UsePomander(Pomander.Steel, Auras.Steel);
 
-            //Move To SelectedDungeonLogic Boss()
-            await LustLogic();
+            await Constants.SelectedDungeon.BuffBoss();
 
             return false;
         }
-
-        private static async Task LustLogic()
-        {
-            var lust = false;
-            var itm = DeepDungeonManager.GetInventoryItem(Pomander.Lust);
-            Logger.Info("[LUST] Item Count: {0}", itm.Count);
-
-            //we are inside the dungeon, should be ok to use InParty here.
-            if (PartyManager.IsInParty)
-            {
-                Logger.Info("In A Party. Doing Lust Logic...");
-                var lustFound = false;
-                foreach (var k in PartyManager.AllMembers)
-                    if (!k.Class.IsHealer() && !k.Class.IsTank())
-                    {
-                        lustFound = true;
-                        if (k.IsMe)
-                            lust = true;
-                        break;
-                    }
-
-                Logger.Info("Party Lust status: {0} :: {1} :: {2}", !lust, !lustFound, PartyManager.IsPartyLeader);
-                if (!lust && !lustFound) lust = PartyManager.IsPartyLeader;
-            }
-            else
-            {
-                Logger.Info("Solo Lust Logic");
-                lust = true;
-            }
-
-            if (lust)
-            {
-                Logger.Info("Use Pomander Debug: [HasAura: {0}]", itm.HasAura);
-                await UsePomander(Pomander.Lust, Auras.Lust);
-            }
-        }
-
 
         /// <summary>
         ///     Player pomander buffs
@@ -123,12 +78,10 @@ namespace Deep.TaskManager.Actions
         /// <returns></returns>
         private static async Task<bool> BuffMe()
         {
-            if (Settings.Instance.UsePomRage && CombatTargeting.Instance.LastEntities.Count() > 5 &&
-                !Core.Me.HasAura(Auras.Rage)) return await UsePomander(Pomander.Rage, Auras.Lust);
-
-
             if (Core.Me.HasAura(Auras.ItemPenalty))
                 return false;
+            
+            await Constants.SelectedDungeon.BuffMe();
 
             if (await UsePomander(Pomander.Raising))
                 return true;
@@ -170,13 +123,11 @@ namespace Deep.TaskManager.Actions
                 return true;
             if (await UsePomander(Pomander.Fortune))
                 return true;
-            if (await UsePomander(Pomander.Intuition))
-                return true;
+            if (await Inuit()) return true;
 
-            if (await BuffNextFloor())
-                return true;
-
-            return false;
+            await Constants.SelectedDungeon.BuffCurrentFloor();
+            
+            return await BuffNextFloor();
         }
 
         /// <summary>
@@ -223,7 +174,25 @@ namespace Deep.TaskManager.Actions
                 if (await UsePomander(Pomander.Alteration))
                     return true;
 
-            return await UsePomander(Pomander.Affluence);
+            if (await UsePomander(Pomander.Affluence))
+                return true;
+
+            return await Constants.SelectedDungeon.BuffNextFloor();
+        }
+        
+        private async Task<bool> Inuit()
+        {
+            if (Core.Me.HasAura(Auras.ItemPenalty)) return false;
+
+            if (_intuitPomanderUsageCheck == DeepDungeonManager.Level) return false;
+
+            if (await UsePomander(Pomander.Intuition))
+            {
+                _intuitPomanderUsageCheck = DeepDungeonManager.Level;
+                return true;
+            }
+
+            return false;
         }
     }
 }

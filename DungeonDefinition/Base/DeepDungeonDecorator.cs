@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Buddy.Service.Client;
 using Clio.Utilities;
 using ff14bot.Managers;
@@ -82,6 +83,26 @@ namespace Deep.DungeonDefinition.Base
             var test = Floors.Select(i => (uint) i.MapId);
 
             return test.ToArray();
+        }
+
+        public virtual async Task<bool> BuffMe()
+        {
+            return false;
+        }
+
+        public virtual async Task<bool> BuffBoss()
+        {
+            return false;
+        }
+
+        public virtual async Task<bool> BuffCurrentFloor()
+        {
+            return false;
+        }
+
+        public virtual async Task<bool> BuffNextFloor()
+        {
+            return false;
         }
 
         public override string ToString()

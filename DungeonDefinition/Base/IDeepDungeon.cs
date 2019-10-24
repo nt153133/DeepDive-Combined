@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Clio.Utilities;
 using ff14bot.Objects;
 
@@ -10,7 +11,7 @@ namespace Deep.DungeonDefinition.Base
         string Name { get; }
         string NameWithoutArticle { get; }
         int ContentFinderId { get; }
-        Dictionary<int, int> PomanderMapping { get; }
+
         int LobbyId { get; }
         int UnlockQuest { get; }
         EntranceNpc Npc { get; }
@@ -32,10 +33,21 @@ namespace Deep.DungeonDefinition.Base
         uint[] DeepDungeonRawIds { get; }
         uint CheckPointLevel { get; }
         int SustainingPotion { get; }
-        string GetDDType();
+        
+        
+        
+        //Pomanders
+        Dictionary<int, int> PomanderMapping { get; }
+        Task<bool> BuffMe();
+        Task<bool> BuffBoss();
+        Task<bool> BuffCurrentFloor();
+        Task<bool> BuffNextFloor();
 
+        //Targeting
         uint[] GetIgnoreEntity(uint[] baseList);
 
         List<GameObject> GetObjectsByWeight();
+        
+        string GetDDType();
     }
 }

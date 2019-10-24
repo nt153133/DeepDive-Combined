@@ -23,7 +23,7 @@ using ff14bot.Managers;
 
 namespace Deep.Tasks
 {
-    internal class Common
+    internal static class Common
     {
         /// <summary>
         /// Cancel player aura
@@ -32,7 +32,7 @@ namespace Deep.Tasks
         /// <returns></returns>
         internal static async Task<bool> CancelAura(uint aura)
         {
-            var auraname = '"' + DataManager.GetAuraResultById(aura).CurrentLocaleName + '"';
+            var auraname = $"\"{DataManager.GetAuraResultById(aura).CurrentLocaleName}\"";
             while (Core.Me.HasAura(aura))
             {
                 Logger.Verbose("Cancel Aura {0}", auraname);
@@ -83,7 +83,7 @@ namespace Deep.Tasks
             wt.Reset();
             while (cnt == data.Count && !wt.IsFinished)
             {
-                Logger.Verbose("Using Pomander: {0}", number);
+                Logger.Verbose($"Using Pomander: {number}");
                 DeepDungeonManager.UsePomander(number);
                 await Coroutine.Sleep(150);
 
