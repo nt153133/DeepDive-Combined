@@ -35,7 +35,7 @@ namespace Deep
     /// <summary>
     ///     Notable mobs in Deep Dungeon
     /// </summary>
-    internal  static partial class Mobs
+    internal static partial class Mobs
     {
         internal const uint PalaceHornet = 4981;
         internal const uint PalaceSlime = 4990;
@@ -50,10 +50,10 @@ namespace Deep
         internal const uint GoldCoffer = 2007358;
         internal const uint SilverCoffer = 2007357;
 
-        internal static readonly uint[] MimicCoffer = {2006020, 2006022};
-
         internal const uint Hidden = 2007542;
         internal const uint BandedCoffer = 2007543;
+
+        internal static readonly uint[] MimicCoffer = {2006020, 2006022};
 
         internal static uint OfPassage => Constants.SelectedDungeon.OfPassage;
         internal static uint OfReturn => Constants.SelectedDungeon.OfReturn;
@@ -205,16 +205,6 @@ namespace Deep
 
     internal static partial class Constants
     {
-
-        internal static Vector3 EntranceNpcPosition => SelectedDungeon.CaptainNpcPosition; 
-        internal static uint EntranceNpcId => SelectedDungeon.CaptainNpcId;
-        internal static uint AetheryteId => SelectedDungeon.EntranceAetheryte;
-        internal static AetheryteResult EntranceZone => DataManager.AetheryteCache[AetheryteId];
-        internal static uint EntranceZoneId => EntranceZone.ZoneId;
-        internal static IEnumerable<uint> DeepDungeonRawIds => SelectedDungeon.DeepDungeonRawIds;
-
-        internal static IEnumerable<uint> Exits => new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
-
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
         internal static uint[] BaseIgnoreEntity =
         {
@@ -238,6 +228,16 @@ namespace Deep
                 pot.Value.Setup();
             }
         }
+
+        internal static Vector3 EntranceNpcPosition => SelectedDungeon.CaptainNpcPosition;
+        internal static uint EntranceNpcId => SelectedDungeon.CaptainNpcId;
+        internal static uint AetheryteId => SelectedDungeon.EntranceAetheryte;
+        internal static AetheryteResult EntranceZone => DataManager.AetheryteCache[AetheryteId];
+        internal static uint EntranceZoneId => EntranceZone.ZoneId;
+        internal static IEnumerable<uint> DeepDungeonRawIds => SelectedDungeon.DeepDungeonRawIds;
+
+        internal static IEnumerable<uint> Exits =>
+            new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
 
         /// <summary>
         ///     returns true if we are in any of the Deep Dungeon areas.
@@ -277,7 +277,7 @@ namespace Deep
 
         #region DataAsResource
 
-        internal static Dictionary<uint, uint> Maps => Constants.SelectedDungeon.WallMapData;
+        internal static Dictionary<uint, uint> Maps => SelectedDungeon.WallMapData;
 
         internal static readonly uint[] TrapIds =
         {
