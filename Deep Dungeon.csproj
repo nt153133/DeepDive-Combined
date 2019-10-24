@@ -121,6 +121,7 @@
     <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BattleCharacterExtension.cs" />
     <Compile Include="Helpers\DeepDungeonManager.cs" />
     <Compile Include="Helpers\FrameCache.cs" />
     <Compile Include="Helpers\LocalPlayerExtension.cs" />
