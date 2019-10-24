@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Deep.DungeonDefinition.Base;
 
 namespace Deep.DungeonDefinition
@@ -11,6 +12,11 @@ namespace Deep.DungeonDefinition
         private const uint _LobbyExit = 2006016; //Exit
         private const uint _LobbyEntrance = 2006012; //Entry Point
         private const uint _checkPointLevel = 51;
+        
+        private uint[] _ignoreEntity =
+        {
+            _CairnOfPassage, _CairnofReturn, _LobbyEntrance
+        };
 
         //public override string DisplayName => Name;
 
@@ -60,6 +66,12 @@ namespace Deep.DungeonDefinition
             {607, 7}
         };
 
+        public override uint[] GetIgnoreEntity(uint[] baseList)
+        {
+            return baseList.Concat(_ignoreEntity).ToArray();
+        }
+
+        
         public override string GetDDType()
         {
             return "PotD";

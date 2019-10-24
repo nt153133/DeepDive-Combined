@@ -89,7 +89,7 @@ namespace Deep
         internal static int SustainingPotion = 20309;
     }
 
-    internal static class Auras
+    internal static partial class Auras
     {
         internal const uint Odder = 1546;
         internal static uint Frog = 1101;
@@ -225,10 +225,9 @@ namespace Deep
         //{SelectedDungeon.LobbyExit, SelectedDungeon.BossExit, SelectedDungeon.OfPassage};
 
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
-        internal static uint[] IgnoreEntity =
+        internal static uint[] BaseIgnoreEntity =
         {
-            5402,  2002872,
-            EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
+            5402,  2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
             EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook,
             EntityNames.Bishop
         };
@@ -237,37 +236,10 @@ namespace Deep
 
         internal static Language Lang;
 
+        internal static uint[] IgnoreEntity;
+
         static Constants()
         {
-            /*
-            Maps = new Dictionary<uint, uint>
-            {
-                //mapid - wall file
-                {561, 1},
-                {562, 2},
-                {563, 3},
-                {564, 4},
-                {565, 4},
-                {593, 5},
-                {594, 5},
-                {595, 5},
-                {596, 6},
-                {597, 6},
-                {598, 6},
-                {599, 8},
-                {600, 8},
-                {601, 9},
-                {602, 9},
-                {603, 7},
-                {604, 7},
-                {605, 7},
-                {606, 7},
-                {607, 7}
-            };
-*/
-            //DeepDungeonRawIds = Maps.Keys.ToArray();
-
-
             Pots = loadResource<Potion[]>(Resources.pots).ToDictionary(r => r.Id, r => r);
             foreach (var pot in Pots)
             {

@@ -58,7 +58,14 @@ namespace Deep.DungeonDefinition.Base
 
         public virtual uint CheckPointLevel { get; }
 
+        public virtual int SustainingPotion { get; }
+
         public List<FloorSetting> Floors { get; }
+
+        public virtual uint[] GetIgnoreEntity(uint[] baseList)
+        {
+            return baseList;
+        }
 
         public virtual List<GameObject> GetObjectsByWeight()
         {

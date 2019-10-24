@@ -328,49 +328,53 @@ namespace Deep
         private static void SetupSettings()
         {
             Logger.Info("UpdateTrapSettings");
+            
+            
             //mimic stuff
             if (Settings.Instance.OpenMimics)
             {
                 //if we have mimics remove them from our ignore list
-                if (Constants.IgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Except(EntityNames.MimicCoffer).ToArray();
+                if (Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(EntityNames.MimicCoffer).ToArray();
             }
             else
             {
                 //if we don't have mimics add them to our ignore list
-                if (!Constants.IgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(EntityNames.MimicCoffer).ToArray();
+                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(EntityNames.MimicCoffer).ToArray();
             }
 
             //Exploding Coffers
             if (Settings.Instance.OpenTraps)
             {
                 //if we have traps remove them
-                if (Constants.IgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Except(new[] { EntityNames.TrapCoffer }).ToArray();
+                if (Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.TrapCoffer }).ToArray();
             }
             else
             {
-                if (!Constants.IgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.TrapCoffer }).ToArray();
+                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.TrapCoffer }).ToArray();
             }
 
             if (Settings.Instance.OpenSilver)
             {
                 //if we have traps remove them
-                if (Constants.IgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Except(new[] { EntityNames.SilverCoffer }).ToArray();
+                if (Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.SilverCoffer }).ToArray();
             }
             else
             {
-                if (!Constants.IgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
+                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
             }
             
             //Add the current Dungeon's Ignores
-            if (!Constants.IgnoreEntity.Contains(EntityNames.OfPassage))
-                Constants.IgnoreEntity = Constants.IgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
-           
+            if (!Constants.BaseIgnoreEntity.Contains(EntityNames.OfPassage))
+                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+
+            Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
+            
             Settings.Instance.Dump();
 
         }

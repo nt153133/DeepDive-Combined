@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Deep.DungeonDefinition.Base;
 
 namespace Deep.DungeonDefinition
@@ -12,6 +13,13 @@ namespace Deep.DungeonDefinition
         private const uint _LobbyEntrance = 2009524;
         private const uint _checkPointLevel = 21;
 
+        private uint[] _ignoreEntity =
+        {
+            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.CatThing, Mobs.Inugami, Mobs.Raiun, 377, 7396, 7395
+        };
+
+        private const int _sustainingPotion = 23163;
+
         public HeavenOnHigh(DeepDungeonData deep) : base(deep)
         {
             BossExit = _BossExit;
@@ -23,9 +31,7 @@ namespace Deep.DungeonDefinition
         }
 
         public override uint OfPassage { get; }
-
         public override uint OfReturn { get; }
-
         public override uint BossExit { get; }
         public override uint LobbyExit { get; }
         public override uint LobbyEntrance { get; }
@@ -45,6 +51,13 @@ namespace Deep.DungeonDefinition
             {784, 0}, //71-80
             {785, 0} //91-100
         };
+
+        public override int SustainingPotion => _sustainingPotion;
+
+        public override uint[] GetIgnoreEntity(uint[] baseList)
+        {
+            return baseList.Concat(_ignoreEntity).ToArray();
+        }
 
         public override string GetDDType()
         {
