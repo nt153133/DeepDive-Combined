@@ -284,7 +284,7 @@ namespace Deep.TaskManager.Actions
             return await ObjectInteraction(obj, interactRange, () => true);
         }
         /// <summary>
-        ///    Made by Zzi - Borrowed from DungonMaster
+        ///    Made by Zzi - Borrowed from DungeonMaster
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="interactRange"></param>
