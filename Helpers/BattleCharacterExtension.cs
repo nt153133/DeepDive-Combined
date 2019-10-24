@@ -3,6 +3,7 @@ using ff14bot.Objects;
 
 namespace Deep.Helpers
 {
+    //Original methods made by ZZi for dungeonMaster
     public static class BattleCharacterExtension
     {
         public static bool IsTargetingMyPartyMember(this BattleCharacter bc)
