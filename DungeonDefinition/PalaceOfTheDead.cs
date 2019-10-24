@@ -19,6 +19,7 @@ namespace Deep.DungeonDefinition
         private const uint _LobbyExit = 2006016; //Exit
         private const uint _LobbyEntrance = 2006012; //Entry Point
         private const uint _checkPointLevel = 51;
+        private const int _sustainingPotion = 20309;
         
         private uint[] _ignoreEntity =
         {
@@ -35,6 +36,7 @@ namespace Deep.DungeonDefinition
             OfPassage = _CairnOfPassage;
             LobbyEntrance = _LobbyEntrance;
             CheckPointLevel = _checkPointLevel;
+            SustainingPotion = _sustainingPotion;
         }
 
         public override uint LobbyEntrance { get; }
@@ -47,6 +49,8 @@ namespace Deep.DungeonDefinition
         public override uint LobbyExit { get; }
 
         public override uint CheckPointLevel { get; }
+        
+        public override int SustainingPotion { get; }
 
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
         {

@@ -47,7 +47,7 @@ namespace Deep.Forms
             this.DungeonListCombo.Location = new System.Drawing.Point(12, 24);
             this.DungeonListCombo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DungeonListCombo.Name = "DungeonListCombo";
-            this.DungeonListCombo.Size = new System.Drawing.Size(162, 23);
+            this.DungeonListCombo.Size = new System.Drawing.Size(193, 23);
             this.DungeonListCombo.TabIndex = 0;
             // 
             // label1
@@ -65,25 +65,25 @@ namespace Deep.Forms
             this.FloorCombo.Location = new System.Drawing.Point(12, 75);
             this.FloorCombo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.FloorCombo.Name = "FloorCombo";
-            this.FloorCombo.Size = new System.Drawing.Size(300, 23);
+            this.FloorCombo.Size = new System.Drawing.Size(317, 23);
             this.FloorCombo.TabIndex = 2;
             this.FloorCombo.SelectedIndexChanged += new System.EventHandler(this.FloorCombo_SelectedIndexChanged);
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(12, 2);
+            this.label2.Location = new System.Drawing.Point(10, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(105, 22);
+            this.label2.Size = new System.Drawing.Size(105, 12);
             this.label2.TabIndex = 3;
             this.label2.Text = "Profile";
             // 
             // startLevelBox
             // 
-            this.startLevelBox.Location = new System.Drawing.Point(192, 13);
+            this.startLevelBox.Location = new System.Drawing.Point(213, 13);
             this.startLevelBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.startLevelBox.Name = "startLevelBox";
-            this.startLevelBox.Size = new System.Drawing.Size(133, 44);
+            this.startLevelBox.Size = new System.Drawing.Size(116, 44);
             this.startLevelBox.TabIndex = 4;
             this.startLevelBox.Text = "Start at checkpoint floor";
             this.startLevelBox.UseVisualStyleBackColor = true;
@@ -117,7 +117,7 @@ namespace Deep.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(338, 313);
+            this.ClientSize = new System.Drawing.Size(340, 296);
             this.Controls.Add(this.HordeCheck);
             this.Controls.Add(this.SilverChest);
             this.Controls.Add(this.startLevelBox);

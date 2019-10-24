@@ -85,7 +85,7 @@ namespace Deep
     {
         internal static int Antidote = 4564;
         internal static int EchoDrops = 4566;
-        internal static int SustainingPotion = 20309;
+        internal static int SustainingPotion => Constants.SelectedDungeon.SustainingPotion;
     }
 
     internal static partial class Auras
@@ -218,7 +218,7 @@ namespace Deep
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
         internal static uint[] BaseIgnoreEntity =
         {
-            5402,  2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
+            5402, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
             EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook,
             EntityNames.Bishop
         };

@@ -17,14 +17,13 @@ namespace Deep.DungeonDefinition
         private const uint _LobbyExit = 2009523;
         private const uint _LobbyEntrance = 2009524;
         private const uint _checkPointLevel = 21;
+        private const int _sustainingPotion = 23163;
 
-        private uint[] _ignoreEntity =
+        private readonly uint[] _ignoreEntity =
         {
             _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.CatThing, Mobs.Inugami, Mobs.Raiun, 377, 7396, 7395
         };
-
-        private const int _sustainingPotion = 23163;
-
+        
         public HeavenOnHigh(DeepDungeonData deep) : base(deep)
         {
             BossExit = _BossExit;
@@ -33,6 +32,7 @@ namespace Deep.DungeonDefinition
             OfPassage = _BeaconOfPassage;
             LobbyEntrance = _LobbyEntrance;
             CheckPointLevel = _checkPointLevel;
+            SustainingPotion = _sustainingPotion;
         }
 
         public override uint OfPassage { get; }
@@ -57,7 +57,7 @@ namespace Deep.DungeonDefinition
             {785, 0} //91-100
         };
 
-        public override int SustainingPotion => _sustainingPotion;
+        public override int SustainingPotion { get; }
 
         public override uint[] GetIgnoreEntity(uint[] baseList)
         {
@@ -66,7 +66,7 @@ namespace Deep.DungeonDefinition
 
         public override async Task<bool> BuffMe()
         {
-            if (CombatTargeting.Instance.LastEntities.Count() > 4) return await UsePomander(Pomander.Petrification);
+            if (CombatTargeting.Instance.LastEntities.Count > 4) return await UsePomander(Pomander.Petrification);
 
             if (DeepDungeonManager.GetInventoryItem(Pomander.Petrification).Count == 3)
                 return await UsePomander(Pomander.Petrification);
@@ -76,7 +76,7 @@ namespace Deep.DungeonDefinition
 
         public override async Task<bool> BuffBoss()
         {
-            return await UsePomander(Pomander.Frailty);;
+            return await UsePomander(Pomander.Frailty);
         }
 
         public override async Task<bool> BuffCurrentFloor()
@@ -93,4 +93,6 @@ namespace Deep.DungeonDefinition
             return "HoH";
         }
     }
+    
+    
 }
