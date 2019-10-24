@@ -221,5 +221,27 @@ namespace Deep.Providers
 
             return obj.Type == GameObjectType.EventObject || obj.Type == GameObjectType.Treasure || obj.Type == GameObjectType.BattleNpc;
         }
+        
+        public static bool FilterKnown(GameObject obj)
+        {
+            if (obj.Location == Vector3.Zero)
+                return false;
+            //Blacklists
+            if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
+                Constants.IgnoreEntity.Contains(obj.NpcId))
+                return false;
+            
+            switch (obj.Type)
+            {
+                case GameObjectType.Treasure:
+                    return true;
+                case GameObjectType.EventObject:
+                    return true;
+                case GameObjectType.BattleNpc:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
