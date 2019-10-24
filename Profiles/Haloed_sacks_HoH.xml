@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Profile []>
+<Profile>
+    <Name>Trimmed Sacks || 道具鉴定</Name>
+    <Author>Lycorisrda</Author>
+    <KillRadius>50</KillRadius>
+    <CodeChunks>
+        <CodeChunk Name="Interact">
+            <![CDATA[
+			ff14bot.Managers.GameObjectManager.GetObjectByNPCId(1025847).Interact();
+			await Buddy.Coroutines.Coroutine.Sleep(1000);
+			Talk.Next();
+            await Coroutine.Wait(10000, () => ff14bot.RemoteWindows.SelectString.IsOpen);
+			ff14bot.RemoteWindows.SelectString.ClickSlot(0);
+            await Coroutine.Wait(5000, () => RaptureAtkUnitManager.GetWindowByName("ItemAppraisal") != null);
+			await Buddy.Coroutines.Coroutine.Sleep(500);
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="BronzeSack">
+            <![CDATA[
+            uint sackid = 16170;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="IronSack">
+            <![CDATA[
+            uint sackid = 16171;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="SilverSack">
+            <![CDATA[
+            uint sackid = 16172;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="GoldSack">
+            <![CDATA[
+            uint sackid = 16173;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="SilverHaloed">
+            <![CDATA[
+            uint sackid = 23223;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="GoldHaloed">
+            <![CDATA[
+            uint sackid = 23224;
+
+            while (ff14bot.NeoProfiles.ConditionParser.ItemCount(sackid) > 0 && ff14bot.NeoProfiles.ConditionParser.FreeItemSlots() > 0)
+            {
+                RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(2, 0, 0, 1, sackid);
+                await Coroutine.Wait(2000, () => ff14bot.RemoteWindows.SelectYesno.IsOpen);
+                ff14bot.RemoteWindows.SelectYesno.ClickYes();
+                await Buddy.Coroutines.Coroutine.Sleep(7000);
+            }
+			]]>
+        </CodeChunk>
+        <CodeChunk Name="CloseWindow">
+            <![CDATA[
+            // Close Window
+            RaptureAtkUnitManager.GetWindowByName("ItemAppraisal").SendAction(1, 3, 0xFFFFFFFF);
+			]]>
+        </CodeChunk>
+    </CodeChunks>
+    <Order>
+        <If Condition="not IsOnMap(613)">
+            <GetTo XYZ="-6.912354, 2.945007, -612.1157" ZoneId="613"/>
+        </If>
+        <MoveTo Name="Confederate Appraiser" XYZ="-7.761304, 2.928307, -610.1073"/>
+
+        <WaitTimer WaitTime="3"/>
+
+        <While Condition="HasAtLeast(23223,1) and FreeItemSlots() &gt; 0">
+            <If Condition="HasAtLeast(23223,1) and FreeItemSlots() &gt; 0">
+                <RunCode name="Interact"/>
+                <WaitTimer WaitTime="3"/>
+                <RunCode name="SilverHaloed"/>
+                <WaitTimer WaitTime="3"/>
+            </If>
+        </While>
+
+        <While Condition="HasAtLeast(23224,1) and FreeItemSlots() &gt; 0">
+            <If Condition="HasAtLeast(23224,1) and FreeItemSlots() &gt; 0">
+                <RunCode name="Interact"/>
+                <WaitTimer WaitTime="3"/>
+                <RunCode name="GoldHaloed"/>
+                <WaitTimer WaitTime="3"/>
+            </If>
+        </While>
+
+        <If Condition="FreeItemSlots() &lt; 1">
+            <LogMessage Message="Inventory Full. || 背包已满，停止脚本"/>
+        </If>
+    </Order>
+</Profile>

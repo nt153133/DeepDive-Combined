@@ -199,6 +199,9 @@
     <EmbeddedResource Include="Resources\Walls\7.json" />
     <EmbeddedResource Include="Resources\Walls\8.json" />
     <EmbeddedResource Include="Resources\Walls\9.json" />
+    <Content Include="Profiles\Haloed_sacks_HoH.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Profiles\PotD_Unlock.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
