@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Deep.Helpers.Logging;
+using ff14bot.Directors;
 
 namespace Deep.TaskManager.Actions
 {
@@ -48,7 +49,7 @@ namespace Deep.TaskManager.Actions
             foreach (var spellId in pomanderSpellIds)
             {
                 //append and prepend a space so we easily filter out that specific message
-                pomanderLocalizedNames.Add(" " + DataManager.GetSpellData(spellId).LocalizedName + " ");
+                pomanderLocalizedNames.Add($" {DataManager.GetSpellData(spellId).LocalizedName} ");
             }
         }
 
@@ -72,9 +73,13 @@ namespace Deep.TaskManager.Actions
             
             //let the user know we are trying to run a treasure task
             TreeRoot.StatusText = "Treasure";
-            if (Target.Unit?.NpcId == EntityNames.Hidden)
+            if (Target.Unit.IsValid)
             {
-                return await HandleCacheOfTheHoard();
+                if (Target.Unit?.NpcId == EntityNames.Hidden) return await HandleCacheOfTheHoard();
+            }
+            else
+            {
+                return true;
             }
             
             //treasure... or an "exit"...
@@ -105,14 +110,13 @@ namespace Deep.TaskManager.Actions
             {
                 try
                 {
-                    //if we are a frog / lust we can't open a chest
-                    if (Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) || Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust))
+                    //if we are a transformed we can't open a chest
+                    if (Constants.AuraTransformed)
                     {
                         Logger.Warn("Unable to open chest. Waiting for aura to end...");
                         await CommonTasks.StopMoving("Waiting on aura to end");
                         await Coroutine.Wait(TimeSpan.FromSeconds(30),
-                            () => !(Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) || Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust)) ||
-                                  Core.Me.InCombat || DeepDungeon.StopPlz);
+                            () => !Constants.AuraTransformed || Core.Me.InCombat || DeepDungeon.StopPlz);
                         return true;
                     }
 
@@ -123,18 +127,29 @@ namespace Deep.TaskManager.Actions
                     {
                         await Tasks.Common.CancelAura(Auras.Lust);
                     }
-                    Logger.Verbose("Attempting to interact with: {0} ({1} / 3)", Target.Name, tries + 1);
-
-                    await CommonTasks.StopMoving("Stop and open chest");
-                    Target.Unit.Target();
-                    Target.Unit.Interact();
-                    await Coroutine.Sleep(800);
-
                     
-                    if (!Target.Unit.IsTargetable)
+                    Logger.Verbose("Attempting to interact with: {0} ({1} / 3)", Target.Name, tries + 1);
+                    
+                    if (!PartyManager.IsInParty || PartyManager.IsPartyLeader ||
+                        PartyManager.IsInParty && Constants.IsExitObject(Target.Unit))
+                    {
+                        await CommonTasks.StopMoving("Interacting with chest");
+                        if (!await ObjectInteraction(Target.Unit))
+                            break;
+                    }
+                    else
+                    {
+                        await CommonTasks.StopMoving("Waiting for leader to use chest");
+                    }
+
+                    await Coroutine.Sleep(700);
+
+                    if (!Target.Unit.IsValid)
                         break;
-                    if (SelectYesno.IsOpen)
-                        break;
+
+                    if (!Target.Unit.IsTargetable) break;
+
+                    if (SelectYesno.IsOpen) break;
                 }
                 finally
                 {
@@ -234,6 +249,14 @@ namespace Deep.TaskManager.Actions
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
                 return;
+            
+            if (DirectorManager.ActiveDirector is InstanceContentDirector activeAsInstance)
+            {
+                if (activeAsInstance.TimeLeftInDungeon == TimeSpan.Zero)
+                {
+                    return;
+                }
+            }
 
             var t = DDTargetingProvider.Instance.FirstEntity;
 
@@ -250,5 +273,62 @@ namespace Deep.TaskManager.Actions
                 return;
             }
         }
+        /// <summary>
+        /// Object Interaction
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="interactRange"></param>
+        /// <returns></returns>
+        private static async Task<bool> ObjectInteraction(GameObject obj, float interactRange = 4.5f)
+        {
+            return await ObjectInteraction(obj, interactRange, () => true);
+        }
+        /// <summary>
+        ///    Made by Zzi - Borrowed from DungonMaster
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="interactRange"></param>
+        /// <param name="canInteract">Return False if we should not interact with the object</param>
+        /// <returns></returns>
+        private static async Task<bool> ObjectInteraction(GameObject obj, float interactRange, Func<bool> canInteract)
+        {
+            if (!canInteract())
+                return false;
+
+            if (!obj.IsValid || !obj.IsVisible)
+                return false;
+
+            if (Core.Me.IsCasting)
+                return true;
+
+            if (obj.Distance2D() > interactRange)
+            {
+                var mr = await CommonTasks.MoveTo(new MoveToParameters(obj.Location));
+                if (mr == MoveResult.PathGenerationFailed && obj.InLineOfSight())
+                {
+                    Navigator.PlayerMover.MoveTowards(obj.Location);
+                    return true;
+                }
+                else if (mr == MoveResult.PathGenerationFailed)
+                {
+                    Logger.Error($"Unable to move toward {obj.Name} [{obj.NpcId}] (It appears to be out of line of sight and off the mesh)");
+                }
+                return mr.IsSuccessful();
+            }
+            if (MovementManager.IsMoving)
+            {
+                await CommonTasks.StopMoving();
+                return true;
+            }
+            if (Core.Target == null || Core.Target.ObjectId != obj.ObjectId)
+            {
+                obj.Target();
+                return true;
+            }
+            obj.Interact();
+            await Coroutine.Sleep(500);
+            return true;
+        }
+
     }
 }
