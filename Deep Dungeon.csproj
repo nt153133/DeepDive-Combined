@@ -136,7 +136,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TaskManager\Actions\BaseLogicHandler.cs" />
-    <Compile Include="TaskManager\Actions\CarnOfReturn.cs" />
+    <Compile Include="TaskManager\Actions\CairnOfReturn.cs" />
     <Compile Include="TaskManager\Actions\CombatHandler.cs" />
     <Compile Include="TaskManager\Actions\DeathWindowHandler.cs" />
     <Compile Include="TaskManager\Actions\FloorExit.cs" />
