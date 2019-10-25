@@ -7,14 +7,11 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Memory;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Helpers;
@@ -27,11 +24,12 @@ namespace Deep.Providers
     // ReSharper disable once InconsistentNaming
     internal class DDCombatTargetingProvider : ITargetingProvider
     {
-        private Vector3 _location;
         private int _level;
+        private Vector3 _location;
         private GameObject _targetObject;
 
         internal IEnumerable<BattleCharacter> Targets { get; private set; }
+
         public List<BattleCharacter> GetObjectsByWeight()
         {
             //Set some variables here that will get called often so memory reads only need to be performed one time
@@ -49,7 +47,7 @@ namespace Deep.Providers
             var portalActive = DeepDungeonManager.PortalActive;
 
 
-            var units = GameObjectManager.GetObjectsOfType<BattleCharacter>();//.ToArray();
+            var units = GameObjectManager.GetObjectsOfType<BattleCharacter>(); //.ToArray();
 
             //using (new PerformanceTimer("targeting " + units.Length))
             //{
@@ -64,7 +62,7 @@ namespace Deep.Providers
 
                     var targetInCombat = target.InCombat;
 
-                    if (inDD && (Blacklist.Contains(target) && !targetInCombat))
+                    if (inDD && Blacklist.Contains(target) && !targetInCombat)
                         return false;
 
                     if (Constants.TrapIds.Contains(targetNpcId) || Constants.IgnoreEntity.Contains(targetNpcId))
@@ -76,13 +74,10 @@ namespace Deep.Providers
                     if (portalActive && !targetInCombat)
                     {
                         var targetLevel = target.ClassLevel;
-                        if (_level - targetLevel >= 3)
-                        {
-                            return false;
-                        }
+                        if (_level - targetLevel >= 3) return false;
                     }
 
-                    if (target.IsDead) 
+                    if (target.IsDead)
                         return false;
 
                     if (target.StatusFlags.HasFlag(StatusFlags.Hostile))
@@ -90,22 +85,15 @@ namespace Deep.Providers
                         if (bossFloor)
                             return true;
 
-                        if (target.Location.Distance2DSqr(_location) < combatReach)
-                        {
-                            return targetInCombat || target.InLineOfSight();
-                        }
+                        if (target.Location.Distance2DSqr(_location) < combatReach) return targetInCombat || target.InLineOfSight();
                     }
 
                     return false;
                 });
 
 
-
-
             return Targets.OrderByDescending(Priority).ToList();
             //}
-
-
         }
 
         private double Priority(BattleCharacter battleCharacter)
@@ -116,7 +104,7 @@ namespace Deep.Providers
             weight -= distance2D / 2.25;
             weight += battleCharacter.ClassLevel / 1.25;
             weight += 100 - battleCharacter.CurrentHealthPercent;
-            
+
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader)
                 if (battleCharacter.IsTargetingMyPartyMember())
                     weight += 100;

@@ -1,12 +1,11 @@
-﻿﻿using Deep.DungeonDefinition.Base;
+﻿using Deep.DungeonDefinition.Base;
 
- namespace Deep.DungeonDefinition
+namespace Deep.DungeonDefinition
 {
     public class UnknownDeepDungeon : DeepDungeonDecorator
     {
-        public UnknownDeepDungeon(Base.DeepDungeonData deepDungeon) : base(deepDungeon)
+        public UnknownDeepDungeon(DeepDungeonData deepDungeon) : base(deepDungeon)
         {
-            
         }
     }
 }

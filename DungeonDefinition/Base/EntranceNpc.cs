@@ -5,12 +5,7 @@ namespace Deep.DungeonDefinition.Base
 {
     public class EntranceNpc
     {
-        public int NpcId { get; }
-        public string Name { get; }
         public float[] Location;
-        public int MapId { get; }
-        public int AetheryteId { get; set; }
-        [field: JsonIgnore] public Vector3 LocationVector { get; }
 
         [JsonConstructor]
         public EntranceNpc(float[] location, int npcId, string name, int mapId, int aetheryteId)
@@ -22,6 +17,14 @@ namespace Deep.DungeonDefinition.Base
             AetheryteId = aetheryteId;
             LocationVector = new Vector3(Location[0], Location[1], Location[2]);
         }
+
+        public int NpcId { get; }
+        public string Name { get; }
+        public int MapId { get; }
+        public int AetheryteId { get; set; }
+
+        [field: JsonIgnore] public Vector3 LocationVector { get; }
+
 /*
         public EntranceNpc(MappyNPC npc, int aetheryteId)
         {

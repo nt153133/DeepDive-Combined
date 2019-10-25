@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,12 +23,81 @@ namespace Deep.Forms.Converter
     [MarkupExtensionReturnType(typeof(IEnumerable<object>))]
     public sealed class EnumerateExtension : MarkupExtension
     {
-        #region Fields
+        #region MarkupExtension Members
 
-        private Type type;
-        private IValueConverter converter;
-        private CultureInfo converterCulture;
-        private object converterParameter;
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            if (Type == null) throw new InvalidOperationException(Resources.EnumTypeNotSet);
+
+            var actualType = Nullable.GetUnderlyingType(Type) ?? Type;
+            TypeConverter typeConverter;
+            ICollection standardValues;
+
+            if ((typeConverter = TypeDescriptor.GetConverter(actualType)) == null ||
+                (standardValues = typeConverter.GetStandardValues(serviceProvider as ITypeDescriptorContext)) == null)
+                throw new ArgumentException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.TypeHasNoStandardValues,
+                        Type
+                    ),
+                    "value"
+                );
+
+            var items = Type == actualType
+                ? new object[standardValues.Count]
+                : new object[standardValues.Count + 1];
+            var index = 0;
+
+            if (Converter == null)
+            {
+                foreach (var standardValue in standardValues)
+                {
+                    items[index++] = standardValue;
+                }
+            }
+            else
+            {
+                var culture = ConverterCulture ?? GetCulture(serviceProvider);
+
+                foreach (var standardValue in standardValues)
+                {
+                    items[index++] = Converter.Convert(standardValue, typeof(object), ConverterParameter, culture);
+                }
+
+                if (Type != actualType) items[index] = Converter.Convert(null, typeof(object), ConverterParameter, culture);
+            }
+
+            return items;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private static CultureInfo GetCulture(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider != null)
+            {
+                var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+
+                if (provideValueTarget != null)
+                {
+                    var targetObject = provideValueTarget.TargetObject as DependencyObject;
+                    XmlLanguage language;
+
+                    if ((targetObject = provideValueTarget.TargetObject as DependencyObject) != null &&
+                        (language = (XmlLanguage) targetObject.GetValue(FrameworkElement.LanguageProperty)) != null)
+                        return language.GetSpecificCulture();
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Fields
 
         #endregion
 
@@ -39,114 +109,22 @@ namespace Deep.Forms.Converter
 
         public EnumerateExtension(Type type)
         {
-            if (type == null)
-            { throw new ArgumentNullException("type"); }
+            if (type == null) throw new ArgumentNullException("type");
 
-            this.Type = type;
-        }
-
-        #endregion
-
-        #region MarkupExtension Members
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            if (type == null)
-            { throw new InvalidOperationException(Resources.EnumTypeNotSet); }
-
-            Type actualType = Nullable.GetUnderlyingType(type) ?? type;
-            TypeConverter typeConverter;
-            ICollection standardValues;
-
-            if ((typeConverter = TypeDescriptor.GetConverter(actualType)) == null ||
-                (standardValues = typeConverter.GetStandardValues(serviceProvider as ITypeDescriptorContext)) == null)
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        Resources.TypeHasNoStandardValues,
-                        type
-                    ),
-                    "value"
-                );
-            }
-
-            object[] items = (type == actualType)
-                ? new object[standardValues.Count]
-                : new object[standardValues.Count + 1];
-            int index = 0;
-
-            if (converter == null)
-            {
-                foreach (object standardValue in standardValues)
-                { items[index++] = standardValue; }
-            }
-            else
-            {
-                CultureInfo culture = converterCulture ?? GetCulture(serviceProvider);
-
-                foreach (object standardValue in standardValues)
-                { items[index++] = converter.Convert(standardValue, typeof(object), converterParameter, culture); }
-
-                if (type != actualType)
-                { items[index] = converter.Convert(null, typeof(object), converterParameter, culture); }
-            }
-
-            return items;
+            Type = type;
         }
 
         #endregion
 
         #region Properties
 
-        [ConstructorArgument("type")]
-        public Type Type
-        {
-            get { return type; }
-            set { type = value; }
-        }
+        [ConstructorArgument("type")] public Type Type { get; set; }
 
-        public IValueConverter Converter
-        {
-            get { return converter; }
-            set { converter = value; }
-        }
+        public IValueConverter Converter { get; set; }
 
-        public CultureInfo ConverterCulture
-        {
-            get { return converterCulture; }
-            set { converterCulture = value; }
-        }
+        public CultureInfo ConverterCulture { get; set; }
 
-        public object ConverterParameter
-        {
-            get { return converterParameter; }
-            set { converterParameter = value; }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private static CultureInfo GetCulture(IServiceProvider serviceProvider)
-        {
-            if (serviceProvider != null)
-            {
-                IProvideValueTarget provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-
-                if (provideValueTarget != null)
-                {
-                    DependencyObject targetObject = provideValueTarget.TargetObject as DependencyObject;
-                    XmlLanguage language;
-
-                    if ((targetObject = provideValueTarget.TargetObject as DependencyObject) != null &&
-                        (language = (XmlLanguage)targetObject.GetValue(FrameworkElement.LanguageProperty)) != null)
-                    { return language.GetSpecificCulture(); }
-                }
-            }
-
-            return null;
-        }
+        public object ConverterParameter { get; set; }
 
         #endregion
     }

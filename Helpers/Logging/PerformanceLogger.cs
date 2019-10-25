@@ -17,9 +17,9 @@ namespace Deep.Helpers.Logging
     internal class PerformanceLogger : IDisposable
     {
         private readonly string _blockName;
+        private readonly bool _forceLog;
         private readonly Stopwatch _stopwatch;
         private bool _isDisposed;
-        private readonly bool _forceLog;
 
         public PerformanceLogger(string blockName, bool forceLog = false)
         {
@@ -37,13 +37,9 @@ namespace Deep.Helpers.Logging
             _isDisposed = true;
             _stopwatch.Stop();
             if (_stopwatch.Elapsed.TotalMilliseconds > 5 || _forceLog)
-            {
                 if (_stopwatch.Elapsed.TotalMilliseconds >= 500)
-                {
                     Logger.Error("[Performance] Execution of \"{0}\" took {1:00.00000}ms.", _blockName,
                         _stopwatch.Elapsed.TotalMilliseconds);
-                }
-            }
             _stopwatch.Reset();
         }
 

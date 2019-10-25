@@ -8,25 +8,24 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System.Threading.Tasks;
 using Deep.Helpers;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using System.Threading.Tasks;
 using static Deep.Tasks.Common;
 
 namespace Deep.TaskManager.Actions
 {
     internal class Pomanders : ITask
     {
-        private bool _runbuf = false;
+        private int _intuitPomanderUsageCheck;
+        private bool _runbuf;
 
         /// <summary>
         ///     stores the floor # for the level we last removed traps from
         /// </summary>
-        private int _trapPomanderUsageCheck = 0;
-
-        private int _intuitPomanderUsageCheck;
+        private int _trapPomanderUsageCheck;
 
         private int PortalPercent => Constants.Percent[DeepDungeonManager.PortalStatus];
         public string Name => "Pomanders";
@@ -63,7 +62,7 @@ namespace Deep.TaskManager.Actions
             if (Core.Me.HasAura(Auras.Enervation) || Core.Me.HasAura(Auras.Silence)) return true;
 
             if (DeepDungeonManager.PortalActive) return false;
-            
+
             await UsePomander(Pomander.Strength, Auras.Strength);
             await UsePomander(Pomander.Steel, Auras.Steel);
 
@@ -80,7 +79,7 @@ namespace Deep.TaskManager.Actions
         {
             if (Core.Me.HasAura(Auras.ItemPenalty))
                 return false;
-            
+
             await Constants.SelectedDungeon.BuffMe();
 
             if (await UsePomander(Pomander.Raising))
@@ -126,7 +125,7 @@ namespace Deep.TaskManager.Actions
             if (await Inuit()) return true;
 
             await Constants.SelectedDungeon.BuffCurrentFloor();
-            
+
             return await BuffNextFloor();
         }
 
@@ -179,7 +178,7 @@ namespace Deep.TaskManager.Actions
 
             return await Constants.SelectedDungeon.BuffNextFloor();
         }
-        
+
         private async Task<bool> Inuit()
         {
             if (Core.Me.HasAura(Auras.ItemPenalty)) return false;

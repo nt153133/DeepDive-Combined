@@ -19,7 +19,6 @@ namespace Deep.Helpers.Logging
 {
     internal static class Logger
     {
-
         internal static string Name => Constants.Lang == Language.Chn ? "深层迷宫" : "DeepDive";
         private static string Prefix => $"[{Name}] ";
 
@@ -48,13 +47,9 @@ namespace Deep.Helpers.Logging
         internal static void Verbose(string format, params object[] args)
         {
             if (Settings.Instance.VerboseLogging)
-            {
                 Log(LogColors.Verbose, format, args);
-            }
             else
-            {
                 rLogging.WriteToFileSync(LogLevel.Verbose, format, args);
-            }
         }
 
 

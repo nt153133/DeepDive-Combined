@@ -10,19 +10,16 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Clio.Utilities;
-using Deep.Helpers;
 using Deep.Memory;
+using Deep.Properties;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;
-using Newtonsoft.Json;
-using Deep.Properties;
 using ff14bot.RemoteAgents;
+using Newtonsoft.Json;
 
 namespace Deep
 {
@@ -190,14 +187,14 @@ namespace Deep
         {
             ItemData = new Item[2]
             {
-                DataManager.GetItem(Id, false),
+                DataManager.GetItem(Id),
                 DataManager.GetItem(Id, true)
             };
 
             HPs = new[]
             {
                 Max[0] / (float) ItemData[0].Cooldown,
-                Max[1] / (float) ItemData[1].Cooldown,
+                Max[1] / (float) ItemData[1].Cooldown
             };
         }
     }
@@ -282,7 +279,7 @@ namespace Deep
         };
 
         internal static HashSet<uint> PotionIds = new HashSet<uint>();
-        internal static Dictionary<uint, Potion> Pots { get; private set; }
+        internal static Dictionary<uint, Potion> Pots { get; }
 
         public static bool InExitLevel => WorldManager.ZoneId == SelectedDungeon.LobbyId;
 

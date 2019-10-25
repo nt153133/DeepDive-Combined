@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -39,7 +40,7 @@ namespace Deep.Memory
                             if (field.FieldType == typeof(IntPtr))
                                 field.SetValue(instance, res);
                             else
-                                field.SetValue(instance, (int)res);
+                                field.SetValue(instance, (int) res);
                         }
 
                         //set the value
@@ -51,62 +52,49 @@ namespace Deep.Memory
                         if (type.FieldType == typeof(IntPtr))
                             type.SetValue(null, res);
                         else
-                            type.SetValue(null, (int)res);
+                            type.SetValue(null, (int) res);
                     }
-
                 }
             );
         }
 
         private static IntPtr ParseField(FieldInfo field, PatternFinder pf)
         {
-            var offset = (OffsetAttribute)Attribute.GetCustomAttributes(field, typeof(OffsetAttribute))
+            var offset = (OffsetAttribute) Attribute.GetCustomAttributes(field, typeof(OffsetAttribute))
                 .FirstOrDefault();
-            var valcn = (OffsetValueCN)Attribute.GetCustomAttributes(field, typeof(OffsetValueCN))
+            var valcn = (OffsetValueCN) Attribute.GetCustomAttributes(field, typeof(OffsetValueCN))
                 .FirstOrDefault();
-            var valna = (OffsetValueNA)Attribute.GetCustomAttributes(field, typeof(OffsetValueNA))
+            var valna = (OffsetValueNA) Attribute.GetCustomAttributes(field, typeof(OffsetValueNA))
                 .FirstOrDefault();
 
-            IntPtr result = IntPtr.Zero;
+            var result = IntPtr.Zero;
 
             if (Constants.Lang == Language.Chn)
             {
                 if (valcn != null)
-                    return (IntPtr)valcn.Value;
-                if (offset == null)
-                {
-                    return IntPtr.Zero;
-                }
+                    return (IntPtr) valcn.Value;
+                if (offset == null) return IntPtr.Zero;
 
-                bool b1 = true;
+                var b1 = true;
                 var results = pf.FindMany(offset.PatternCN, ref b1);
                 if (results != null)
                     result = results[0];
-
             }
             else
             {
                 if (valna != null)
-                    return (IntPtr)valna.Value;
-                if (offset == null)
-                {
-                    return IntPtr.Zero;
-                }
+                    return (IntPtr) valna.Value;
+                if (offset == null) return IntPtr.Zero;
 
-                bool b1 = true;
+                var b1 = true;
                 var results = pf.FindMany(offset.Pattern, ref b1);
                 if (results != null)
                     result = results[0];
-
-
             }
 
             Logger.Info("[OffsetManager][{0:,27}] {1}", field.Name, result.ToString("X"));
 
             return result;
-
-
         }
-
     }
 }

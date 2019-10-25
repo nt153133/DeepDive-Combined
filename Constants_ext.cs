@@ -42,6 +42,7 @@ namespace Deep
 
             DeepListType = new List<IDeepDungeon>();
             foreach (var dd in deepList)
+            {
                 switch (GetDDEnum(dd.Index))
                 {
                     case DeepDungeonType.Blank:
@@ -60,6 +61,7 @@ namespace Deep
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
         }
 
         // ReSharper disable once InconsistentNaming

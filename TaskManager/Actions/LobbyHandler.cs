@@ -7,24 +7,19 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
+using System.Threading.Tasks;
 using Buddy.Coroutines;
+using Deep.Helpers.Logging;
 using ff14bot;
-using ff14bot.Behavior;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Objects;
-using ff14bot.Pathing;
 using ff14bot.RemoteWindows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
-    class LobbyHandler : ITask
+    internal class LobbyHandler : ITask
     {
         private GameObject _target;
 
@@ -76,12 +71,9 @@ namespace Deep.TaskManager.Actions
 
         public void Tick()
         {
-            if(_target != null && !_target.IsValid)
-            {
-                _target = null;
-            }
+            if (_target != null && !_target.IsValid) _target = null;
             if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return;
-            
+
             _target = GameObjectManager.GetObjectByNPCId(EntityNames.LobbyExit);
         }
     }

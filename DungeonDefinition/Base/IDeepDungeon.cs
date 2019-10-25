@@ -20,22 +20,21 @@ namespace Deep.DungeonDefinition.Base
 
         uint OfPassage { get; }
         uint OfReturn { get; }
-        
+
         uint BossExit { get; }
         uint LobbyExit { get; }
         uint LobbyEntrance { get; }
-        
+
         Dictionary<uint, uint> WallMapData { get; }
-        
+
         uint EntranceAetheryte { get; }
         uint CaptainNpcId { get; }
         Vector3 CaptainNpcPosition { get; }
         uint[] DeepDungeonRawIds { get; }
         uint CheckPointLevel { get; }
         int SustainingPotion { get; }
-        
-        
-        
+
+
         //Pomanders
         Dictionary<int, int> PomanderMapping { get; }
         Task<bool> BuffMe();
@@ -49,7 +48,7 @@ namespace Deep.DungeonDefinition.Base
         List<GameObject> GetObjectsByWeight();
         float Sort(GameObject obj);
         bool Filter(GameObject obj);
-        
+
         string GetDDType();
     }
 }

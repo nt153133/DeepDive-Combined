@@ -7,42 +7,32 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Buddy.Coroutines;
 using Deep.Forms;
 using Deep.Helpers;
-using Deep.Providers;
-using Deep.Tasks;
-using ff14bot.Behavior;
-using TreeSharp;
-using ff14bot.NeoProfiles;
-using ff14bot;
-using ff14bot.Navigation;
-using ff14bot.Managers;
-using ff14bot.RemoteAgents;
-using ff14bot.RemoteWindows;
-using Action = TreeSharp.Action;
-using ff14bot.Pathing.Service_Navigation;
-using ff14bot.Enums;
-using ff14bot.AClasses;
-using System.Windows.Controls;
 using Deep.Helpers.Logging;
-using Decorator = TreeSharp.Decorator;
-using ff14bot.Overlay3D;
+using Deep.Providers;
 using Deep.TaskManager;
 using Deep.TaskManager.Actions;
+using ff14bot;
+using ff14bot.AClasses;
+using ff14bot.Behavior;
+using ff14bot.Enums;
 using ff14bot.Helpers;
-
+using ff14bot.Managers;
+using ff14bot.Navigation;
+using ff14bot.NeoProfiles;
+using ff14bot.Overlay3D;
+using ff14bot.Pathing.Service_Navigation;
+using TreeSharp;
 
 namespace Deep
 {
-
-    public partial class DeepDungeon : AsyncBotBase
+    public class DeepDungeon : AsyncBotBase
     {
         public override string EnglishName => "Deep Dungeon";
 #if RB_CN
@@ -59,10 +49,10 @@ namespace Deep
         public DeepDungeon()
         {
             //Captain = new GetToCaptain();
-          
-           // if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
-           //     Logger.Warn("Settings are empty?");
-            
+
+            // if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
+            //     Logger.Warn("Settings are empty?");
+
             Constants.LoadList();
             Constants.SelectedDungeon = Constants.DeepListType.First();
 
@@ -74,11 +64,10 @@ namespace Deep
 
                 _init = true;
                 Logger.Info("INIT DONE");
-                
             });
         }
 
-        private volatile bool _init = false;
+        private volatile bool _init;
 
         private TaskManagerProvider _tasks;
 
@@ -86,7 +75,7 @@ namespace Deep
 
         //private SettingsForm _settings;
         private DungeonSelection _settings;
-        private static Version v = new Version(1, 3, 3);
+        private static readonly Version v = new Version(1, 3, 3);
 
         public override void OnButtonPress()
         {
@@ -110,19 +99,16 @@ namespace Deep
             try
             {
                 _settings.Show();
-
             }
             catch (Exception)
             {
-
             }
         }
-
 
         #endregion
 
         /// <summary>
-        /// = true when we stop gets pushed
+        ///     = true when we stop gets pushed
         /// </summary>
         internal static bool StopPlz;
 
@@ -135,8 +121,8 @@ namespace Deep
             DDTargetingProvider.Instance.Reset();
             Navigator.Clear();
             Poi.Current = null;
-
         }
+
         public override Composite Root => _root;
 
         private Composite _root;
@@ -149,10 +135,10 @@ namespace Deep
         {
             if (Constants.SelectedDungeon == null)
                 return;
-            
+
             if (Constants.InDeepDungeon)
             {
-                if (Constants.IgnoreEntity == null)   
+                if (Constants.IgnoreEntity == null)
                     Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
                 //force a pulse on the director if we are hitting "start" inside of the dungeon
                 if (DirectorManager.ActiveDirector == null)
@@ -174,35 +160,34 @@ namespace Deep
                 _root = new ActionAlwaysFail();
                 return;
             }
-            
+
             if (Settings.Instance.BetterSelectedLevel == null)
             {
                 Settings.Instance.BetterSelectedLevel = Constants.SelectedDungeon.Floors[0];
                 Logger.Error($"No floor selected, setting it to use [{Settings.Instance.BetterSelectedLevel.DisplayName}]");
             }
-            
+
             Logger.Info(Constants.SelectedDungeon.ToString());
             //setup navigation manager
             Navigator.NavigationProvider = new DDNavigationProvider(new ServiceNavigationProvider());
             Navigator.PlayerMover = new SlideMover();
 
             TreeHooks.Instance.ClearAll();
-            
+
             _tasks = new TaskManagerProvider();
 
 
-            
             _tasks.Add(new LoadingHandler());
             _tasks.Add(new DeathWindowHandler());
             _tasks.Add(new SideStepTask());
             //not sure if i want the trap handler to be above combat or not
             _tasks.Add(new TrapHandler());
-            
+
             //pomanders for sure need to happen before combat so that we can correctly apply Lust for bosses
             _tasks.Add(new Pomanders());
 
             _tasks.Add(new CombatHandler());
-            
+
             _tasks.Add(new LobbyHandler());
             _tasks.Add(new GetToCaptain());
             _tasks.Add(new POTDEntrance());
@@ -215,7 +200,7 @@ namespace Deep
 
             _tasks.Add(new StuckDetection());
             _tasks.Add(new POTDNavigation());
-            
+
 
             _tasks.Add(new BaseLogicHandler());
 
@@ -227,16 +212,14 @@ namespace Deep
                 return;
             }
 
-            
+
             //setup combat manager
             CombatTargeting.Instance.Provider = new DDCombatTargetingProvider();
 
             GameSettingsManager.FaceTargetOnAction = true;
-        
 
-            
+
             if (Constants.Lang == Language.Chn)
-            {
                 //回避 - sidestep
                 //Zekken 
                 if (PluginManager.Plugins.Any(i => (i.Plugin.Name.Contains("Zekken") || i.Plugin.Name.Contains("技能躲避")) && i.Enabled))
@@ -246,7 +229,6 @@ namespace Deep
                     return;
                 }
 
-            }
             if (PluginManager.Plugins.Any(i => i.Plugin.Name == "Zekken" && i.Enabled))
             {
                 Logger.Error(
@@ -255,7 +237,6 @@ namespace Deep
                 return;
             }
 
-            
 
             if (!ConditionParser.IsQuestCompleted(Constants.SelectedDungeon.UnlockQuest))
             {
@@ -265,7 +246,7 @@ namespace Deep
                 _root = new ActionAlwaysFail();
                 return;
             }
-            
+
             if (!ConditionParser.IsQuestCompleted(Settings.Instance.BetterSelectedLevel.QuestId))
             {
                 Logger.Error($"You must complete \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this floor.");
@@ -273,13 +254,11 @@ namespace Deep
                 _root = new ActionAlwaysFail();
                 return;
             }
-            else
-            {
-                Logger.Error($"Quest {Settings.Instance.BetterSelectedLevel.QuestId} - \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this base.");
-            }
+
+            Logger.Error($"Quest {Settings.Instance.BetterSelectedLevel.QuestId} - \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this base.");
 
             StopPlz = false;
-            
+
             SetupSettings();
 
             _root =
@@ -289,21 +268,22 @@ namespace Deep
                         return false;
                     if (!_init)
                     {
-                        ff14bot.Helpers.Logging.Write($"DeepDive is waiting on Initialization to finish");
+                        Logging.Write("DeepDive is waiting on Initialization to finish");
                         return true;
                     }
+
                     if (await _tasks.Run())
                     {
                         await Coroutine.Yield();
                     }
                     else
                     {
-                        Logger.Warn($"No tasks ran");
+                        Logger.Warn("No tasks ran");
                         await Coroutine.Sleep(1000);
                     }
+
                     return true;
                 });
-
         }
 
         public override async Task AsyncRoot()
@@ -312,26 +292,26 @@ namespace Deep
                 return;
             if (!_init)
             {
-                ff14bot.Helpers.Logging.Write($"DeepDive is waiting on Initialization to finish");
+                Logging.Write("DeepDive is waiting on Initialization to finish");
                 return;
             }
+
             if (await _tasks.Run())
             {
                 await Coroutine.Yield();
             }
             else
             {
-                Logger.Warn($"No tasks ran");
+                Logger.Warn("No tasks ran");
                 await Coroutine.Sleep(1000);
             }
-            return;
         }
 
         private static void SetupSettings()
         {
             Logger.Info("UpdateTrapSettings");
-            
-            
+
+
             //mimic stuff
             if (Settings.Instance.OpenMimics)
             {
@@ -351,35 +331,33 @@ namespace Deep
             {
                 //if we have traps remove them
                 if (Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.TrapCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] {EntityNames.TrapCoffer}).ToArray();
             }
             else
             {
                 if (!Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.TrapCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.TrapCoffer}).ToArray();
             }
 
             if (Settings.Instance.OpenSilver)
             {
                 //if we have traps remove them
                 if (Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.SilverCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] {EntityNames.SilverCoffer}).ToArray();
             }
             else
             {
                 if (!Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.SilverCoffer}).ToArray();
             }
-            
+
             //Add the current Dungeon's Ignores
             if (!Constants.BaseIgnoreEntity.Contains(EntityNames.OfPassage))
-                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance}).ToArray();
 
             Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
-            
-            Settings.Instance.Dump();
 
+            Settings.Instance.Dump();
         }
     }
-
 }

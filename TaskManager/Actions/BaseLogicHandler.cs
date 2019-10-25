@@ -7,17 +7,14 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-using Buddy.Coroutines;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
+using Buddy.Coroutines;
 using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
-    class BaseLogicHandler : ITask
+    internal class BaseLogicHandler : ITask
     {
         public string Name => "BaseLogicHandler";
 
@@ -30,7 +27,6 @@ namespace Deep.TaskManager.Actions
 
         public void Tick()
         {
-            
         }
     }
 }

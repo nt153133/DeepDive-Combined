@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using ff14bot;
 
@@ -14,9 +15,9 @@ namespace Deep.Helpers
 {
     internal class FrameCache<T>
     {
-        private Func<T> _producer;
-        private uint _lastFrame = uint.MaxValue;
+        private readonly Func<T> _producer;
         private T _cached;
+        private uint _lastFrame = uint.MaxValue;
 
         public FrameCache(Func<T> producer)
         {
@@ -33,6 +34,7 @@ namespace Deep.Helpers
                     _cached = _producer();
                     _lastFrame = frameCount;
                 }
+
                 return _cached;
             }
         }
@@ -43,6 +45,5 @@ namespace Deep.Helpers
         {
             return pfcv.Value;
         }
-
     }
 }

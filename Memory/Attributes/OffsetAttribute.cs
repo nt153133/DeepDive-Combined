@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 
 namespace Deep.Memory.Attributes
@@ -14,9 +15,9 @@ namespace Deep.Memory.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     internal class OffsetAttribute : Attribute
     {
+        public bool Numeric;
         public string Pattern;
         public string PatternCN;
-        public bool Numeric;
 
         public OffsetAttribute(string pattern, bool numeric = false, int expectedValue = 0)
         {
@@ -24,6 +25,7 @@ namespace Deep.Memory.Attributes
             PatternCN = pattern;
             Numeric = numeric;
         }
+
         public OffsetAttribute(string pattern, string cnpattern, bool numeric = false, int expectedValue = 0)
         {
             Pattern = pattern;
