@@ -247,15 +247,7 @@ namespace Deep
         /// <summary>
         ///     Pull range (minimum of 8)
         /// </summary>
-        internal static float ModifiedCombatReach
-        {
-            get
-            {
-                if (!PartyManager.IsInParty)
-                    return 17;
-                return Math.Max(8, RoutineManager.Current.PullRange + Settings.Instance.PullRange);
-            }
-        }
+        internal static float ModifiedCombatReach => Math.Max(8, RoutineManager.Current.PullRange);
 
         //cn = 3
         //64 = 2

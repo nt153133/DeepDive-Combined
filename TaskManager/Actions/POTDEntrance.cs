@@ -200,8 +200,10 @@ namespace Deep.TaskManager.Actions
                 Logger.Verbose("Resetting save data: Our Party has changed. {0} != {1}", PartyManager.NumMembers, partyData.Count);
             if (saved && _error)
                 Logger.Verbose("Resetting save data: there was a warning waiting for the duty finder.");
+            if (Settings.Instance.StartAt51 && sdSaveStates[UseSaveSlot].Floor < Constants.SelectedDungeon.CheckPointLevel)
+                Logger.Verbose("Resetting save data: Level start ({0}) is Less than checkpoint floor: {1}", sdSaveStates[UseSaveSlot].Floor,Constants.SelectedDungeon.CheckPointLevel);
 
-            return saved && (lm || notfixed || cjChanged || partySize || partyClass || _error);
+            return saved && (lm || notfixed || cjChanged || partySize || partyClass || _error || (Settings.Instance.StartAt51 && sdSaveStates[UseSaveSlot].Floor < Constants.SelectedDungeon.CheckPointLevel));
         }
 
         private async Task ReadStartingLevel()
