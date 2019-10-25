@@ -152,6 +152,8 @@ namespace Deep
             
             if (Constants.InDeepDungeon)
             {
+                if (Constants.IgnoreEntity == null)   
+                    Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
                 //force a pulse on the director if we are hitting "start" inside of the dungeon
                 if (DirectorManager.ActiveDirector == null)
                     DirectorManager.Update();
