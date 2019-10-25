@@ -57,11 +57,11 @@ namespace Deep.TaskManager.Actions
                 return;
             }
 
-            if (!DungeonQueue.IsFinished)
-                foreach (var x in GamelogManager.CurrentBuffer.Where(i => i.MessageType == (MessageType) 2876))
-                {
-                    HandleErrorMessages(x);
-                }
+            if (DungeonQueue.IsFinished) return;
+            foreach (var x in GamelogManager.CurrentBuffer.Where(i => i.MessageType == (MessageType) 2876))
+            {
+                HandleErrorMessages(x);
+            }
         }
 
         public async Task<bool> Run()
