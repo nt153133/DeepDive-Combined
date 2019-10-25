@@ -153,6 +153,12 @@ namespace Deep
         public override void Start()
         {
             Poi.Current = null;
+            
+            if (DutyManager.InInstance)
+            {
+                Constants.SelectedDungeon = Constants.GetDeepDungeonByMapid(WorldManager.ZoneId);
+                Settings.Instance.BetterSelectedLevel = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.MapId == WorldManager.ZoneId);
+            }
 
             if (Constants.SelectedDungeon == null)
             {

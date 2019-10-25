@@ -39,6 +39,7 @@ namespace Deep.Forms
             this.startLevelBox = new System.Windows.Forms.CheckBox();
             this.SilverChest = new System.Windows.Forms.CheckBox();
             this.HordeCheck = new System.Windows.Forms.CheckBox();
+            this.StopCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // DungeonListCombo
@@ -80,10 +81,10 @@ namespace Deep.Forms
             // 
             // startLevelBox
             // 
-            this.startLevelBox.Location = new System.Drawing.Point(213, 13);
+            this.startLevelBox.Location = new System.Drawing.Point(214, 13);
             this.startLevelBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.startLevelBox.Name = "startLevelBox";
-            this.startLevelBox.Size = new System.Drawing.Size(116, 44);
+            this.startLevelBox.Size = new System.Drawing.Size(115, 44);
             this.startLevelBox.TabIndex = 4;
             this.startLevelBox.Text = "Start at checkpoint floor";
             this.startLevelBox.UseVisualStyleBackColor = true;
@@ -113,11 +114,23 @@ namespace Deep.Forms
             this.HordeCheck.UseVisualStyleBackColor = true;
             this.HordeCheck.CheckedChanged += new System.EventHandler(this.HordeCheck_CheckedChanged);
             // 
+            // StopCheck
+            // 
+            this.StopCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.StopCheck.Location = new System.Drawing.Point(174, 120);
+            this.StopCheck.Name = "StopCheck";
+            this.StopCheck.Size = new System.Drawing.Size(111, 18);
+            this.StopCheck.TabIndex = 7;
+            this.StopCheck.Text = "Stop Run";
+            this.StopCheck.UseVisualStyleBackColor = true;
+            this.StopCheck.CheckedChanged += new System.EventHandler(this.StopCheck_CheckedChanged);
+            // 
             // DungeonSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 296);
+            this.ClientSize = new System.Drawing.Size(340, 297);
+            this.Controls.Add(this.StopCheck);
             this.Controls.Add(this.HordeCheck);
             this.Controls.Add(this.SilverChest);
             this.Controls.Add(this.startLevelBox);
@@ -142,5 +155,6 @@ namespace Deep.Forms
         private System.Windows.Forms.CheckBox HordeCheck;
         private System.Windows.Forms.CheckBox SilverChest;
         private System.Windows.Forms.CheckBox startLevelBox;
+        private System.Windows.Forms.CheckBox StopCheck;
     }
 }

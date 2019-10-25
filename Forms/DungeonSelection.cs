@@ -68,5 +68,10 @@ namespace Deep.Forms
         {
             Settings.Instance.StartAt51 = startLevelBox.Checked;
         }
+
+        private void StopCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.Stop = StopCheck.Checked;
+        }
     }
 }

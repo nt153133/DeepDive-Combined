@@ -242,9 +242,9 @@ namespace Deep
         internal static bool InDeepDungeon => DeepDungeonRawIds.Contains(WorldManager.ZoneId);
 
         /// <summary>
-        ///     Pull range (minimum of 8)
+        ///     Pull range (Max of 15 to stop from attacking around corners on classes with large pull ranges)
         /// </summary>
-        internal static float ModifiedCombatReach => Math.Max(8, RoutineManager.Current.PullRange);
+        internal static float ModifiedCombatReach => Math.Min(15, RoutineManager.Current.PullRange);
 
         //cn = 3
         //64 = 2

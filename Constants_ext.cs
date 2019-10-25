@@ -87,6 +87,12 @@ namespace Deep
         {
             return Exits.Any(exit => obj.NpcId == exit);
         }
+
+        public static IDeepDungeon GetDeepDungeonByMapid(uint mapId)
+        {
+            return DeepListType.FirstOrDefault(deepDungeon => deepDungeon.Floors.Any(i => i.MapId == mapId));
+        }
+        
     }
 
     public enum DeepDungeonType
