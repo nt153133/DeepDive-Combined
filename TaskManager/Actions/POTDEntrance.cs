@@ -41,7 +41,7 @@ namespace Deep.TaskManager.Actions
 
         private static uint UseSaveSlot => (uint)Settings.Instance.SaveSlot;
 
-        private FloorSetting _targetFloor;
+        //private FloorSetting _targetFloor;
         private DungeonDefinition.Base.FloorSetting _bettertargetFloor;
 
         private AgentDeepDungeonSaveData Sd => Constants.GetSaveInterface();
@@ -163,29 +163,19 @@ namespace Deep.TaskManager.Actions
 
             try
             {
-                if (!PartyManager.IsInParty)
-                {
-                    Logger.Warn("You are solo, Setting the bot to do 1-10.");
-                    stop = Constants.SelectedDungeon.Floors[0];  //Settings.Instance.FloorSettings[0];
-                }
-
-                //_targetFloor = stop;
                 _bettertargetFloor = stop;
 
-                //Logger.Verbose("Going to floor: {0}", _targetFloor.LevelMax);
                 Logger.Verbose("Going to floor: {0}", _bettertargetFloor.End);
 
             }
             catch (Exception)
             {
                 Logger.Verbose("Exception with setting floor data. setting target floor to 10");
-                _targetFloor = new FloorSetting { LevelMax = 10 };
+                stop = Constants.SelectedDungeon.Floors[0];
             }
 
-            //Logger.Verbose("Starting Level {0}", _targetFloor.LevelMax - 9);
             Logger.Verbose("Starting Level {0}", _bettertargetFloor.Start);
 
-            //var lm = _targetFloor.LevelMax < sdSaveStates[UseSaveSlot].Floor;
             var lm = _bettertargetFloor.End < sdSaveStates[UseSaveSlot].Floor;
             
             var notfixed = !sdSaveStates[UseSaveSlot].FixedParty;
@@ -196,35 +186,14 @@ namespace Deep.TaskManager.Actions
             bool partySize;
             var partyClass = false;
 
-            //if (saved && partyData.Count == PartyManager.NumMembers)
-            //{
-            //    foreach (var r in partyData)
-            //    {
-            //        var c = PartyManager.AllMembers.FirstOrDefault(i => i.Name == r.Name);
-            //        if (c == null)
-            //        {
-            //            Logger.Warn("Resetting save data: A member in the party has changed.");
-            //            partyClass = true;
-            //            break;
-            //        }
-
-            //        if (c.Class == r.Class) continue;
-
-            //        Logger.Warn("Resetting save data: Someone has changed jobs");
-            //        partyClass = true;
-            //        break;
-            //    }
-            //}
 
             if (PartyManager.IsInParty)
                 partySize = PartyManager.NumMembers != partyData.Count;
             else
                 partySize = partyData.Count != 1;
 
-
             if (saved && lm)
                 Logger.Verbose("Resetting save data: Level Max ({0}) is Less than floor value: {1}", _bettertargetFloor.End, sdSaveStates[UseSaveSlot].Floor);
-                //Logger.Verbose("Resetting save data: Level Max ({0}) is Less than floor value: {1}", _targetFloor.LevelMax, sdSaveStates[UseSaveSlot].Floor);
             if (saved && notfixed)
                 Logger.Verbose("Resetting save data: Our class/job has changed from: {0} to {1}", sdSaveStates[UseSaveSlot].Class, Core.Me.CurrentJob);
             if (saved && partySize)
@@ -368,9 +337,9 @@ Aetherpool Armor: +{1}
                         await Coroutine.Sleep(1000);
 
                         if (Settings.Instance.StartAt51)
-                            Logger.Verbose("Start at 51: {0}", _targetFloor.LevelMax > 50);
+                            Logger.Verbose("Start at {1}: {0}", _bettertargetFloor.End > (Constants.SelectedDungeon.CheckPointLevel - 1), Constants.SelectedDungeon.CheckPointLevel);
 
-                        if (Settings.Instance.StartAt51 && _targetFloor.LevelMax > 50)
+                        if (Settings.Instance.StartAt51 && _bettertargetFloor.End > (Constants.SelectedDungeon.CheckPointLevel - 1 ))
                         {
                             SelectString.ClickSlot(1);
                         }
@@ -386,7 +355,7 @@ Aetherpool Armor: +{1}
                 {
                     Logger.Verbose($"ContentsFinderConfirm is open: {ContentsFinderConfirm.IsOpen} so we aren't going through the main menu.");
                 }
-                _targetFloor = null;
+                _bettertargetFloor = null;
             }
             Logger.Info("Waiting on the queue, Or for an error.");
             DungeonQueue.Reset();

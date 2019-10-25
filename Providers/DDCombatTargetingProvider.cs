@@ -114,10 +114,12 @@ namespace Deep.Providers
             var distance2D = battleCharacter.Distance2D(_location);
 
             weight -= distance2D / 2.25;
-
             weight += battleCharacter.ClassLevel / 1.25;
-
             weight += 100 - battleCharacter.CurrentHealthPercent;
+            
+            if (PartyManager.IsInParty && !PartyManager.IsPartyLeader)
+                if (battleCharacter.IsTargetingMyPartyMember())
+                    weight += 100;
 
             if (battleCharacter.HasTarget && battleCharacter.TargetCharacter == Core.Me)
                 weight += 50;
