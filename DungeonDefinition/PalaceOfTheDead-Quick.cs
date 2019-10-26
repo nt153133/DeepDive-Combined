@@ -157,6 +157,9 @@ namespace Deep.DungeonDefinition
                 if (obj.Location == Vector3.Zero)
                     continue;
                 
+                if (obj.Type != GameObjectType.Treasure || obj.Type != GameObjectType.BattleNpc || obj.Type != GameObjectType.EventObject)
+                    continue;
+                
                 if (!obj.IsValid || !obj.IsVisible)
                     continue;
 
@@ -175,6 +178,7 @@ namespace Deep.DungeonDefinition
                         
                         if (!(HaveMainPomander() && DeepDungeonManager.PortalActive && FloorExit.location != Vector3.Zero))
                             result.Add(obj);
+                        
                         break;
                     case GameObjectType.EventObject:
                         result.Add(obj);

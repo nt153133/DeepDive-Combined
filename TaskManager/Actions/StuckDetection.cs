@@ -26,7 +26,7 @@ namespace Deep.TaskManager.Actions
         private
             const float DISTANCE = 0.25f;
 
-        internal readonly WaitTimer MoveTimer = new WaitTimer(TimeSpan.FromSeconds(15));
+        internal readonly WaitTimer MoveTimer = new WaitTimer(TimeSpan.FromSeconds(30));
         private Vector3 _location = Vector3.Zero;
         public string Name => "Stuck Detection";
 
@@ -42,7 +42,7 @@ namespace Deep.TaskManager.Actions
                 }
 
                 Logger.Warn("No activity was detected for {0} seconds. Adding target to the blacklist and trying again", MoveTimer.WaitTime.TotalSeconds);
-                if (Poi.Current.Unit != null) DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
+                if (Poi.Current.Unit != null && !Constants.IsExitObject(Poi.Current.Unit)) DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
                 if (Poi.Current.Type != PoiType.None)
                     Poi.Clear("No activity detected");
 
