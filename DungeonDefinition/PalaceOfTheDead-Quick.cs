@@ -157,9 +157,6 @@ namespace Deep.DungeonDefinition
                 if (obj.Location == Vector3.Zero)
                     continue;
                 
-                if (obj.Type != GameObjectType.Treasure || obj.Type != GameObjectType.BattleNpc || obj.Type != GameObjectType.EventObject)
-                    continue;
-                
                 if (!obj.IsValid || !obj.IsVisible)
                     continue;
 
