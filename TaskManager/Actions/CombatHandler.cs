@@ -246,13 +246,13 @@ namespace Deep.TaskManager.Actions
                     return true;
                 }
 
-                if (hasspell(LustSpell.Id))
+                if (HasSpell(LustSpell.Id))
                 {
                     await CastPomanderAbility(LustSpell);
                     return true;
                 }
 
-                if (hasspell(PummelSpell.Id))
+                if (HasSpell(PummelSpell.Id))
                 {
                     await CastPomanderAbility(PummelSpell);
                     return true;
@@ -273,7 +273,7 @@ namespace Deep.TaskManager.Actions
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private bool hasspell(uint id)
+        private bool HasSpell(uint id)
         {
             var hbs = HotbarManager.HotbarsSlot;
             for (uint i = 0; i < hbs.Length; i++)
