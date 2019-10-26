@@ -92,6 +92,7 @@ namespace Deep.Tasks
                 await Coroutine.Sleep(150);
 
                 await Coroutine.Wait(5000, () => !DeepDungeonManager.IsCasting);
+                DeepDungeonManager.PomanderChange();
                 data = DeepDungeonManager.GetInventoryItem(number);
             }
 

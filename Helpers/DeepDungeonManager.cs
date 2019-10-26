@@ -8,6 +8,10 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System;
+using System.Runtime.CompilerServices;
+using Buddy.Coroutines;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
@@ -22,6 +26,8 @@ namespace Deep.Helpers
     public static class DeepDungeonManager
     {
         public static InstanceContentDirector Director => DirectorManager.ActiveDirector as InstanceContentDirector;
+        
+        //public static event EventHandler OnInventoryChange;
 
         public static bool BossFloor => Director != null && Director.DeepDungeonLevel % 10 == 0;
         public static bool NextFloorIsBossFloor => Director != null && Director.DeepDungeonLevel % 10 == 9;
@@ -34,16 +40,39 @@ namespace Deep.Helpers
         public static bool PortalActive => Director.DeepDungeonPortalStatus == 11;
         public static bool ReturnActive => Director.DeepDungeonReturnStatus == 11;
 
+        private static DDInventoryItem[] _inventory;
+
+        static DeepDungeonManager()
+        {
+            PomanderChange();
+        }
+
         public static DDInventoryItem GetInventoryItem(Pomander pom)
         {
-            //return Director.DeepDungeonInventory[(byte) pom - 1];
-            return Director.DeepDungeonInventory[(byte) Constants.PomanderInventorySlot(pom)];
+            using (new PerformanceLogger($"GetInventoryItem", true))
+            {
+                //return Director.DeepDungeonInventory[(byte) pom - 1];
+                return _inventory[(byte) Constants.PomanderInventorySlot(pom)];
+            }
         }
 
         public static void UsePomander(Pomander pom)
         {
-            AgentModule.GetAgentInterfaceByType<AgentDeepDungeonInformation>().UsePomander(pom);
-            Navigator.NavigationProvider.ClearStuckInfo(); // don't trigger antistuck
+            using (new PerformanceLogger($"UsePomander", true))
+            {
+                AgentModule.GetAgentInterfaceByType<AgentDeepDungeonInformation>().UsePomander(pom);
+                Navigator.NavigationProvider.ClearStuckInfo(); // don't trigger antistuck
+                PomanderChange();
+            }
+        }
+
+        public static void PomanderChange()
+        {
+            using (new PerformanceLogger($"PomanderChange", true))
+            {
+                _inventory = Director.DeepDungeonInventory;
+                
+            }
         }
     }
 }

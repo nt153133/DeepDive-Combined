@@ -114,6 +114,18 @@ namespace Deep
 
         public override void Stop()
         {
+            foreach (var block in Constants.PerformanceStats)
+            {
+                Logger.Verbose($"[Performance] {block.Key}");
+                Logger.Verbose(block.Value.ToArray().ToString() );
+                double sum = 0;
+                foreach (var stat in block.Value)
+                {
+                    sum += stat;
+                }
+                
+                Logger.Verbose($"Average {sum/block.Value.Count()} Count {block.Value.Count()}");
+            }
             _root = null;
             StopPlz = true;
 
@@ -158,6 +170,7 @@ namespace Deep
             {
                 Constants.SelectedDungeon = Constants.GetDeepDungeonByMapid(WorldManager.ZoneId);
                 Settings.Instance.BetterSelectedLevel = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.MapId == WorldManager.ZoneId);
+                Logger.Warn($"Started bot inside dungeon: Using {Constants.SelectedDungeon.DisplayName}");
             }
 
             if (Constants.SelectedDungeon == null)

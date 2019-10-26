@@ -36,13 +36,11 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (!Constants.InDeepDungeon)
+            if (!DutyManager.InInstance || !Constants.InDeepDungeon)
                 return false;
-
 
             if (Target == null)
                 return false;
-
 
             if (Target.Location == Vector3.Zero)
                 return true;

@@ -8,10 +8,12 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Clio.Utilities;
 using Deep.Helpers;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Helpers;
@@ -32,6 +34,11 @@ namespace Deep.Providers
 
         public List<BattleCharacter> GetObjectsByWeight()
         {
+            if (!DutyManager.InInstance)
+                return new List<BattleCharacter>();
+
+            if (DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+                return new List<BattleCharacter>();
             //Set some variables here that will get called often so memory reads only need to be performed one time
             var player = Core.Me;
             _location = player.Location;
@@ -47,53 +54,60 @@ namespace Deep.Providers
             var portalActive = DeepDungeonManager.PortalActive;
 
 
-            var units = GameObjectManager.GetObjectsOfType<BattleCharacter>(); //.ToArray();
+             //.ToArray();
 
-            //using (new PerformanceTimer("targeting " + units.Length))
-            //{
+            using (new PerformanceLogger($"targeting",true))
+            {
+                //var units = GameObjectManager.GetObjectsOfType<BattleCharacter>();
+                
+                var inDD = Constants.InDeepDungeon;
+                
+                var _Targets = new List<BattleCharacter>();
 
-            var inDD = Constants.InDeepDungeon;
-            Targets = units
-                .Where(target =>
+                foreach (var target1 in GameObjectManager.GameObjects)
                 {
+                    if (target1.Type != GameObjectType.BattleNpc)
+                        continue;
+
+                    var target = (BattleCharacter) target1;
                     var targetNpcId = target.NpcId;
+                    
                     if (targetNpcId == 5042 || targetNpcId == 0)
-                        return false;
+                        continue;
+                    
+                    if (target.IsDead)
+                        continue;
+                    
+                    if (Constants.TrapIds.Contains(targetNpcId) || Constants.IgnoreEntity.Contains(targetNpcId))
+                        continue;
 
                     var targetInCombat = target.InCombat;
 
                     if (inDD && Blacklist.Contains(target) && !targetInCombat)
-                        return false;
-
-                    if (Constants.TrapIds.Contains(targetNpcId) || Constants.IgnoreEntity.Contains(targetNpcId))
-                        return false;
+                        continue;
 
                     if (!target.IsTargetable)
-                        return false;
+                        continue;
 
                     if (portalActive && !targetInCombat)
                     {
-                        var targetLevel = target.ClassLevel;
-                        if (_level - targetLevel >= 3) return false;
+                        continue;
                     }
 
-                    if (target.IsDead)
-                        return false;
+                    if (!target.StatusFlags.HasFlag(StatusFlags.Hostile)) continue;
+                    
+                    if (bossFloor)
+                        _Targets.Add(target);
 
-                    if (target.StatusFlags.HasFlag(StatusFlags.Hostile))
-                    {
-                        if (bossFloor)
-                            return true;
+                    if (!(target.Location.Distance2DSqr(_location) < combatReach)) continue;
+                    
+                    if (targetInCombat || target.InLineOfSight())
+                        _Targets.Add((target));
 
-                        if (target.Location.Distance2DSqr(_location) < combatReach) return targetInCombat || target.InLineOfSight();
-                    }
+                }
 
-                    return false;
-                });
-
-
-            return Targets.OrderByDescending(Priority).ToList();
-            //}
+                return _Targets.OrderByDescending(Priority).ToList();
+            }
         }
 
         private double Priority(BattleCharacter battleCharacter)

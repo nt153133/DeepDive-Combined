@@ -136,6 +136,8 @@ namespace Deep.Providers
         {
             //if (AvoidanceManager.IsRunningOutOfAvoid)
             //    return MoveResult.Moving;
+            if (!DutyManager.InInstance)
+                return Original.MoveTo(location);
 
             //if we aren't in POTD default to the original mover right away.
             if (!Constants.Maps.ContainsKey(WorldManager.RawZoneId)) return Original.MoveTo(location);

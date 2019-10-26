@@ -10,6 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Threading.Tasks;
 using Deep.Helpers;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
@@ -32,17 +33,19 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (!Constants.InDeepDungeon)
-                return false;
 
-            if (PortalPercent < 10)
-                if (await BuffCurrentFloor())
-                    return true;
+                if (!Constants.InDeepDungeon)
+                    return false;
 
-            if (DeepDungeonManager.BossFloor && !Core.Me.InCombat) return await BuffBoss();
+                if (PortalPercent < 10)
+                    if (await BuffCurrentFloor())
+                        return true;
 
-            _runbuf = false;
-            return await BuffMe();
+                if (DeepDungeonManager.BossFloor && !Core.Me.InCombat) return await BuffBoss();
+
+                _runbuf = false;
+                return await BuffMe();
+      
         }
 
         public void Tick()
@@ -77,31 +80,34 @@ namespace Deep.TaskManager.Actions
         /// <returns></returns>
         private static async Task<bool> BuffMe()
         {
-            if (Core.Me.HasAura(Auras.ItemPenalty))
+            using (new PerformanceLogger($"Pomander-BuffMe", true))
+            {
+                if (Core.Me.HasAura(Auras.ItemPenalty))
+                    return false;
+
+                await Constants.SelectedDungeon.BuffMe();
+
+                if (await UsePomander(Pomander.Raising))
+                    return true;
+
+
+                if (await UsePomander(Pomander.Intuition))
+                    return true;
+
+                if (!Settings.Instance.SaveSteel || DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
+                    if (await UsePomander(Pomander.Steel, Auras.Steel))
+                        return true;
+
+                if (!Settings.Instance.SaveStr || DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
+                    if (await UsePomander(Pomander.Strength, Auras.Strength))
+                        return true;
+
+                if (Core.Me.HasAura(Auras.Pox))
+                    if (await UsePomander(Pomander.Purity))
+                        return true;
+
                 return false;
-
-            await Constants.SelectedDungeon.BuffMe();
-
-            if (await UsePomander(Pomander.Raising))
-                return true;
-
-
-            if (await UsePomander(Pomander.Intuition))
-                return true;
-
-            if (!Settings.Instance.SaveSteel || DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
-                if (await UsePomander(Pomander.Steel, Auras.Steel))
-                    return true;
-
-            if (!Settings.Instance.SaveStr || DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
-                if (await UsePomander(Pomander.Strength, Auras.Strength))
-                    return true;
-
-            if (Core.Me.HasAura(Auras.Pox))
-                if (await UsePomander(Pomander.Purity))
-                    return true;
-
-            return false;
+            }
         }
 
         /// <summary>

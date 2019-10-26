@@ -9,6 +9,7 @@ Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden an
                                                                                  */
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 using Clio.Utilities;
 using Deep.DungeonDefinition.Base;
 using Deep.Helpers;
@@ -33,13 +34,10 @@ namespace Deep.DungeonDefinition
         public override List<GameObject> GetObjectsByWeight()
         {
             if (DeepDungeonManager.PortalActive)
-                return GameObjectManager.GameObjects
-                    .Where(Filter)
-                    .OrderByDescending(SortComplete)
+                return StartList().OrderByDescending(SortComplete)
                     .ToList();
 
-            return GameObjectManager.GameObjects
-                .Where(Filter)
+            return StartList()
                 .OrderByDescending(Sort)
                 .ToList();
         }
@@ -97,7 +95,8 @@ namespace Deep.DungeonDefinition
                 }
                 else
                 {
-                    weight -= obj.Distance2D();
+                    if (FloorExit.location != Vector3.Zero)
+                        weight -= Core.Me.Distance2D(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
                 }
             }
             else
@@ -148,6 +147,50 @@ namespace Deep.DungeonDefinition
                 default:
                     return false;
             }
+        }
+        
+        public List<GameObject> StartList()
+        {
+            var result = new List<GameObject>();
+            foreach (var obj in GameObjectManager.GameObjects)
+            {
+                if (obj.Location == Vector3.Zero)
+                    continue;
+                
+                if (!obj.IsValid || !obj.IsVisible)
+                    continue;
+
+                if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
+                    Constants.IgnoreEntity.Contains(obj.NpcId))
+                    continue;
+
+                switch (obj.Type)
+                {
+                    case GameObjectType.Treasure:
+                        if (obj.NpcId == EntityNames.BandedCoffer)
+                        {
+                            result.Add(obj);
+                            break;
+                        }
+                        
+                        if (!(HaveMainPomander() && DeepDungeonManager.PortalActive && FloorExit.location != Vector3.Zero))
+                            result.Add(obj);
+                        break;
+                    case GameObjectType.EventObject:
+                        result.Add(obj);
+                        break;
+                    case GameObjectType.BattleNpc:
+                        if (DeepDungeonManager.PortalActive && !((BattleCharacter) obj).InCombat && FloorExit.location != Vector3.Zero)
+                            continue;
+                        if (!((BattleCharacter) obj).IsDead)
+                            result.Add(obj);
+                        break;
+                    default:
+                        continue;
+                }
+            }
+            //Blacklists
+            return result;
         }
 
         private bool HaveMainPomander()

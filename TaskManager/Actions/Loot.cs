@@ -122,10 +122,10 @@ namespace Deep.TaskManager.Actions
 
             pomanderCapped = false;
             //Unsubscribe first to prevent subscriptions from persisting
-            GamelogManager.MessageRecevied -= GamelogManagerOnMessageRecevied;
-            GamelogManager.MessageRecevied += GamelogManagerOnMessageRecevied;
+            //GamelogManager.MessageRecevied -= GamelogManagerOnMessageRecevied;
+           // GamelogManager.MessageRecevied += GamelogManagerOnMessageRecevied;
 
-            while (!DeepDungeon.StopPlz && Target.Unit != null && Target.Unit.IsValid && tries < 3 && !pomanderCapped)
+            while (!DeepDungeon.StopPlz && Target.Unit != null && Target.Unit.IsValid && tries < 3)
             {
                 try
                 {
@@ -170,6 +170,7 @@ namespace Deep.TaskManager.Actions
                 finally
                 {
                     tries++;
+                    DeepDungeonManager.PomanderChange();
                 }
             }
 

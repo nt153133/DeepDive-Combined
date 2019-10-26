@@ -36,6 +36,8 @@ namespace Deep
                                               Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
                                               Core.Me.HasAura(Auras.Odder);
 
+        public static Dictionary<string, List<double>> PerformanceStats = new Dictionary<string, List<double>>();
+
         public static void LoadList()
         {
             var deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);

@@ -91,6 +91,12 @@ namespace Deep.Providers
         {
             if (CommonBehaviors.IsLoading)
                 return;
+            
+            if (!DutyManager.InInstance)
+                return;
+
+            if (DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+                return;
 
             if (!Constants.InDeepDungeon)
                 return;
@@ -100,18 +106,20 @@ namespace Deep.Providers
                 Logger.Info("Level has Changed. Clearing Targets");
                 _floor = DeepDungeonManager.Level;
                 Blacklist.Clear(i => i.Flags == (BlacklistFlags) DeepDungeonManager.Level);
+                DeepDungeonManager.PomanderChange();
             }
 
-            using (new PerformanceLogger("Targeting Pulse"))
+            using (new PerformanceLogger("Targeting Pulse",true))
             {
                 LastEntities = new ReadOnlyCollection<GameObject>(GetObjectsByWeight());
-
-                if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
-                {
-                    Logger.Verbose($"Found {LastEntities.Count} Targets");
-                    _lastPulse = DateTime.Now;
-                }
             }
+            
+            if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
+            {
+                Logger.Verbose($"Found {LastEntities.Count} Targets");
+                _lastPulse = DateTime.Now;
+            }
+            
         }
 
         internal void AddToBlackList(GameObject obj, string reason)
