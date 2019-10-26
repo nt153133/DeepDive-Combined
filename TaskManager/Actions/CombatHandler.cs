@@ -130,7 +130,7 @@ namespace Deep.TaskManager.Actions
             //we are outside of targeting range, walk to the mob
             if (Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach)
             {
-                Logger.Info("======= MoveAndStop======");
+                //Logger.Info("======= MoveAndStop======");
                 var dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
                 if (dist > 30)
                     dist = 29;
