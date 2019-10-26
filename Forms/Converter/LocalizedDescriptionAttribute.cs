@@ -7,6 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System.ComponentModel;
 using Deep.Properties;
 
@@ -14,36 +15,28 @@ namespace Deep.Forms.Converter
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-        #region Fields
-
-        private string resourceName;
-
-        #endregion
-
         #region Constructors
 
         public LocalizedDescriptionAttribute(string resourceName)
         {
-            this.resourceName = resourceName;
+            ResourceName = resourceName;
         }
 
         #endregion
 
         #region DescriptionAttribute Members
 
-        public override string Description
-        {
-            get { return Resources.ResourceManager.GetString(resourceName); }
-        }
+        public override string Description => Resources.ResourceManager.GetString(ResourceName);
 
         #endregion
 
         #region Properties
 
-        public string ResourceName
-        {
-            get { return resourceName; }
-        }
+        public string ResourceName { get; }
+
+        #endregion
+
+        #region Fields
 
         #endregion
     }

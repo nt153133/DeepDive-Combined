@@ -7,10 +7,12 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
+using System.Linq;
+using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Memory;
 using Deep.Providers;
 using ff14bot;
 using ff14bot.Behavior;
@@ -18,10 +20,6 @@ using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Pathing;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using ff14bot.Objects;
 
 namespace Deep.TaskManager.Actions
 {
@@ -69,7 +67,7 @@ namespace Deep.TaskManager.Actions
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
                 //var ret = GameObjectManager.GetObjectByNPCId(EntityNames.FloorExit);
-                GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
+                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
                     .OrderBy(r => r.Distance()).FirstOrDefault();
                 if (ret != null)
                 {
@@ -85,7 +83,7 @@ namespace Deep.TaskManager.Actions
 
             if (location != Vector3.Zero)
             {
-                GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
+                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
                     .OrderBy(r => r.Distance()).FirstOrDefault();
                 if (ret != null)
                     if (Core.Me.Location.Distance2D(ret.Location) < location.Distance2D(ret.Location))

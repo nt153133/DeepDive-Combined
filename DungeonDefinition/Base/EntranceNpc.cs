@@ -1,16 +1,21 @@
-﻿using Clio.Utilities;
+﻿/*
+DeepDungeon is licensed under a
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+
+Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden and mastahg
+                                                                                 */
+
+using Clio.Utilities;
 using Newtonsoft.Json;
 
 namespace Deep.DungeonDefinition.Base
 {
     public class EntranceNpc
     {
-        public int NpcId { get; }
-        public string Name { get; }
         public float[] Location;
-        public int MapId { get; }
-        public int AetheryteId { get; set; }
-        [field: JsonIgnore] public Vector3 LocationVector { get; }
 
         [JsonConstructor]
         public EntranceNpc(float[] location, int npcId, string name, int mapId, int aetheryteId)
@@ -22,6 +27,14 @@ namespace Deep.DungeonDefinition.Base
             AetheryteId = aetheryteId;
             LocationVector = new Vector3(Location[0], Location[1], Location[2]);
         }
+
+        public int NpcId { get; }
+        public string Name { get; }
+        public int MapId { get; }
+        public int AetheryteId { get; set; }
+
+        [field: JsonIgnore] public Vector3 LocationVector { get; }
+
 /*
         public EntranceNpc(MappyNPC npc, int aetheryteId)
         {

@@ -8,9 +8,11 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Memory;
 using Deep.Providers;
 using ff14bot;
 using ff14bot.Behavior;
@@ -18,16 +20,12 @@ using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Pathing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Deep.TaskManager.Actions
 {
     internal class POTDNavigation : ITask
     {
-        private int level = 0;
+        private int level;
 
         private List<Vector3> SafeSpots;
 
@@ -38,13 +36,11 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (!Constants.InDeepDungeon)
+            if (!DutyManager.InInstance || !Constants.InDeepDungeon)
                 return false;
-
 
             if (Target == null)
                 return false;
-
 
             if (Target.Location == Vector3.Zero)
                 return true;

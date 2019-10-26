@@ -7,18 +7,17 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-using Clio.Utilities;
+
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using Clio.Utilities;
 using Deep.Helpers.Logging;
 
 namespace Deep.Helpers
@@ -26,7 +25,7 @@ namespace Deep.Helpers
     internal class WPF
     {
         /// <summary>
-        /// load our Resource file that contains styles and magic.
+        ///     load our Resource file that contains styles and magic.
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="control"></param>
@@ -35,7 +34,7 @@ namespace Deep.Helpers
             try
             {
                 var resource = LoadAndTransformXamlFile<ResourceDictionary>(filename);
-                foreach (System.Collections.DictionaryEntry res in resource)
+                foreach (DictionaryEntry res in resource)
                 {
                     if (!control.Resources.Contains(res.Key))
                         control.Resources.Add(res.Key, res.Value);
@@ -48,13 +47,12 @@ namespace Deep.Helpers
         }
 
         /// <summary>
-        /// loads up the window content for an xml file.
+        ///     loads up the window content for an xml file.
         /// </summary>
         /// <param name="xamlFilePath"></param>
         /// <returns></returns>
-        public static UserControl LoadWindowContent([NotNull]string xamlFilePath)
+        public static UserControl LoadWindowContent([NotNull] string xamlFilePath)
         {
-
             try
             {
                 var windowContent = LoadAndTransformXamlFile<UserControl>(xamlFilePath);
@@ -66,10 +64,12 @@ namespace Deep.Helpers
             {
                 Logger.Error("Exception loading window content! {0}", arg);
             }
+
             return null;
         }
+
         /// <summary>
-        /// loads our xaml files into a type
+        ///     loads our xaml files into a type
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="xamlText"></param>
@@ -86,13 +86,14 @@ namespace Deep.Helpers
                 xamlText = Regex.Replace(xamlText,
                     "<ResourceDictionary.MergedDictionaries>.*</ResourceDictionary.MergedDictionaries>", string.Empty,
                     RegexOptions.Compiled | RegexOptions.Singleline);
-                result = (T)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(xamlText)));
+                result = (T) XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(xamlText)));
             }
             catch (Exception exception)
             {
                 Logger.Error("Error loading/transforming XAML\n{0}", exception);
                 result = default(T);
             }
+
             return result;
         }
     }

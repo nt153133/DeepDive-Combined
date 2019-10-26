@@ -36,12 +36,15 @@ namespace Deep
                                               Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
                                               Core.Me.HasAura(Auras.Odder);
 
+        public static Dictionary<string, List<double>> PerformanceStats = new Dictionary<string, List<double>>();
+
         public static void LoadList()
         {
             var deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
 
             DeepListType = new List<IDeepDungeon>();
             foreach (var dd in deepList)
+            {
                 switch (GetDDEnum(dd.Index))
                 {
                     case DeepDungeonType.Blank:
@@ -60,6 +63,7 @@ namespace Deep
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+            }
         }
 
         // ReSharper disable once InconsistentNaming
@@ -85,6 +89,12 @@ namespace Deep
         {
             return Exits.Any(exit => obj.NpcId == exit);
         }
+
+        public static IDeepDungeon GetDeepDungeonByMapid(uint mapId)
+        {
+            return DeepListType.FirstOrDefault(deepDungeon => deepDungeon.Floors.Any(i => i.MapId == mapId));
+        }
+        
     }
 
     public enum DeepDungeonType

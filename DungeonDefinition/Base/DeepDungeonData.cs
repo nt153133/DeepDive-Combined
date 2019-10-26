@@ -1,7 +1,14 @@
-﻿using System;
+﻿/*
+DeepDungeon is licensed under a
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+
+Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden and mastahg
+                                                                                 */
 using System.Collections.Generic;
 using ff14bot.Managers;
-using ff14bot.Objects;
 using Newtonsoft.Json;
 
 namespace Deep.DungeonDefinition.Base
@@ -17,7 +24,7 @@ namespace Deep.DungeonDefinition.Base
 
         [JsonConstructor]
         public DeepDungeonData(int index, string name, string nameWithoutArticle, int contentFinderId,
-            Dictionary<int, int> pomanderMapping, int lobbyId, int unlockQuest, EntranceNpc npc)
+                               Dictionary<int, int> pomanderMapping, int lobbyId, int unlockQuest, EntranceNpc npc)
         {
             Index = index;
             Name = name;
@@ -61,13 +68,10 @@ namespace Deep.DungeonDefinition.Base
         public string Name;
         public int QuestId;
 
-        public int Start;
-        
-        [JsonIgnore]
-        public string QuestName;
+        [JsonIgnore] public string QuestName;
 
-        [JsonIgnore]
-        public string DisplayName => DataManager.InstanceContentResults[(uint) ContentFinderId].CurrentLocaleName;
+        public int Start;
+
         public FloorSetting(string name, int instanceId, int mapId, int questId)
         {
             Name = name;
@@ -78,7 +82,7 @@ namespace Deep.DungeonDefinition.Base
 
         [JsonConstructor]
         public FloorSetting(string name, int instanceId, int contentFinderId, int mapId, int questId, int start,
-            int end)
+                            int end)
         {
             Name = name;
             InstanceId = instanceId;
@@ -89,6 +93,8 @@ namespace Deep.DungeonDefinition.Base
             End = end;
             QuestName = DataManager.GetLocalizedQuestName(questId);
         }
+
+        [JsonIgnore] public string DisplayName => DataManager.InstanceContentResults[(uint) ContentFinderId].CurrentLocaleName;
 
         public override string ToString()
         {

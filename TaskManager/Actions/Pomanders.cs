@@ -8,42 +8,44 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System.Threading.Tasks;
 using Deep.Helpers;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using System.Threading.Tasks;
 using static Deep.Tasks.Common;
 
 namespace Deep.TaskManager.Actions
 {
     internal class Pomanders : ITask
     {
-        private bool _runbuf = false;
+        private int _intuitPomanderUsageCheck;
+        private bool _runbuf;
 
         /// <summary>
         ///     stores the floor # for the level we last removed traps from
         /// </summary>
-        private int _trapPomanderUsageCheck = 0;
-
-        private int _intuitPomanderUsageCheck;
+        private int _trapPomanderUsageCheck;
 
         private int PortalPercent => Constants.Percent[DeepDungeonManager.PortalStatus];
         public string Name => "Pomanders";
 
         public async Task<bool> Run()
         {
-            if (!Constants.InDeepDungeon)
-                return false;
 
-            if (PortalPercent < 10)
-                if (await BuffCurrentFloor())
-                    return true;
+                if (!Constants.InDeepDungeon)
+                    return false;
 
-            if (DeepDungeonManager.BossFloor && !Core.Me.InCombat) return await BuffBoss();
+                if (PortalPercent < 10)
+                    if (await BuffCurrentFloor())
+                        return true;
 
-            _runbuf = false;
-            return await BuffMe();
+                if (DeepDungeonManager.BossFloor && !Core.Me.InCombat) return await BuffBoss();
+
+                _runbuf = false;
+                return await BuffMe();
+      
         }
 
         public void Tick()
@@ -63,7 +65,7 @@ namespace Deep.TaskManager.Actions
             if (Core.Me.HasAura(Auras.Enervation) || Core.Me.HasAura(Auras.Silence)) return true;
 
             if (DeepDungeonManager.PortalActive) return false;
-            
+
             await UsePomander(Pomander.Strength, Auras.Strength);
             await UsePomander(Pomander.Steel, Auras.Steel);
 
@@ -78,31 +80,34 @@ namespace Deep.TaskManager.Actions
         /// <returns></returns>
         private static async Task<bool> BuffMe()
         {
-            if (Core.Me.HasAura(Auras.ItemPenalty))
+            using (new PerformanceLogger($"Pomander-BuffMe", true))
+            {
+                if (Core.Me.HasAura(Auras.ItemPenalty))
+                    return false;
+
+                await Constants.SelectedDungeon.BuffMe();
+
+                if (await UsePomander(Pomander.Raising))
+                    return true;
+
+
+                if (await UsePomander(Pomander.Intuition))
+                    return true;
+
+                if (!Settings.Instance.SaveSteel || DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
+                    if (await UsePomander(Pomander.Steel, Auras.Steel))
+                        return true;
+
+                if (!Settings.Instance.SaveStr || DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
+                    if (await UsePomander(Pomander.Strength, Auras.Strength))
+                        return true;
+
+                if (Core.Me.HasAura(Auras.Pox))
+                    if (await UsePomander(Pomander.Purity))
+                        return true;
+
                 return false;
-            
-            await Constants.SelectedDungeon.BuffMe();
-
-            if (await UsePomander(Pomander.Raising))
-                return true;
-
-
-            if (await UsePomander(Pomander.Intuition))
-                return true;
-
-            if (!Settings.Instance.SaveSteel || DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
-                if (await UsePomander(Pomander.Steel, Auras.Steel))
-                    return true;
-
-            if (!Settings.Instance.SaveStr || DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
-                if (await UsePomander(Pomander.Strength, Auras.Strength))
-                    return true;
-
-            if (Core.Me.HasAura(Auras.Pox))
-                if (await UsePomander(Pomander.Purity))
-                    return true;
-
-            return false;
+            }
         }
 
         /// <summary>
@@ -126,7 +131,7 @@ namespace Deep.TaskManager.Actions
             if (await Inuit()) return true;
 
             await Constants.SelectedDungeon.BuffCurrentFloor();
-            
+
             return await BuffNextFloor();
         }
 
@@ -179,7 +184,7 @@ namespace Deep.TaskManager.Actions
 
             return await Constants.SelectedDungeon.BuffNextFloor();
         }
-        
+
         private async Task<bool> Inuit()
         {
             if (Core.Me.HasAura(Auras.ItemPenalty)) return false;

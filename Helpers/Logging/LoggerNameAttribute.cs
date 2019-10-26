@@ -17,14 +17,11 @@ namespace Deep.Helpers.Logging
     {
         public LoggerNameAttribute(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Cannot be null or whitespace.", nameof(name));
-            }
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Cannot be null or whitespace.", nameof(name));
 
             Name = name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 }

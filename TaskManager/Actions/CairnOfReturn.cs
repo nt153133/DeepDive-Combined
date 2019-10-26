@@ -7,42 +7,39 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using Deep.Helpers;
-using Deep.Memory;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Pathing;
 using ff14bot.RemoteWindows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Deep.Helpers.Logging;
 
 namespace Deep.TaskManager.Actions
 {
-    class CairnOfReturn : ITask
+    internal class CairnOfReturn : ITask
     {
-        public string Name => "CairnOfReturn";
+        private int Level;
+        private Vector3 location = Vector3.Zero;
 
-        Poi Target => Poi.Current;
+        private Poi Target => Poi.Current;
+        public string Name => "CairnOfReturn";
 
 
         public async Task<bool> Run()
         {
-            if (Target.Type != (PoiType)PoiTypes.UseCairnOfReturn)
+            if (Target.Type != (PoiType) PoiTypes.UseCairnOfReturn)
                 return false;
 
             //let the navigation task handle moving toward the object if we are too far away.
-            if (Target.Location.Distance2D(Core.Me.Location) > 3)
-            {
-                return false;
-            }
+            if (Target.Location.Distance2D(Core.Me.Location) > 3) return false;
 
             var unit = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
             if (unit == null)
@@ -75,10 +72,7 @@ namespace Deep.TaskManager.Actions
 
             await Coroutine.Yield();
 
-            if (Core.Me.HasAura(Auras.Lust))
-            {
-                await Tasks.Common.CancelAura(Auras.Lust);
-            }
+            if (Core.Me.HasAura(Auras.Lust)) await Tasks.Common.CancelAura(Auras.Lust);
             Logger.Verbose("Attempting to interact with: {0}", unit.Name);
             unit.Target();
             unit.Interact();
@@ -98,19 +92,16 @@ namespace Deep.TaskManager.Actions
             return true;
         }
 
-        private int Level = 0;
-        private Vector3 location = Vector3.Zero;
 
-        
         public void Tick()
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
                 return;
 
-            if(location == Vector3.Zero || Level != DeepDungeonManager.Level)
+            if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
                 var ret = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
-                if(ret != null)
+                if (ret != null)
                 {
                     Level = DeepDungeonManager.Level;
                     location = ret.Location;
@@ -118,15 +109,13 @@ namespace Deep.TaskManager.Actions
             }
 
             //if we are in combat don't move toward the cairn of return
-            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType)PoiTypes.UseCairnOfReturn))
+            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType) PoiTypes.UseCairnOfReturn))
                 return;
 
 
             //party member is dead & we have the location of the cairn and it's active
             if (DeepDungeonManager.ReturnActive && PartyManager.AllMembers.Any(member => member.CurrentHealth == 0) && location != Vector3.Zero && Level == DeepDungeonManager.Level)
-            {
-                Poi.Current = new Poi(location, (PoiType)PoiTypes.UseCairnOfReturn);
-            }
+                Poi.Current = new Poi(location, (PoiType) PoiTypes.UseCairnOfReturn);
         }
     }
 }

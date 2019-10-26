@@ -7,55 +7,54 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Clio.Utilities;
+using Deep.Helpers;
+using Deep.Helpers.Logging;
 using Deep.Memory;
 using Deep.Properties;
 using ff14bot;
 using ff14bot.Enums;
-using ff14bot.Interfaces;
 using ff14bot.Managers;
-using NeoGaia.ConnectionHandler;
-using Newtonsoft.Json;
-using ff14bot.Pathing.Service_Navigation;
-using ff14bot.Pathing;
 using ff14bot.Navigation;
-using ff14bot.Objects;
-using ff14bot.Pathing.Avoidance;
 using ff14bot.Overlay3D;
-using System.Drawing;
-using ff14bot.Helpers;
+using ff14bot.Pathing;
+using ff14bot.Pathing.Service_Navigation;
 using ff14bot.ServiceClient;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using Newtonsoft.Json;
 
 namespace Deep.Providers
 {
-
     internal class DDNavigationProvider : WrappingNavigationProvider
     {
-
-        private uint _detourLevel = 0;
-
-        private static Dictionary<uint, List<Vector3>> _walls;
-        private static Dictionary<uint, bool> _hit;
-        internal static Dictionary<uint, bool> Walls => _hit;
-
-        private List<uint> _traps;
-
-        private static List<Vector3> _trapPos;
-        internal static List<Vector3> Traps => _trapPos;
-
-        private static List<Vector3> _map;
         private const float TrapSize = 2.4f;
 
+        private static Dictionary<uint, List<Vector3>> _walls;
+
+        private static List<Vector3> _map;
+
+        private static readonly HashSet<BoundingBox3> wallList = new HashSet<BoundingBox3>();
+        private static readonly HashSet<BoundingCircle> trapList = new HashSet<BoundingCircle>();
+
+        private uint _detourLevel;
+
         private int _floorId;
+
+        private List<uint> _traps;
         private HashSet<uint> activeWalls;
+
+        public DDNavigationProvider(NavigationProvider original) : base(original)
+        {
+        }
+
+        internal static Dictionary<uint, bool> Walls { get; private set; }
+
+        internal static List<Vector3> Traps { get; private set; }
 
 
         private void SetupDetour()
@@ -65,21 +64,20 @@ namespace Deep.Providers
 
             _floorId = DeepDungeonManager.Level;
 
-            
+
             var map = Constants.Maps[WorldManager.RawZoneId];
-            if(_detourLevel != map)
+            if (_detourLevel != map)
             {
                 _detourLevel = map;
                 _walls = LoadWalls(map);
             }
 
             //load the map
-            _hit = new Dictionary<uint, bool>();
+            Walls = new Dictionary<uint, bool>();
             _traps = new List<uint>();
-            _trapPos = new List<Vector3>();
+            Traps = new List<Vector3>();
             _map = new List<Vector3>();
 
-            
 
             Logger.Verbose("Updating navigation {0}", map);
             wallList.Clear();
@@ -87,7 +85,6 @@ namespace Deep.Providers
             activeWalls = FindWalls();
 
             WallCheck();
-
         }
 
         private static Dictionary<uint, List<Vector3>> LoadWalls(uint map)
@@ -135,56 +132,42 @@ namespace Deep.Providers
             return JsonConvert.DeserializeObject<Dictionary<uint, List<Vector3>>>(text);
         }
 
-        private static HashSet<BoundingBox3> wallList = new HashSet<BoundingBox3>();
-        private static HashSet<BoundingCircle> trapList = new HashSet<BoundingCircle>();
-
-        public DDNavigationProvider(NavigationProvider original) : base(original)
-        {
-
-        }
-
         public override MoveResult MoveTo(MoveToParameters location)
         {
             //if (AvoidanceManager.IsRunningOutOfAvoid)
             //    return MoveResult.Moving;
+            if (!DutyManager.InInstance)
+                return Original.MoveTo(location);
 
             //if we aren't in POTD default to the original mover right away.
-            if (!Constants.Maps.ContainsKey(WorldManager.RawZoneId))
-            {
-                return Original.MoveTo(location);
-            }
+            if (!Constants.Maps.ContainsKey(WorldManager.RawZoneId)) return Original.MoveTo(location);
 
             SetupDetour();
 
             AddBlackspots();
             WallCheck();
 
-            location.WorldState = new WorldState() { MapId = WorldManager.ZoneId, Walls = wallList, Avoids = trapList };
+            location.WorldState = new WorldState {MapId = WorldManager.ZoneId, Walls = wallList, Avoids = trapList};
             return Original.MoveTo(location);
-
         }
 
         private bool WallCheck()
         {
-
             var updated = false;
             var me = Core.Me.Location;
-            foreach (var id in _walls.Where(i => i.Value[0].Distance2D(Core.Me.Location) < 50 && !_hit.ContainsKey(i.Key) && !activeWalls.Contains(i.Key)))
+            foreach (var id in _walls.Where(i => i.Value[0].Distance2D(Core.Me.Location) < 50 && !Walls.ContainsKey(i.Key) && !activeWalls.Contains(i.Key)))
             {
-
                 var wall1 = id.Value[1];
                 wall1.Y -= 2;
 
-                wallList.Add(new BoundingBox3() { Min = wall1, Max = id.Value[2] });
-                _hit.Add(id.Key, true);
+                wallList.Add(new BoundingBox3 {Min = wall1, Max = id.Value[2]});
+                Walls.Add(id.Key, true);
                 updated = true;
-
             }
 
             //Logger.Info($"[walls] {string.Join(", ", _hit.Keys)}");
 
             return updated;
-
         }
 
 
@@ -202,7 +185,7 @@ namespace Deep.Providers
 
             var v187A = Core.Memory.Read<byte>(director + Offsets.DDMapGroup);
 
-            var v3 = director + Offsets.Map5xStart + (v187A * Offsets.Map5xSize);
+            var v3 = director + Offsets.Map5xStart + v187A * Offsets.Map5xSize;
             var v332 = Core.Memory.Read<ushort>(v3 + Offsets.WallStartingPoint);
 
             var v29 = v3 + 0x10;
@@ -214,7 +197,7 @@ namespace Deep.Providers
 
             var v5 = 0;
 
-            var types = new uint[] { 1, 2, 4, 8 }; //taken from the client
+            var types = new uint[] {1, 2, 4, 8}; //taken from the client
 
             for (var v30 = 5; v30 > 1; v30--)
             {
@@ -235,9 +218,7 @@ namespace Deep.Providers
                                 continue;
 
                             if ((@byte & types[v16]) != 0) //==0 is closed != 0 is "open"
-                            {
                                 wallset.Add(walls[v16]);
-                            }
                         } //for3
                     }
 
@@ -247,12 +228,10 @@ namespace Deep.Providers
                 v7_location = v29 + 0xc;
                 v7 = Core.Memory.ReadArray<short>(v7_location, 5);
                 v29 = v29 + 0xc;
-
             }
 
             //_wallcache = wallset;
             return wallset;
-
         }
 
         internal static void Render(object sender, DrawingEventArgs e)
@@ -274,7 +253,7 @@ namespace Deep.Providers
                 //    }
                 //}
 
-                if (_hit == null)
+                if (Walls == null)
                     return;
 
                 //List<uint> active = new List<uint>();
@@ -286,7 +265,7 @@ namespace Deep.Providers
                 //    drawer.DrawBox(_walls[x][0], extents, Color.FromArgb(150, Color.Goldenrod));
                 //}
 
-                List<BoundingBox3> service = new List<BoundingBox3>();
+                var service = new List<BoundingBox3>();
                 service.AddRange(wallList);
 
                 foreach (var x in service)
@@ -295,28 +274,29 @@ namespace Deep.Providers
                     drawer.DrawBox(Vector3.Lerp(x.Min, x.Max, 0.5f), extents, Color.FromArgb(100, Color.Turquoise));
                 }
 
-                List<BoundingCircle> tarp = new List<BoundingCircle>();
+                var tarp = new List<BoundingCircle>();
                 tarp.AddRange(trapList);
-                foreach(var t in tarp)
+                foreach (var t in tarp)
                 {
                     drawer.DrawCircleOutline(t.Center, t.Radius, Color.FromArgb(100, Color.Red));
                 }
-
-
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
         }
+
         public static Vector3 Bound(Vector3 a, Vector3 b)
         {
-            float minX = Math.Min(a.X, b.X);
-            float minY = Math.Min(a.Y, b.Y);
-            float minZ = Math.Min(a.Z, b.Z);
+            var minX = Math.Min(a.X, b.X);
+            var minY = Math.Min(a.Y, b.Y);
+            var minZ = Math.Min(a.Z, b.Z);
 
-            float maxX = Math.Max(a.X, b.X);
-            float maxY = Math.Max(a.Y, b.Y);
-            float maxZ = Math.Max(a.Z, b.Z);
+            var maxX = Math.Max(a.X, b.X);
+            var maxY = Math.Max(a.Y, b.Y);
+            var maxZ = Math.Max(a.Z, b.Z);
 
-            return new Vector3((maxX - minX), (maxY - minY), (maxZ - minZ)) / 2;
+            return new Vector3(maxX - minX, maxY - minY, maxZ - minZ) / 2;
         }
 
 
@@ -331,9 +311,9 @@ namespace Deep.Providers
                 {
                     Logger.Verbose($"[{i.NpcId}] {i.ObjectId} - {i.Location}");
                     //_detour.AddBlackspot(i.Location, TrapSize);
-                    trapList.Add(new BoundingCircle() { Center = i.Location, Radius = TrapSize });
+                    trapList.Add(new BoundingCircle {Center = i.Location, Radius = TrapSize});
                     _traps.Add(i.ObjectId);
-                    _trapPos.Add(i.Location);
+                    Traps.Add(i.Location);
                 }
             }
         }
@@ -341,21 +321,22 @@ namespace Deep.Providers
 
     internal static class StraightPathHelper
     {
+        private static readonly MethodInfo Method;
+
         static StraightPathHelper()
         {
             Method = typeof(NavigationProvider).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(i => i.ReturnType == typeof(List<Vector3>));
         }
-        private static MethodInfo Method;
 
         /// <summary>
-        /// invoke the get straight path information.
+        ///     invoke the get straight path information.
         /// </summary>
         /// <returns></returns>
         internal static List<Vector3> GetStraightPath()
         {
             if (Method == null)
             {
-                Logger.Warn($"GSP is null?");
+                Logger.Warn("GSP is null?");
                 return null;
             }
 
@@ -364,7 +345,7 @@ namespace Deep.Providers
 
         internal static List<Vector3> RealStraightPath()
         {
-            return (List<Vector3>)Method.Invoke((Navigator.NavigationProvider as WrappingNavigationProvider).Original, new object[] { });
+            return (List<Vector3>) Method.Invoke((Navigator.NavigationProvider as WrappingNavigationProvider).Original, new object[] { });
         }
     }
 }

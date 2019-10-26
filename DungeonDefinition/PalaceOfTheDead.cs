@@ -1,4 +1,14 @@
-﻿using System.Collections.Generic;
+﻿/*
+DeepDungeon is licensed under a
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+
+Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden and mastahg
+                                                                                 */
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Deep.DungeonDefinition.Base;
@@ -20,8 +30,8 @@ namespace Deep.DungeonDefinition
         private const uint _LobbyEntrance = 2006012; //Entry Point
         private const uint _checkPointLevel = 51;
         private const int _sustainingPotion = 20309;
-        
-        private uint[] _ignoreEntity =
+
+        private readonly uint[] _ignoreEntity =
         {
             _CairnOfPassage, _CairnofReturn, _LobbyEntrance
         };
@@ -49,7 +59,7 @@ namespace Deep.DungeonDefinition
         public override uint LobbyExit { get; }
 
         public override uint CheckPointLevel { get; }
-        
+
         public override int SustainingPotion { get; }
 
         public override Dictionary<uint, uint> WallMapData { get; } = new Dictionary<uint, uint>
@@ -100,7 +110,7 @@ namespace Deep.DungeonDefinition
         {
             return await base.BuffCurrentFloor();
         }
-        
+
         private static async Task LustLogic()
         {
             var lust = false;
@@ -113,6 +123,7 @@ namespace Deep.DungeonDefinition
                 Logger.Info("In A Party. Doing Lust Logic...");
                 var lustFound = false;
                 foreach (var k in PartyManager.AllMembers)
+                {
                     if (!k.Class.IsHealer() && !k.Class.IsTank())
                     {
                         lustFound = true;
@@ -120,6 +131,7 @@ namespace Deep.DungeonDefinition
                             lust = true;
                         break;
                     }
+                }
 
                 Logger.Info("Party Lust status: {0} :: {1} :: {2}", !lust, !lustFound, PartyManager.IsPartyLeader);
                 if (!lust && !lustFound) lust = PartyManager.IsPartyLeader;

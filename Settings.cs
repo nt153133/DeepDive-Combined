@@ -7,31 +7,74 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using Deep.DungeonDefinition.Base;
 using Deep.Enums;
-using Deep.Structure;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.Configuration;
-using Deep.Helpers.Logging;
 
 namespace Deep
 {
-
-
     internal class Settings : JsonSettings
     {
-
         private static Settings _settings;
-        private bool _initialized = false;
+
+
+        private bool _antidote;
+
+        private FloorSetting _BetterSelectedLevel;
+
+        private bool _echoDrop;
+
+        private List<Structure.FloorSetting> _floorSettings;
+
+        private bool _GoExit;
+
+        private bool _goFortheHoard;
+        private bool _initialized;
+
+        private bool _openMimics;
+
+        private bool _openSilver;
+
+        private bool _openTraps;
+
+        private float _pullRange;
+
+        private bool _saveSteel;
+
+        private bool _savestr;
+
+        private Structure.FloorSetting _selectedLevel;
+
+        private bool _startAt51;
+
+        private bool _stop;
+
+        private bool _stopsolo;
+
+        private bool _usePomAlt;
+        private bool _usePomRage;
+
+
+        private SaveSlot _useSaveSlots;
+
+        private bool _useSustain;
+
+        private bool _verboseLogging;
+
+
+        public Settings() : base(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")))
+        {
+        }
 
         public static Settings Instance
         {
@@ -47,13 +90,6 @@ namespace Deep
             }
         }
 
-
-        public Settings() : base(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")))
-        { }
-
-
-        private SaveSlot _useSaveSlots;
-
         [Setting]
         [DefaultValue(SaveSlot.First)]
         [JsonProperty("SaveSlot")]
@@ -68,23 +104,12 @@ namespace Deep
             }
         }
 
-        private bool _render;
-
         [Setting]
         [Description("Enable the Debug Renderer")]
         [DefaultValue(false)]
         [JsonProperty("DebugRender")]
         [Category("Debug")]
-        public bool DebugRender
-        {
-            get => _render;
-            set
-            {
-                _render = value;
-            }
-        }
-
-        private bool _GoExit;
+        public bool DebugRender { get; set; }
 
         [Setting]
         [Description("Prioritize the exit - Party mode only")]
@@ -101,7 +126,6 @@ namespace Deep
             }
         }
 
-        private bool _useSustain;
         [Setting]
         [Description("UseSustain")]
         [DefaultValue(true)]
@@ -117,21 +141,18 @@ namespace Deep
             }
         }
 
-        private List<FloorSetting> _floorSettings;
-
         [Browsable(false)]
         [JsonProperty("FloorSettings")]
-        public List<FloorSetting> FloorSettings
+        public List<Structure.FloorSetting> FloorSettings
         {
-            get => _floorSettings ?? (EnsureFloorSettings());
+            get => _floorSettings ?? EnsureFloorSettings();
             set
             {
                 _floorSettings = value;
                 Save();
             }
         }
-        
-        private bool _verboseLogging;
+
         [Setting]
         [Description("enables verbose logging")]
         [DefaultValue(true)]
@@ -147,7 +168,6 @@ namespace Deep
             }
         }
 
-        private bool _startAt51;
         [Setting]
         [Description("Start at floor 51 when we can.")]
         [JsonProperty("StartAt51")]
@@ -163,7 +183,6 @@ namespace Deep
             }
         }
 
-        private bool _openMimics;
         [Setting]
         [Description("Interact with mimic chests?")]
         [JsonProperty("OpenMimics")]
@@ -179,7 +198,6 @@ namespace Deep
             }
         }
 
-        private bool _openTraps;
         [Setting]
         [Description("open traps")]
         [JsonProperty("OpenTraps")]
@@ -188,13 +206,13 @@ namespace Deep
         public bool OpenTraps
         {
             get => _openTraps;
-            set {
+            set
+            {
                 _openTraps = value;
                 Save();
             }
         }
 
-        private bool _openSilver;
         [Setting]
         [Description("open Silver Chests")]
         [DefaultValue(true)]
@@ -202,7 +220,7 @@ namespace Deep
         [Category("Chests")]
         public bool OpenSilver
         {
-            get { return _openSilver; }
+            get => _openSilver;
             set
             {
                 _openSilver = value;
@@ -210,7 +228,6 @@ namespace Deep
             }
         }
 
-        private float _pullRange;
         [Setting]
         [Description("Modifies the default pull range by this amount (Positive values decrease the default pull range)")]
         [DefaultValue(0)]
@@ -226,7 +243,6 @@ namespace Deep
             }
         }
 
-        private bool _goFortheHoard;
         [Setting]
         [Description("go for the hoard when we are prioritizing the exit")]
         [JsonProperty("GoForTheHoard")]
@@ -235,10 +251,13 @@ namespace Deep
         public bool GoForTheHoard
         {
             get => _goFortheHoard;
-            set { _goFortheHoard = value; Save(); }
+            set
+            {
+                _goFortheHoard = value;
+                Save();
+            }
         }
 
-        private bool _savestr;
         [Setting]
         [Description("Save Pomander of Strength")]
         [JsonProperty("SaveStr")]
@@ -247,10 +266,13 @@ namespace Deep
         public bool SaveStr
         {
             get => _savestr;
-            set { _savestr = value; Save(); }
+            set
+            {
+                _savestr = value;
+                Save();
+            }
         }
 
-        private bool _saveSteel;
         [Setting]
         [Description("Save Pomander of Steel")]
         [JsonProperty("SaveSteel")]
@@ -259,11 +281,13 @@ namespace Deep
         public bool SaveSteel
         {
             get => _saveSteel;
-            set { _saveSteel = value; Save(); }
+            set
+            {
+                _saveSteel = value;
+                Save();
+            }
         }
 
-
-        private bool _antidote;
         [Setting]
         [Description("Antidote usage")]
         [DefaultValue(false)]
@@ -279,7 +303,6 @@ namespace Deep
             }
         }
 
-        private bool _echoDrop;
         [Setting]
         [Description("EchoDrop usage")]
         [DefaultValue(false)]
@@ -294,7 +317,7 @@ namespace Deep
                 Save();
             }
         }
-        private bool _usePomRage;
+
         [Setting]
         [Description("Pomander of Rage usage")]
         [DefaultValue(false)]
@@ -310,7 +333,6 @@ namespace Deep
             }
         }
 
-        private bool _usePomAlt;
         [Setting]
         [Description("Pomander of Alteration usage")]
         [DefaultValue(false)]
@@ -326,7 +348,6 @@ namespace Deep
             }
         }
 
-        private bool _stop;
         [Setting]
         [Description("Stop the bot after we finish the current dungeon")]
         [JsonProperty("Stop")]
@@ -338,15 +359,11 @@ namespace Deep
             set
             {
                 _stop = value;
-                if (_initialized)
-                {
-                    Logger.Verbose($"Stop state has changed to: {value}");
-                }
+                if (_initialized) Logger.Verbose($"Stop state has changed to: {value}");
                 Save();
-            } 
+            }
         }
 
-        private bool _stopsolo;
         [Browsable(false)]
         [JsonProperty("SoloStop")]
         [DefaultValue(false)]
@@ -360,10 +377,9 @@ namespace Deep
             }
         }
 
-        private FloorSetting _selectedLevel;
         [Browsable(false)]
         [JsonProperty("SelectedLevel")]
-        public FloorSetting SelectedLevel
+        public Structure.FloorSetting SelectedLevel
         {
             get => _selectedLevel;
             set
@@ -373,10 +389,9 @@ namespace Deep
             }
         }
 
-        private DungeonDefinition.Base.FloorSetting _BetterSelectedLevel;
         [Browsable(false)]
         [JsonProperty("BetterSelectedLevel")]
-        public DungeonDefinition.Base.FloorSetting BetterSelectedLevel
+        public FloorSetting BetterSelectedLevel
         {
             get => _BetterSelectedLevel;
             set
@@ -385,12 +400,7 @@ namespace Deep
                 Save();
             }
         }
-        
-        #region Dump
 
-
-
-        #endregion
         internal void Dump()
         {
             _saveSteel = true;
@@ -404,12 +414,12 @@ namespace Deep
             Logger.Verbose("Open Silver: {0}", _openSilver);
             //Logger.Verbose("Open Mimics: {0}", _openMimics);
             //Logger.Verbose("Open Traps: {0}", _openTraps);
-            
+
             Logger.Verbose("Exit Priority: {0}", _GoExit);
             Logger.Verbose("Save slot: {0}", SaveSlot);
-            
+
             //Logger.Verbose("Use Sustain Pot: {0}", UseSustain);
-            
+
             Logger.Verbose("Combat Pull range: {0}", Constants.ModifiedCombatReach);
             Logger.Verbose("In Party: {0}", PartyManager.IsInParty);
             //Logger.Verbose("StopSolo: {0}", SoloStop);
@@ -426,28 +436,33 @@ namespace Deep
             */
         }
 
-        internal List<FloorSetting> EnsureFloorSettings()
+        internal List<Structure.FloorSetting> EnsureFloorSettings()
         {
             if (!_initialized) return _floorSettings;
 
             if (_floorSettings == null || !_floorSettings.Any())
             {
-                var llnext = new List<FloorSetting>();
+                var llnext = new List<Structure.FloorSetting>();
 
                 for (var i = 10; i <= 100; i += 10)
                 {
-                    llnext.Add(new FloorSetting
+                    llnext.Add(new Structure.FloorSetting
                     {
-                        LevelMax = i,
+                        LevelMax = i
                     });
                 }
 
                 _floorSettings = llnext;
             }
+
             if (SelectedLevel == null)
                 SelectedLevel = FloorSettings.First();
 
             return _floorSettings;
         }
+
+        #region Dump
+
+        #endregion
     }
 }

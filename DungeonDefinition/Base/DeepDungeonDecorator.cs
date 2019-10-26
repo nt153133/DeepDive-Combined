@@ -1,7 +1,15 @@
-﻿using System.Collections.Generic;
+﻿/*
+DeepDungeon is licensed under a
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+
+Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden and mastahg
+                                                                                 */
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Buddy.Service.Client;
 using Clio.Utilities;
 using Deep.Helpers;
 using ff14bot.Enums;
@@ -76,13 +84,6 @@ namespace Deep.DungeonDefinition.Base
             return "Unknown";
         }
 
-        protected virtual uint[] GetRawMapIds()
-        {
-            var test = Floors.Select(i => (uint) i.MapId);
-
-            return test.ToArray();
-        }
-        
         public virtual List<GameObject> GetObjectsByWeight()
         {
             return GameObjectManager.GameObjects
@@ -97,15 +98,12 @@ namespace Deep.DungeonDefinition.Base
 
             weight -= obj.Distance2D();
 
-            if (obj.Type == GameObjectType.BattleNpc)
-            {
-                return weight / 2;
-            }
+            if (obj.Type == GameObjectType.BattleNpc) return weight / 2;
 
             if (obj.NpcId == EntityNames.BandedCoffer)
                 weight += 500;
 
-            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && (obj.NpcId == EntityNames.Hidden))
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
                 weight += 5;
             else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.OfPassage && PartyManager.IsInParty)
                 weight -= 10;
@@ -118,7 +116,7 @@ namespace Deep.DungeonDefinition.Base
             if (obj.Location == Vector3.Zero)
                 return false;
 
-            
+
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) || Constants.IgnoreEntity.Contains(obj.NpcId))
                 return false;
 
@@ -153,6 +151,13 @@ namespace Deep.DungeonDefinition.Base
         public virtual async Task<bool> BuffNextFloor()
         {
             return false;
+        }
+
+        protected virtual uint[] GetRawMapIds()
+        {
+            var test = Floors.Select(i => (uint) i.MapId);
+
+            return test.ToArray();
         }
 
         public override string ToString()

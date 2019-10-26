@@ -9,6 +9,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Deep.Helpers.Logging
@@ -17,9 +18,9 @@ namespace Deep.Helpers.Logging
     internal class PerformanceLogger : IDisposable
     {
         private readonly string _blockName;
+        private readonly bool _forceLog;
         private readonly Stopwatch _stopwatch;
         private bool _isDisposed;
-        private readonly bool _forceLog;
 
         public PerformanceLogger(string blockName, bool forceLog = false)
         {
@@ -38,11 +39,14 @@ namespace Deep.Helpers.Logging
             _stopwatch.Stop();
             if (_stopwatch.Elapsed.TotalMilliseconds > 5 || _forceLog)
             {
-                if (_stopwatch.Elapsed.TotalMilliseconds >= 500)
-                {
+                if (!Constants.PerformanceStats.ContainsKey(_blockName))
+                    Constants.PerformanceStats.Add(_blockName, new List<double>());
+                
+                Constants.PerformanceStats[_blockName].Add(_stopwatch.Elapsed.TotalMilliseconds);
+
+                if (_stopwatch.Elapsed.TotalMilliseconds >= 5)
                     Logger.Error("[Performance] Execution of \"{0}\" took {1:00.00000}ms.", _blockName,
-                        _stopwatch.Elapsed.TotalMilliseconds);
-                }
+                        _stopwatch.Elapsed.TotalMilliseconds); 
             }
             _stopwatch.Reset();
         }

@@ -7,17 +7,14 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net;
 using Clio.Utilities;
 using Deep.Helpers;
 using Deep.Helpers.Logging;
-using Deep.Memory;
-using Deep.Tasks;
-using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Enums;
 using ff14bot.Helpers;
@@ -31,18 +28,18 @@ namespace Deep.Providers
     {
         private static DDTargetingProvider _instance;
 
-        internal static DDTargetingProvider Instance => _instance ?? (_instance = new DDTargetingProvider());
-
-        private delegate List<GameObject> GetObjectsByWeightDel();
-
-        private static GetObjectsByWeightDel GetObjectsByWeight => Constants.SelectedDungeon.GetObjectsByWeight;
+        private int _floor;
+        private DateTime _lastPulse = DateTime.MinValue;
 
         public DDTargetingProvider()
         {
             LastEntities = new ReadOnlyCollection<GameObject>(new List<GameObject>());
-            
         }
-        
+
+        internal static DDTargetingProvider Instance => _instance ?? (_instance = new DDTargetingProvider());
+
+        private static GetObjectsByWeightDel GetObjectsByWeight => Constants.SelectedDungeon.GetObjectsByWeight;
+
         public ReadOnlyCollection<GameObject> LastEntities { get; set; }
 
         internal bool LevelComplete
@@ -80,17 +77,25 @@ namespace Deep.Providers
             }
         }
 
+        /// <summary>
+        ///     decide what we need to do
+        /// </summary>
+        public GameObject FirstEntity => LastEntities.FirstOrDefault();
+
         internal void Reset()
         {
             Blacklist.Clear(i => true);
         }
 
-        private int _floor;
-        private DateTime _lastPulse = DateTime.MinValue;
-
         internal void Pulse()
         {
             if (CommonBehaviors.IsLoading)
+                return;
+            
+            if (!DutyManager.InInstance)
+                return;
+
+            if (DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
                 return;
 
             if (!Constants.InDeepDungeon)
@@ -100,27 +105,23 @@ namespace Deep.Providers
             {
                 Logger.Info("Level has Changed. Clearing Targets");
                 _floor = DeepDungeonManager.Level;
-                Blacklist.Clear(i => i.Flags == (BlacklistFlags)DeepDungeonManager.Level);
+                Blacklist.Clear(i => i.Flags == (BlacklistFlags) DeepDungeonManager.Level);
+                DeepDungeonManager.PomanderChange();
             }
 
-            using (new PerformanceLogger("Targeting Pulse"))
+            using (new PerformanceLogger("Targeting Pulse",true))
             {
                 LastEntities = new ReadOnlyCollection<GameObject>(GetObjectsByWeight());
-
-                if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
-                {
-                    Logger.Verbose($"Found {LastEntities.Count} Targets");
-                    _lastPulse = DateTime.Now;
-                }
-                
             }
+            
+            if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
+            {
+                Logger.Verbose($"Found {LastEntities.Count} Targets");
+                _lastPulse = DateTime.Now;
+            }
+            
         }
 
-        /// <summary>
-        /// decide what we need to do
-        /// </summary>
-        public GameObject FirstEntity => LastEntities.FirstOrDefault();
- 
         internal void AddToBlackList(GameObject obj, string reason)
         {
             AddToBlackList(obj, TimeSpan.FromMinutes(3), reason);
@@ -128,7 +129,7 @@ namespace Deep.Providers
 
         internal void AddToBlackList(GameObject obj, TimeSpan time, string reason)
         {
-            Blacklist.Add(obj, (BlacklistFlags)_floor, time, reason);
+            Blacklist.Add(obj, (BlacklistFlags) _floor, time, reason);
             Poi.Clear(reason);
         }
 
@@ -140,7 +141,7 @@ namespace Deep.Providers
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                 Constants.IgnoreEntity.Contains(obj.NpcId))
                 return false;
-            
+
             switch (obj.Type)
             {
                 case GameObjectType.Treasure:
@@ -153,5 +154,7 @@ namespace Deep.Providers
                     return false;
             }
         }
+
+        private delegate List<GameObject> GetObjectsByWeightDel();
     }
 }

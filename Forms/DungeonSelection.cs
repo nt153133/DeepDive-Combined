@@ -18,21 +18,14 @@ namespace Deep.Forms
             DungeonListCombo.DisplayMember = "DisplayName";
             DungeonListCombo.SelectionChangeCommitted += ChangeDungeon;
             if (Constants.SelectedDungeon != null)
-            {
                 DungeonListCombo.SelectedItem = Constants.SelectedDungeon;
-            }
             else
-            {
                 DungeonListCombo.SelectedItem = Constants.DeepListType[0];
-            }
-            
+
             FloorCombo.DataSource = Constants.SelectedDungeon.Floors;
             FloorCombo.DisplayMember = "DisplayName";
 
-            if (Settings.Instance.BetterSelectedLevel != null)
-            {
-                FloorCombo.SelectedItem = Settings.Instance.BetterSelectedLevel;
-            }
+            if (Settings.Instance.BetterSelectedLevel != null) FloorCombo.SelectedItem = Settings.Instance.BetterSelectedLevel;
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
 
@@ -40,9 +33,8 @@ namespace Deep.Forms
             startLevelBox.Checked = Settings.Instance.StartAt51;
             SilverChest.Checked = Settings.Instance.OpenSilver;
             HordeCheck.Checked = Settings.Instance.GoForTheHoard;
-
         }
-        
+
         private void ChangeDungeon(object sender, EventArgs e)
         {
             Logger.Verbose("Changing the selected deep dungeon to run");
@@ -51,13 +43,12 @@ namespace Deep.Forms
             FloorCombo.DisplayMember = "DisplayName";
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
         }
-        
+
         private void DungeonSelection_Closed(object sender, FormClosedEventArgs e)
         {
-            
             DungeonListCombo.SelectionChangeCommitted -= ChangeDungeon;
         }
-        
+
         private void SilverChest_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.OpenSilver = SilverChest.Checked;
@@ -76,6 +67,11 @@ namespace Deep.Forms
         private void startLevelBox_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.StartAt51 = startLevelBox.Checked;
+        }
+
+        private void StopCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.Stop = StopCheck.Checked;
         }
     }
 }

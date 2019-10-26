@@ -7,22 +7,19 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
+
+using System.Threading.Tasks;
 using Buddy.Coroutines;
+using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Managers;
-using ff14bot.Pathing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Deep.Helpers.Logging;
 using ff14bot.NeoProfiles;
+using ff14bot.Pathing;
 
 namespace Deep.TaskManager.Actions
 {
-    class GetToCaptain : ITask
+    internal class GetToCaptain : ITask
     {
         public string Name => "GetToCaptain";
 
@@ -32,8 +29,8 @@ namespace Deep.TaskManager.Actions
             if (Constants.InDeepDungeon || Constants.InExitLevel) return false;
 
             if (WorldManager.ZoneId != Constants.EntranceZoneId ||
-               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null ||
-               GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 110)
+                GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null ||
+                GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Distance2D(Core.Me.Location) > 110)
             {
                 if (Core.Me.IsCasting)
                 {
@@ -47,16 +44,16 @@ namespace Deep.TaskManager.Actions
                     TreeRoot.Stop();
                     return false;
                 }
-                
+
                 if (!WorldManager.TeleportById(Constants.EntranceZone.Id))
                 {
                     Logger.Error($"We can't get to {Constants.EntranceZone.CurrentLocaleAethernetName}. something is very wrong...");
                     TreeRoot.Stop();
                     return false;
                 }
+
                 await Coroutine.Sleep(5000);
                 return true;
-
             }
 
             if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) != null &&
@@ -74,7 +71,6 @@ namespace Deep.TaskManager.Actions
 
         public void Tick()
         {
-            
         }
     }
 }
