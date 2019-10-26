@@ -34,7 +34,7 @@ namespace Deep.Providers
     {
         private const float TrapSize = 2.4f;
 
-        private static Dictionary<uint, List<Vector3>> _walls;
+        private static Dictionary<uint, List<Vector3>> _walls = new Dictionary<uint, List<Vector3>>();
 
         private static List<Vector3> _map;
 
@@ -184,15 +184,25 @@ namespace Deep.Providers
                 return new HashSet<uint>();
 
             var v187A = Core.Memory.Read<byte>(director + Offsets.DDMapGroup);
+            Logger.Info($"v187A {v187A}");
+
+            if (v187A == 0)
+            {
+                Logger.Error($"Is this a big room? ZoneID: {WorldManager.ZoneId} Floor: {DeepDungeonManager.Level}");
+            }
+            
+            //var v187A = Core.Memory.Read<byte>(director + Offsets.DDMapGroup);
 
             var v3 = director + Offsets.Map5xStart + v187A * Offsets.Map5xSize;
             var v332 = Core.Memory.Read<ushort>(v3 + Offsets.WallStartingPoint);
+            Logger.Info($"v332 {v332}");
 
             var v29 = v3 + 0x10;
             var v7_location = v29;
 
 
             var v7 = Core.Memory.ReadArray<short>(v7_location, 5);
+            Logger.Info($"v7 count {v7.Length}");
             var wallset = new HashSet<uint>();
 
             var v5 = 0;
@@ -212,6 +222,8 @@ namespace Deep.Providers
 
                         var @byte = Core.Memory.Read<byte>(director + v5 + Offsets.WallGroupEnabled);
                         var walls = Core.Memory.ReadArray<uint>(v9 + Offsets.Starting, 4);
+                        //Logger.Info($"Walls count {walls.Length}");
+                        //Logger.Info($"Walls byte {@byte}");
                         for (var v16 = 0; v16 < 4; v16++)
                         {
                             if (walls[v16] < 2)

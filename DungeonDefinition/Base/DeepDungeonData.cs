@@ -80,6 +80,12 @@ namespace Deep.DungeonDefinition.Base
             QuestId = questId;
         }
 
+        public override int GetHashCode()
+        {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
+            return InstanceId;
+        }
+
         [JsonConstructor]
         public FloorSetting(string name, int instanceId, int contentFinderId, int mapId, int questId, int start,
                             int end)
