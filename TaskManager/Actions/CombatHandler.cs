@@ -57,6 +57,8 @@ namespace Deep.TaskManager.Actions
 
         public async Task<bool> Run()
         {
+            if (!DutyManager.InInstance || DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+                return false;
             //dont try and do combat outside of the dungeon plz
             if (!Constants.InDeepDungeon)
                 return false;
@@ -200,6 +202,9 @@ namespace Deep.TaskManager.Actions
         public void Tick()
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
+                return;
+
+            if (!DutyManager.InInstance || DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
                 return;
 
             CombatTargeting.Instance.Pulse();
