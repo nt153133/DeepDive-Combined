@@ -10,6 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Threading.Tasks;
 using Buddy.Coroutines;
+using Deep.Helpers;
 using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Managers;
@@ -66,6 +67,7 @@ namespace Deep.TaskManager.Actions
             await Coroutine.Wait(500, () => SelectYesno.IsOpen);
             await Coroutine.Sleep(1000);
             SelectYesno.ClickYes();
+            DeepTracker.EndRun(false);
             return true;
         }
 

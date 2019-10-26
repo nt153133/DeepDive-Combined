@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities.Helpers;
 using Deep.DungeonDefinition.Base;
+using Deep.Helpers;
 using Deep.Helpers.Logging;
 using Deep.Windows;
 using ff14bot;
@@ -70,12 +71,14 @@ namespace Deep.TaskManager.Actions
             if (Settings.Instance.Stop)
             {
                 TreeRoot.Stop("Stop Requested");
+                DeepTracker.EndRun(true);
                 return true;
             }
 
             if (ContentsFinderConfirm.IsOpen)
             {
                 Logger.Warn($"Entering {Constants.SelectedDungeon.GetDDType()} - Currently a Level {Core.Me.ClassLevel} {Core.Me.CurrentJob}");
+                DeepTracker.StartRun(Core.Me.ClassLevel);
                 ContentsFinderConfirm.Commence();
 
                 await Coroutine.Wait(TimeSpan.FromMinutes(2), () => QuestLogManager.InCutscene || NowLoading.IsVisible);

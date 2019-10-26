@@ -10,6 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Threading.Tasks;
 using Buddy.Coroutines;
+using Deep.Helpers;
 using Deep.Helpers.Logging;
 using ff14bot;
 using ff14bot.Enums;
@@ -28,6 +29,9 @@ namespace Deep.TaskManager.Actions
             {
                 GameStatsManager.Died();
                 Logger.Warn("We have died...");
+                
+                DeepTracker.Died();
+                DeepTracker.EndRun(true);
                 RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult").SendAction(1, 3, uint.MaxValue);
                 await Coroutine.Sleep(250);
                 return true;

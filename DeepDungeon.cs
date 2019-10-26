@@ -192,6 +192,8 @@ namespace Deep
             Navigator.PlayerMover = new SlideMover();
 
             TreeHooks.Instance.ClearAll();
+            
+            DeepTracker.InitializeTracker(Core.Me.ClassLevel);
 
             _tasks = new TaskManagerProvider();
 
