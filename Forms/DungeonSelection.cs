@@ -17,6 +17,9 @@ namespace Deep.Forms
             DungeonListCombo.DataSource = Constants.DeepListType;
             DungeonListCombo.DisplayMember = "DisplayName";
             DungeonListCombo.SelectionChangeCommitted += ChangeDungeon;
+
+            DungeonListCombo.SelectedIndex = Settings.Instance.SelectedDungeon;
+            
             if (Constants.SelectedDungeon != null)
                 DungeonListCombo.SelectedItem = Constants.SelectedDungeon;
             else
@@ -72,6 +75,11 @@ namespace Deep.Forms
         private void StopCheck_CheckedChanged(object sender, EventArgs e)
         {
             Settings.Instance.Stop = StopCheck.Checked;
+        }
+
+        private void DungeonListCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.SelectedDungeon = DungeonListCombo.SelectedIndex;
         }
     }
 }

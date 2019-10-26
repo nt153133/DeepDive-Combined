@@ -70,6 +70,7 @@ namespace Deep
         private bool _useSustain;
 
         private bool _verboseLogging;
+        private int _SelectedDungeonIndex;
 
 
         public Settings() : base(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")))
@@ -397,6 +398,19 @@ namespace Deep
             set
             {
                 _BetterSelectedLevel = value;
+                Save();
+            }
+        }
+        
+        [Browsable(false)]
+        [DefaultValue(0)]
+        [JsonProperty("SelectedDungeon")]
+        public int SelectedDungeon
+        {
+            get => _SelectedDungeonIndex;
+            set
+            {
+                _SelectedDungeonIndex = value;
                 Save();
             }
         }

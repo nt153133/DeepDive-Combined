@@ -22,6 +22,7 @@ using ff14bot.Directors;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using ff14bot.Managers;
+using ff14bot.Navigation;
 using ff14bot.Objects;
 using ff14bot.Pathing;
 using TreeSharp;
@@ -125,13 +126,14 @@ namespace Deep.TaskManager.Actions
 
             //Logger.Info("======= OUT OF RANGE2");
             //we are outside of targeting range, walk to the mob
-            if (Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > 30)
+            if (Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach)
             {
+                Logger.Info("======= MoveAndStop======");
                 var dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
                 if (dist > 30)
                     dist = 29;
 
-                await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name), dist, true);
+                await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name), Constants.ModifiedCombatReach, true);
                 return true;
             }
 
@@ -149,12 +151,13 @@ namespace Deep.TaskManager.Actions
             //pull not in combat
             if (!Core.Me.HasAura(Auras.Lust) && !Core.Me.HasAura(Auras.Rage) && !Core.Me.InRealCombat())
             {
-                //if(target.Location.Distance2D(Core.Me.Location) > RoutineManager.Current.PullRange)
-                //{
+                if(target.Location.Distance2D(Core.Me.Location) > RoutineManager.Current.PullRange)
+                {
+                    Logger.Info("======= Should be pulling....out");
                 //    TreeRoot.StatusText = $"Moving to kill target";
-                //    await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name), Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0), true);
+                    await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name),  Constants.ModifiedCombatReach, true);
                 //    return true;
-                //}
+                }
                 await Pull();
                 return true;
             }
@@ -306,6 +309,9 @@ namespace Deep.TaskManager.Actions
         /// <returns></returns>
         private async Task<bool> UseWitching()
         {
+            if (GameObjectManager.NumberOfAttackers < 3)
+                return false;
+            
             if (
                 !DeepDungeonManager.BossFloor &&
                 DeepDungeonManager.GetInventoryItem(Pomander.Witching).Count > 0 &&

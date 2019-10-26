@@ -54,7 +54,7 @@ namespace Deep
             //     Logger.Warn("Settings are empty?");
 
             Constants.LoadList();
-            Constants.SelectedDungeon = Constants.DeepListType.First();
+            Constants.SelectedDungeon = Constants.DeepListType[Settings.Instance.SelectedDungeon];
 
             Task.Factory.StartNew(() =>
             {
@@ -166,11 +166,11 @@ namespace Deep
         {
             Poi.Current = null;
             
-            if (DutyManager.InInstance)
+            if (DutyManager.InInstance && !Constants.SelectedDungeon.DeepDungeonRawIds.Contains(WorldManager.ZoneId))
             {
                 Constants.SelectedDungeon = Constants.GetDeepDungeonByMapid(WorldManager.ZoneId);
                 Settings.Instance.BetterSelectedLevel = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.MapId == WorldManager.ZoneId);
-                Logger.Warn($"Started bot inside dungeon: Using {Constants.SelectedDungeon.DisplayName}");
+                Logger.Warn($"Started bot inside dungeon (Not currently selected): Using {Constants.SelectedDungeon.DisplayName}");
             }
 
             if (Constants.SelectedDungeon == null)

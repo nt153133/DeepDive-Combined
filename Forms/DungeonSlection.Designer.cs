@@ -50,6 +50,7 @@ namespace Deep.Forms
             this.DungeonListCombo.Name = "DungeonListCombo";
             this.DungeonListCombo.Size = new System.Drawing.Size(193, 23);
             this.DungeonListCombo.TabIndex = 0;
+            this.DungeonListCombo.SelectedIndexChanged += new System.EventHandler(this.DungeonListCombo_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -118,6 +119,7 @@ namespace Deep.Forms
             // 
             this.StopCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.StopCheck.Location = new System.Drawing.Point(174, 120);
+            this.StopCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.StopCheck.Name = "StopCheck";
             this.StopCheck.Size = new System.Drawing.Size(111, 18);
             this.StopCheck.TabIndex = 7;
