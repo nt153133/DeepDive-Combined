@@ -115,7 +115,7 @@ namespace Deep.TaskManager.Actions
 
             //target if we are in range
             //Logger.Info("======= OUT OF RANGE");
-            if (target.BattleCharacter.Pointer != Core.Me.PrimaryTargetPtr && target.BattleCharacter.IsTargetable && target.Location.Distance2D(Core.Me.Location) <= 30)
+            if (target.BattleCharacter.Pointer != Core.Me.PrimaryTargetPtr && target.BattleCharacter.IsTargetable && target.Location.Distance2D(Core.Me.Location) <= Constants.ModifiedCombatReach)
             {
                 Logger.Warn("Combat target has changed");
                 target.BattleCharacter.Target();
@@ -128,7 +128,7 @@ namespace Deep.TaskManager.Actions
 
             //Logger.Info("======= OUT OF RANGE2");
             //we are outside of targeting range, walk to the mob
-            if (Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach)
+            if ((Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach)&& !AvoidanceManager.IsRunningOutOfAvoid)
             {
                 //Logger.Info("======= MoveAndStop======");
                 var dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
@@ -153,13 +153,13 @@ namespace Deep.TaskManager.Actions
             //pull not in combat
             if (!Core.Me.HasAura(Auras.Lust) && !Core.Me.HasAura(Auras.Rage) && !Core.Me.InRealCombat())
             {
-                if(target.Location.Distance2D(Core.Me.Location) > RoutineManager.Current.PullRange)
-                {
-                    Logger.Info("======= Should be pulling....out");
+                //if(target.Location.Distance2D(Core.Me.Location) > RoutineManager.Current.PullRange)
+                //{
+                //    Logger.Info("======= Should be pulling....out");
                 //    TreeRoot.StatusText = $"Moving to kill target";
-                    await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name),  Constants.ModifiedCombatReach, true);
+                //    await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name),  Constants.ModifiedCombatReach, true);
                 //    return true;
-                }
+                //}
                 await Pull();
                 return true;
             }
