@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Clio.Utilities;
+using Deep.Helpers;
 using Deep.Memory;
 using Deep.Properties;
 using ff14bot;
@@ -244,7 +245,16 @@ namespace Deep
         /// <summary>
         ///     Pull range (Max of 15 to stop from attacking around corners on classes with large pull ranges)
         /// </summary>
-        internal static float ModifiedCombatReach => Math.Min(15, RoutineManager.Current.PullRange);
+        internal static float ModifiedCombatReach
+        {
+            get
+            {
+                if (Core.Me.CurrentJob.IsMelee())
+                    return Math.Max(8, RoutineManager.Current.PullRange + Core.Me.CombatReach);
+                
+                return Math.Min(15, RoutineManager.Current.PullRange + Core.Me.CombatReach);
+            }
+        }
 
         //cn = 3
         //64 = 2
