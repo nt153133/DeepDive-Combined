@@ -89,7 +89,7 @@ namespace Deep.Providers
                     if (!target.IsTargetable)
                         continue;
 
-                    if (portalActive && !targetInCombat)
+                    if (portalActive && !targetInCombat && targetNpcId != Mobs.PalaceHornet)
                     {
                         continue;
                     }
@@ -118,6 +118,11 @@ namespace Deep.Providers
             weight -= distance2D / 2.25;
             weight += battleCharacter.ClassLevel / 1.25;
             weight += 100 - battleCharacter.CurrentHealthPercent;
+            
+            var battleCharacterInCombat = battleCharacter.InCombat;
+            
+            if ((battleCharacter.NpcId == Mobs.PalaceHornet || battleCharacter.NpcId == Mobs.PalaceSlime) && battleCharacterInCombat)
+                return weight * 100.0;
 
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader)
                 if (battleCharacter.IsTargetingMyPartyMember())
@@ -126,7 +131,7 @@ namespace Deep.Providers
             if (battleCharacter.HasTarget && battleCharacter.TargetCharacter == Core.Me)
                 weight += 50;
 
-            var battleCharacterInCombat = battleCharacter.InCombat;
+            
 
             if (!battleCharacterInCombat)
                 weight -= 5;
@@ -142,8 +147,7 @@ namespace Deep.Providers
             if (distance2D > 25)
                 weight /= 2;
 
-            if ((battleCharacter.NpcId == Mobs.PalaceHornet || battleCharacter.NpcId == Mobs.PalaceSlime) && battleCharacterInCombat)
-                return weight * 100.0;
+            
 
 
             return weight;

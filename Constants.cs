@@ -250,7 +250,7 @@ namespace Deep
             get
             {
                 if (Core.Me.CurrentJob.IsMelee())
-                    return Math.Max(8, RoutineManager.Current.PullRange + Core.Me.CombatReach);
+                    return Math.Max(12, RoutineManager.Current.PullRange + Core.Me.CombatReach);
                 
                 return Math.Min(15, RoutineManager.Current.PullRange + Core.Me.CombatReach);
             }
