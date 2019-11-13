@@ -11,6 +11,8 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.Threading;
 using Buddy.Coroutines;
 using Deep.Forms;
 using Deep.Helpers;
@@ -40,7 +42,8 @@ namespace Deep
 #else
         public override string Name => "Deep Dungeon";
 #endif
-        public override PulseFlags PulseFlags => PulseFlags.All;
+        //public override PulseFlags PulseFlags => PulseFlags.All;
+        public override PulseFlags PulseFlags => PulseFlags.ObjectManager | PulseFlags.GameEvents | PulseFlags.Navigator | PulseFlags.Plugins | PulseFlags.Windows | PulseFlags.Avoidance | PulseFlags.Party;
         public override bool IsAutonomous => true;
         public override bool RequiresProfile => false;
         public override bool WantButton => true;
@@ -81,12 +84,12 @@ namespace Deep
         {
             if (_settings == null)
             {
-#if RB_CN
+/*#if RB_CN
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
                 CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN");
                 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-CN");
-#endif
+#endif*/
 
                 _settings = new DungeonSelection
                 {
