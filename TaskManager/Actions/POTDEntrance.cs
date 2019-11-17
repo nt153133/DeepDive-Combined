@@ -211,7 +211,10 @@ Aetherpool Armor: +{1}
                 _aetherialLevels[1]);
             _saveStates = Sd.SaveStates;
 
-            for (var i = 0; i < 2; i++) Logger.Verbose("[{0}] {1}", i + 1, _saveStates[i]);
+            for (var i = 0; i < 2; i++)
+            {
+                Logger.Verbose("[{0}] {1}", i + 1, _saveStates[i]);
+            }
 
             Logger.Warn("Using the {0} Save Slot", Settings.Instance.SaveSlot);
         }
