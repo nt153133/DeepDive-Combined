@@ -9,10 +9,10 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System.ComponentModel;
-using Deep.Properties;
+using DeepCombined.Properties;
 using Newtonsoft.Json;
 
-namespace Deep.Structure
+namespace DeepCombined.Structure
 {
     internal class FloorSetting : INotifyPropertyChanged
     {

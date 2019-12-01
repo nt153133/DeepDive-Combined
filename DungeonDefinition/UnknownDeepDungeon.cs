@@ -7,9 +7,10 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden and mastahg
                                                                                  */
-using Deep.DungeonDefinition.Base;
 
-namespace Deep.DungeonDefinition
+using DeepCombined.DungeonDefinition.Base;
+
+namespace DeepCombined.DungeonDefinition
 {
     public class UnknownDeepDungeon : DeepDungeonDecorator
     {

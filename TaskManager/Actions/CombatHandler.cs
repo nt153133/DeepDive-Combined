@@ -12,10 +12,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Enums;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Providers;
+using DeepCombined.Enums;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Providers;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Directors;
@@ -27,7 +27,7 @@ using ff14bot.Objects;
 using ff14bot.Pathing;
 using TreeSharp;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class CombatHandler : ITask
     {

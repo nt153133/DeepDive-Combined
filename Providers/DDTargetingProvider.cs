@@ -13,15 +13,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Clio.Utilities;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot.Behavior;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Objects;
 
-namespace Deep.Providers
+namespace DeepCombined.Providers
 {
     // ReSharper disable once InconsistentNaming
     internal class DDTargetingProvider

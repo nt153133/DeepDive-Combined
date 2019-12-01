@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Clio.Utilities;
 using ff14bot.Objects;
 
-namespace Deep.DungeonDefinition.Base
+namespace DeepCombined.DungeonDefinition.Base
 {
     public interface IDeepDungeon
     {

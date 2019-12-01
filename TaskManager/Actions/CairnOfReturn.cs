@@ -13,8 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Helpers;
@@ -22,7 +22,7 @@ using ff14bot.Managers;
 using ff14bot.Pathing;
 using ff14bot.RemoteWindows;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class CairnOfReturn : ITask
     {
@@ -64,7 +64,7 @@ namespace Deep.TaskManager.Actions
 
                 await Coroutine.Wait(TimeSpan.FromSeconds(30),
                     () => !(Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) || Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust)) ||
-                          Core.Me.InCombat || DeepDungeon.StopPlz);
+                          Core.Me.InCombat || DeepDungeonCombined.StopPlz);
 
                 //incase we entered combat
                 return true;

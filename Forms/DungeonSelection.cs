@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using Deep.DungeonDefinition.Base;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers;
+using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Structure;
+using ff14bot.Enums;
+using ff14bot.Helpers;
+using ff14bot.Managers;
+using FloorSetting = DeepCombined.DungeonDefinition.Base.FloorSetting;
 
-namespace Deep.Forms
+namespace DeepCombined.Forms
 {
     public partial class DungeonSelection : Form
     {
@@ -35,16 +43,32 @@ namespace Deep.Forms
             if (FloorCombo.SelectedItem == null)
             {
                 FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors[0];
-                Settings.Instance.BetterSelectedLevel = (FloorSetting) FloorCombo.SelectedItem;
+                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
             }
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
-
+            var list = new List<KeyValuePair<string, int>>();
+            foreach (var gs in GearsetManager.GearSets.Where(i=> i.InUse && i.Class.IsDow()))
+            {
+                list.Add(new KeyValuePair<string, int>(gs.Class.ToString(),gs.Index));
+            }
+            
+            classesCB.DataSource = list;
+            
+            
+            //classesCB.ValueMember = "Value";
+            classesCB.DisplayMember = "Key";
+            
+            listBox1.DataSource = Constants.ClassLevelTargets;
+            listBox1.DisplayMember = "DisplayString";
+            
 
             FloorCombo.SelectionChangeCommitted += ChangeLevel;
             startLevelBox.Checked = Settings.Instance.StartAt51;
             SilverChest.Checked = Settings.Instance.OpenSilver;
             HordeCheck.Checked = Settings.Instance.GoForTheHoard;
+
+            checkBox1.Checked = Constants.UseJobList;
         }
 
         private void ChangeDungeon(object sender, EventArgs e)
@@ -56,7 +80,7 @@ namespace Deep.Forms
             if (FloorCombo.SelectedItem == null)
             {
                 FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors[0];
-                Settings.Instance.BetterSelectedLevel = (FloorSetting) FloorCombo.SelectedItem;
+                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
             }
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
@@ -65,7 +89,7 @@ namespace Deep.Forms
         private void ChangeLevel(object sender, EventArgs e)
         {
             Logger.Verbose("Changing the selected floor to run");
-            Settings.Instance.BetterSelectedLevel = (FloorSetting) FloorCombo.SelectedItem;
+            Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
         }
 
         private void DungeonSelection_Closed(object sender, FormClosedEventArgs e)
@@ -102,6 +126,38 @@ namespace Deep.Forms
         private void DungeonListCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.Instance.SelectedDungeon = DungeonListCombo.SelectedIndex;
+        }
+
+        private void addClassBtn_Click(object sender, EventArgs e)
+        {
+            int level = int.Parse(levelTxt.Text.Trim());
+            ClassJobType test;
+            Enum.TryParse(((KeyValuePair<string, int>)classesCB.SelectedValue).Key,out test);
+            var classTarget = new ClassLevelTarget(test, level,((KeyValuePair<string, int>)classesCB.SelectedValue).Value);
+            Logger.Info($"{classTarget}");
+            Constants.ClassLevelTargets.Add(classTarget);
+            listBox1.Refresh();
+        }
+
+        private void classesCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            Constants.ClassLevelTargets = null;
+            Constants.ClassLevelTargets = new BindingList<ClassLevelTarget>();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Constants.UseJobList = checkBox1.Checked;
         }
     }
 }

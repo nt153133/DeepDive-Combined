@@ -11,12 +11,12 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 using ff14bot.Managers;
 using ff14bot.RemoteAgents;
 using ff14bot.RemoteWindows;
 
-namespace Deep.Windows
+namespace DeepCombined.Windows
 {
     internal class DeepDungeonSaveData
     {

@@ -11,10 +11,10 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 using ff14bot.Managers;
 
-namespace Deep.Windows
+namespace DeepCombined.Windows
 {
     internal class DeepDungeonMenu
     {

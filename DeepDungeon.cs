@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Threading;
 using Buddy.Coroutines;
-using Deep.Forms;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Providers;
-using Deep.TaskManager;
-using Deep.TaskManager.Actions;
+using DeepCombined.Forms;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Providers;
+using DeepCombined.TaskManager;
+using DeepCombined.TaskManager.Actions;
 using ff14bot;
 using ff14bot.AClasses;
 using ff14bot.Behavior;
@@ -32,15 +32,15 @@ using ff14bot.Overlay3D;
 using ff14bot.Pathing.Service_Navigation;
 using TreeSharp;
 
-namespace Deep
+namespace DeepCombined
 {
-    public class DeepDungeon : AsyncBotBase
+    public class DeepDungeonCombined : AsyncBotBase
     {
-        public override string EnglishName => "Deep Dungeon";
+        public override string EnglishName => "Deep Dungeon Combined";
 #if RB_CN
         public override string Name => "深层迷宫";
 #else
-        public override string Name => "Deep Dungeon";
+        public override string Name => "Deep Dungeon Combined";
 #endif
         //public override PulseFlags PulseFlags => PulseFlags.All;
         public override PulseFlags PulseFlags => PulseFlags.ObjectManager | PulseFlags.GameEvents | PulseFlags.Navigator | PulseFlags.Plugins | PulseFlags.Windows | PulseFlags.Avoidance | PulseFlags.Party;
@@ -49,13 +49,8 @@ namespace Deep
         public override bool WantButton => true;
 
 
-        public DeepDungeon()
+        public DeepDungeonCombined()
         {
-            //Captain = new GetToCaptain();
-
-            // if (Settings.Instance.FloorSettings == null || !Settings.Instance.FloorSettings.Any())
-            //     Logger.Warn("Settings are empty?");
-
             Constants.LoadList();
             Constants.SelectedDungeon = Constants.DeepListType[Settings.Instance.SelectedDungeon];
 
@@ -279,7 +274,7 @@ namespace Deep
                 return;
             }
 
-            Logger.Error($"Quest {Settings.Instance.BetterSelectedLevel.QuestId} - \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this base.");
+            //Logger.Error($"Quest {Settings.Instance.BetterSelectedLevel.QuestId} - \"{DataManager.GetLocalizedQuestName(Settings.Instance.BetterSelectedLevel.QuestId)}\" to run this base.");
 
             StopPlz = false;
 

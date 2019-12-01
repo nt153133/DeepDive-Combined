@@ -14,14 +14,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities.Helpers;
-using Deep.Enums;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.Enums;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
 
-namespace Deep.Tasks
+namespace DeepCombined.Tasks
 {
     internal static class Common
     {

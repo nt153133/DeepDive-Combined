@@ -7,8 +7,8 @@
     <ProjectGuid>{DB88F998-A428-42CB-92BD-882D3DCDF720}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Deep</RootNamespace>
-    <AssemblyName>Deep</AssemblyName>
+    <RootNamespace>DeepCombined</RootNamespace>
+    <AssemblyName>DeepCombined</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -136,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Structure\ClassLevelTarget.cs" />
     <Compile Include="TaskManager\Actions\BaseLogicHandler.cs" />
     <Compile Include="TaskManager\Actions\CairnOfReturn.cs" />
     <Compile Include="TaskManager\Actions\CombatHandler.cs" />

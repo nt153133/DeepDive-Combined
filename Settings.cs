@@ -13,15 +13,15 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using Deep.DungeonDefinition.Base;
-using Deep.Enums;
-using Deep.Helpers.Logging;
+using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Enums;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using Newtonsoft.Json;
 
-namespace Deep
+namespace DeepCombined
 {
     internal class Settings : JsonSettings
     {
@@ -73,7 +73,7 @@ namespace Deep
         private int _SelectedDungeonIndex;
 
 
-        public Settings() : base(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")))
+        public Settings() : base(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDiveCombined.json")))
         {
         }
 

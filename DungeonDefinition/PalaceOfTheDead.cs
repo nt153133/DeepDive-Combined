@@ -11,15 +11,15 @@ Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden an
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Deep.DungeonDefinition.Base;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using static Deep.Tasks.Common;
+using static DeepCombined.Tasks.Common;
 
-namespace Deep.DungeonDefinition
+namespace DeepCombined.DungeonDefinition
 {
     public class PalaceOfTheDead : DeepDungeonDecorator
     {

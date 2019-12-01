@@ -9,13 +9,13 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System.Threading.Tasks;
-using Deep.Helpers;
+using DeepCombined.Helpers;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
-using static Deep.Tasks.Common;
+using static DeepCombined.Tasks.Common;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class Pomanders : ITask
     {

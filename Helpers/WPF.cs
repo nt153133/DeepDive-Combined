@@ -18,9 +18,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using Clio.Utilities;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     internal class WPF
     {

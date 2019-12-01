@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Deep.Forms
+namespace DeepCombined.Forms
 {
     partial class DungeonSelection
     {
@@ -40,6 +40,12 @@ namespace Deep.Forms
             this.SilverChest = new System.Windows.Forms.CheckBox();
             this.HordeCheck = new System.Windows.Forms.CheckBox();
             this.StopCheck = new System.Windows.Forms.CheckBox();
+            this.classesCB = new System.Windows.Forms.ComboBox();
+            this.addClassBtn = new System.Windows.Forms.Button();
+            this.levelTxt = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // DungeonListCombo
@@ -127,11 +133,80 @@ namespace Deep.Forms
             this.StopCheck.UseVisualStyleBackColor = true;
             this.StopCheck.CheckedChanged += new System.EventHandler(this.StopCheck_CheckedChanged);
             // 
+            // classesCB
+            // 
+            this.classesCB.FormattingEnabled = true;
+            this.classesCB.Location = new System.Drawing.Point(13, 175);
+            this.classesCB.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.classesCB.Name = "classesCB";
+            this.classesCB.Size = new System.Drawing.Size(164, 23);
+            this.classesCB.TabIndex = 8;
+            this.classesCB.SelectedIndexChanged += new System.EventHandler(this.classesCB_SelectedIndexChanged);
+            // 
+            // addClassBtn
+            // 
+            this.addClassBtn.Location = new System.Drawing.Point(245, 175);
+            this.addClassBtn.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.addClassBtn.Name = "addClassBtn";
+            this.addClassBtn.Size = new System.Drawing.Size(83, 22);
+            this.addClassBtn.TabIndex = 9;
+            this.addClassBtn.Text = "Add";
+            this.addClassBtn.UseVisualStyleBackColor = true;
+            this.addClassBtn.Click += new System.EventHandler(this.addClassBtn_Click);
+            // 
+            // levelTxt
+            // 
+            this.levelTxt.Location = new System.Drawing.Point(191, 174);
+            this.levelTxt.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.levelTxt.Name = "levelTxt";
+            this.levelTxt.Size = new System.Drawing.Size(44, 23);
+            this.levelTxt.TabIndex = 10;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(13, 207);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(222, 79);
+            this.listBox1.TabIndex = 11;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(245, 207);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(80, 21);
+            this.btnClear.TabIndex = 12;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(174, 140);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(111, 18);
+            this.checkBox1.TabIndex = 13;
+            this.checkBox1.Text = "Use Job List";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // DungeonSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(340, 297);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.levelTxt);
+            this.Controls.Add(this.addClassBtn);
+            this.Controls.Add(this.classesCB);
             this.Controls.Add(this.StopCheck);
             this.Controls.Add(this.HordeCheck);
             this.Controls.Add(this.SilverChest);
@@ -146,6 +221,7 @@ namespace Deep.Forms
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DungeonSelection_Closed);
             this.Load += new System.EventHandler(this.DungeonSelection_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         #endregion
@@ -158,5 +234,11 @@ namespace Deep.Forms
         private System.Windows.Forms.CheckBox SilverChest;
         private System.Windows.Forms.CheckBox startLevelBox;
         private System.Windows.Forms.CheckBox StopCheck;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox levelTxt;
+        private System.Windows.Forms.Button addClassBtn;
+        private System.Windows.Forms.ComboBox classesCB;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

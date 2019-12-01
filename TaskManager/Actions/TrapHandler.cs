@@ -9,13 +9,13 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System.Threading.Tasks;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Managers;
 using ff14bot.Navigation;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     /// <summary>
     ///     does an hp check for traps

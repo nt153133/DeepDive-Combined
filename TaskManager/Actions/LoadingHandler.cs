@@ -18,7 +18,7 @@ using ff14bot.Managers;
 using ff14bot.RemoteAgents;
 using ff14bot.RemoteWindows;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class LoadingHandler : ITask
     {

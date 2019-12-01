@@ -8,9 +8,9 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
-using Deep.Memory.Attributes;
+using DeepCombined.Memory.Attributes;
 
-namespace Deep.Memory
+namespace DeepCombined.Memory
 {
 #pragma warning disable CS0649
     internal static class Offsets

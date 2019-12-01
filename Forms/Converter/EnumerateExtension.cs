@@ -16,9 +16,9 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using Deep.Properties;
+using DeepCombined.Properties;
 
-namespace Deep.Forms.Converter
+namespace DeepCombined.Forms.Converter
 {
     [MarkupExtensionReturnType(typeof(IEnumerable<object>))]
     public sealed class EnumerateExtension : MarkupExtension

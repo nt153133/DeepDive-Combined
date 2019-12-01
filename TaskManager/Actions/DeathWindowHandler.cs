@@ -10,14 +10,14 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;
 using ff14bot.RemoteWindows;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class DeathWindowHandler : ITask
     {

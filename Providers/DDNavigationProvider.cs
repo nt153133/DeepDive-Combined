@@ -14,10 +14,10 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using Clio.Utilities;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Memory;
-using Deep.Properties;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Memory;
+using DeepCombined.Properties;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;
@@ -28,7 +28,7 @@ using ff14bot.Pathing.Service_Navigation;
 using ff14bot.ServiceClient;
 using Newtonsoft.Json;
 
-namespace Deep.Providers
+namespace DeepCombined.Providers
 {
     internal class DDNavigationProvider : WrappingNavigationProvider
     {

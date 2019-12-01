@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using ff14bot.Managers;
 using Newtonsoft.Json;
 
-namespace Deep.DungeonDefinition.Base
+namespace DeepCombined.DungeonDefinition.Base
 {
     public class DeepDungeonData
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Deep.Properties {
+namespace DeepCombined.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Deep.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Deep.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DeepCombined.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -93,7 +93,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -372.510681,
         ///      &quot;Y&quot;: 21.7968826,
-        ///  [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 372.9993
+        ///    }
+        ///  ],
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _1 {
             get {
@@ -134,7 +137,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -337.3164,
         ///      &quot;Y&quot;: 21.0,
-        ///      &quot;Z&quot;: 2 [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 260.704041
+        ///    }
+        ///  ],
+        ///  &quot;6288809&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _2 {
             get {
@@ -175,7 +181,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -337.3164,
         ///      &quot;Y&quot;: 21.0,
-        ///      &quot;Z&quot;: 2 [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 260.704041
+        ///    }
+        ///  ],
+        ///  &quot;6288881&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _3 {
             get {
@@ -216,7 +225,11 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -337.082855,
         ///      &quot;Y&quot;: 22.0,
-        ///      &quot;Z&quot;: 256.0 [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 256.001984
+        ///    }
+        ///  ],
+        ///  &quot;6288996&quot;: [
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _4 {
             get {
@@ -257,7 +270,12 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -218.004929,
         ///      &quot;Y&quot;: 10.0,
-        ///      &quot;Z&quot;: 375.783569        /// [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 375.783569
+        ///    }
+        ///  ],
+        ///  &quot;6429962&quot;: [
+        ///    {
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _5 {
             get {
@@ -298,7 +316,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -372.871155,
         ///      &quot;Y&quot;: 12.4296875,
-        ///  [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 252.516953
+        ///    }
+        ///  ],
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _6 {
             get {
@@ -344,7 +365,10 @@ namespace Deep.Properties {
         ///  ],
         ///  &quot;6418713&quot;: [
         ///    {
-        ///      &quot;X&quot;: -299.75,        /// [rest of string was truncated]&quot;;.
+        ///      &quot;X&quot;: -299.75,
+        ///      &quot;Y&quot;: 5.0,
+        ///      &quot;Z&quot;: 300.0
+        ///     [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _7 {
             get {
@@ -394,7 +418,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -339.220276,
         ///      &quot;Y&quot;: 10.0546875,
-        ///      &quot;Z&quot; [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 262.042664
+        ///    }
+        ///  ],
+        ///  &quot;64345 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _8 {
             get {
@@ -435,7 +462,10 @@ namespace Deep.Properties {
         ///    {
         ///      &quot;X&quot;: -339.220276,
         ///      &quot;Y&quot;: 10.0546875,
-        ///      &quot;Z&quot; [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 262.042664
+        ///    }
+        ///  ],
+        ///  &quot;64416 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _9 {
             get {
@@ -481,7 +511,8 @@ namespace Deep.Properties {
         ///    &quot;UnlockQuest&quot;: 67092,
         ///    &quot;Npc&quot;: {
         ///      &quot;Location&quot;: [
-        ///  [rest of string was truncated]&quot;;.
+        ///        187.548584,
+        ///        7 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DeepDungeonData {
             get {

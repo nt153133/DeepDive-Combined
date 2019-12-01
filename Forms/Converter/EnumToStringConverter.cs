@@ -12,9 +12,9 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
-using Deep.Properties;
+using DeepCombined.Properties;
 
-namespace Deep.Forms.Converter
+namespace DeepCombined.Forms.Converter
 {
     [ValueConversion(typeof(Enum), typeof(string))]
     public sealed class EnumToStringConverter : IValueConverter

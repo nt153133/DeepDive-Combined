@@ -10,10 +10,10 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System;
 using System.Windows.Forms;
-using Deep.Helpers.Logging;
-using Deep.Structure;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Structure;
 
-namespace Deep.Forms
+namespace DeepCombined.Forms
 {
     public partial class SettingsForm : Form
     {

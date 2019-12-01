@@ -11,13 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Clio.Utilities;
-using Deep.Helpers;
+using DeepCombined.Helpers;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Objects;
 
-namespace Deep.DungeonDefinition.Base
+namespace DeepCombined.DungeonDefinition.Base
 {
     public abstract class DeepDungeonDecorator : IDeepDungeon
     {

@@ -9,9 +9,9 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System.ComponentModel;
-using Deep.Properties;
+using DeepCombined.Properties;
 
-namespace Deep.Forms.Converter
+namespace DeepCombined.Forms.Converter
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {

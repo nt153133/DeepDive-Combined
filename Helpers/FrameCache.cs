@@ -11,7 +11,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using ff14bot;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     internal class FrameCache<T>
     {

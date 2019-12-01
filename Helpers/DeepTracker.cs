@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Clio.Utilities;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 using ff14bot.RemoteWindows;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     internal static class DeepTracker
     {

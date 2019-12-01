@@ -12,7 +12,7 @@ using System.Linq;
 using ff14bot;
 using ff14bot.Objects;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     internal static class GameObjectExtensions
     {

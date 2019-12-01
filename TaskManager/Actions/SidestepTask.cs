@@ -18,7 +18,7 @@ using ff14bot;
 using ff14bot.Helpers;
 using ff14bot.Managers;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     public class SideStepTask : ITask
     {

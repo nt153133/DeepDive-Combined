@@ -1,6 +1,6 @@
 ﻿﻿using System.ComponentModel;
 
-namespace Deep
+namespace DeepCombined
 {
     partial class DeepTest
     {

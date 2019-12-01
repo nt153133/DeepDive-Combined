@@ -14,7 +14,7 @@ using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.RemoteAgents;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     /// <summary>
     ///     helper class for wrapping director calls

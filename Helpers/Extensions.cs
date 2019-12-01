@@ -11,7 +11,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using ff14bot.Enums;
 using ff14bot.Objects;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     internal static class Extensions
     {

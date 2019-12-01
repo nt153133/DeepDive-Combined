@@ -12,8 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
-using Deep.Helpers;
-using Deep.Providers;
+using DeepCombined.Helpers;
+using DeepCombined.Providers;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Helpers;
@@ -21,7 +21,7 @@ using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Pathing;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class FloorExit : ITask
     {

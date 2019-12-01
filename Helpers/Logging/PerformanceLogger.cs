@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Deep.Helpers.Logging
+namespace DeepCombined.Helpers.Logging
 {
     [DebuggerStepThrough]
     internal class PerformanceLogger : IDisposable

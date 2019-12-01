@@ -10,7 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System;
 
-namespace Deep.Memory.Attributes
+namespace DeepCombined.Memory.Attributes
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     internal class OffsetAttribute : Attribute

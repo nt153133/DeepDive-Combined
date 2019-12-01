@@ -1,7 +1,7 @@
 ﻿using ff14bot.Enums;
 using ff14bot.Objects;
 
-namespace Deep.Helpers
+namespace DeepCombined.Helpers
 {
     //Original methods made by ZZi for dungeonMaster
     public static class BattleCharacterExtension

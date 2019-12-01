@@ -10,12 +10,12 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Windows.Media;
 using Clio.Utilities;
-using Deep.Properties;
+using DeepCombined.Properties;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using rLogging = ff14bot.Helpers.Logging;
 
-namespace Deep.Helpers.Logging
+namespace DeepCombined.Helpers.Logging
 {
     internal static class Logger
     {

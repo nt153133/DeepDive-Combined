@@ -7,7 +7,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
-namespace Deep.Forms
+namespace DeepCombined.Forms
 {
     partial class SettingsForm
     {

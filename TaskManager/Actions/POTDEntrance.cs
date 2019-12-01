@@ -13,17 +13,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities.Helpers;
-using Deep.DungeonDefinition.Base;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Windows;
+using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Windows;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;
 using ff14bot.RemoteAgents;
 using ff14bot.RemoteWindows;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class POTDEntrance : ITask
     {
@@ -98,6 +98,11 @@ namespace Deep.TaskManager.Actions
 
             if (!HasWindowOpen)
             {
+                if (Constants.UseJobList)
+                {
+                    await CheckJobQueue();
+                }
+                
                 await OpenMenu();
                 return true;
             }
@@ -234,7 +239,7 @@ Aetherpool Armor: +{1}
                     Logger.Warn("I am a Party Leader in a XRealm Party. I assume everyone is in the zone.");
                 }
 
-                if (DeepDungeon.StopPlz)
+                if (DeepDungeonCombined.StopPlz)
                     return;
 
                 Logger.Warn("Everyone is now in the zone");
@@ -242,7 +247,7 @@ Aetherpool Armor: +{1}
                 {
                     Logger.Warn("Giving them {0} seconds to do what they need to at the NPC", 60 - i * 10);
                     await Coroutine.Sleep(TimeSpan.FromSeconds(10));
-                    if (DeepDungeon.StopPlz)
+                    if (DeepDungeonCombined.StopPlz)
                         return;
                 }
             }
@@ -359,6 +364,30 @@ Aetherpool Armor: +{1}
         private bool PartyLeaderWaitConditions()
         {
             return PartyManager.VisibleMembers.Count() == PartyManager.AllMembers.Count();
+        }
+
+        private async Task CheckJobQueue()
+        {
+            foreach (var classLevelTarget in Constants.ClassLevelTargets)
+            {
+                if (Core.Me.CurrentJob == classLevelTarget.Job)
+                    if (Core.Me.ClassLevel >= classLevelTarget.Level)
+                        continue;
+                
+                if (Core.Me.CurrentJob == classLevelTarget.Job)
+                    if (Core.Me.Levels[Constants.ClassMap[classLevelTarget.classJobType]] < classLevelTarget.Level)
+                    {
+                        //GearsetManager.ChangeGearset(classLevelTarget.GearSlot);
+                        break;
+                    }
+                
+                if (Core.Me.CurrentJob != classLevelTarget.Job)
+                    if (Core.Me.Levels[Constants.ClassMap[classLevelTarget.classJobType]] < classLevelTarget.Level)
+                    {
+                        GearsetManager.ChangeGearset(classLevelTarget.GearSlot);
+                        break;
+                    }
+            }
         }
     }
 }

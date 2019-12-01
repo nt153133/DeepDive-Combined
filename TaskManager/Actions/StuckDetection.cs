@@ -12,14 +12,14 @@ using System;
 using System.Threading.Tasks;
 using Clio.Utilities;
 using Clio.Utilities.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Providers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Providers;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Helpers;
 using ff14bot.Navigation;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class StuckDetection : ITask
     {

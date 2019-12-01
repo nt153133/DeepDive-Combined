@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using Deep.DungeonDefinition.Base;
+using DeepCombined.DungeonDefinition.Base;
 
-namespace Deep
+namespace DeepCombined
 {
     public partial class DeepTest : Form
     {

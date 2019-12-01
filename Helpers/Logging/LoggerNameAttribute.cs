@@ -10,7 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System;
 
-namespace Deep.Helpers.Logging
+namespace DeepCombined.Helpers.Logging
 {
     [AttributeUsage(AttributeTargets.Class)]
     internal sealed class LoggerNameAttribute : Attribute

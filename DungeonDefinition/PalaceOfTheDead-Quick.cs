@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Documents;
 using Clio.Utilities;
-using Deep.DungeonDefinition.Base;
-using Deep.Helpers;
-using Deep.TaskManager.Actions;
+using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
+using DeepCombined.TaskManager.Actions;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Enums;
@@ -21,7 +21,7 @@ using ff14bot.Helpers;
 using ff14bot.Managers;
 using ff14bot.Objects;
 
-namespace Deep.DungeonDefinition
+namespace DeepCombined.DungeonDefinition
 {
     public class PalaceOfTheDeadQuick : PalaceOfTheDead
     {

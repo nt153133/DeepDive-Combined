@@ -13,16 +13,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Clio.Utilities;
-using Deep.Helpers;
-using Deep.Memory;
-using Deep.Properties;
+using DeepCombined.Helpers;
+using DeepCombined.Memory;
+using DeepCombined.Properties;
 using ff14bot;
 using ff14bot.Enums;
 using ff14bot.Managers;
 using ff14bot.RemoteAgents;
 using Newtonsoft.Json;
 
-namespace Deep
+namespace DeepCombined
 {
     public static class PoiTypes
     {

@@ -11,9 +11,9 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 
-namespace Deep.TaskManager
+namespace DeepCombined.TaskManager
 {
     internal interface ITask
     {

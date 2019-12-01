@@ -10,7 +10,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Windows.Media;
 
-namespace Deep.Helpers.Logging
+namespace DeepCombined.Helpers.Logging
 {
     internal static class LogColors
     {

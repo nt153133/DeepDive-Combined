@@ -12,13 +12,13 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Deep.Helpers.Logging;
-using Deep.Memory.Attributes;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Memory.Attributes;
 using ff14bot;
 using ff14bot.Enums;
 using GreyMagic;
 
-namespace Deep.Memory
+namespace DeepCombined.Memory
 {
     internal class OffsetManager
     {

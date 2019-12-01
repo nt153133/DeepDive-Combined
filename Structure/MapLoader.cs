@@ -11,7 +11,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System.Collections.Generic;
 using ProtoBuf;
 
-namespace Deep.Structure
+namespace DeepCombined.Structure
 {
     [ProtoContract]
     internal class FileList

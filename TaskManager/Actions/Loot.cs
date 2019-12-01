@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Helpers;
-using Deep.Helpers.Logging;
-using Deep.Providers;
+using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
+using DeepCombined.Providers;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Directors;
@@ -27,7 +27,7 @@ using ff14bot.Objects;
 using ff14bot.Pathing;
 using ff14bot.RemoteWindows;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class Loot : ITask
     {
@@ -125,7 +125,7 @@ namespace Deep.TaskManager.Actions
             //GamelogManager.MessageRecevied -= GamelogManagerOnMessageRecevied;
            // GamelogManager.MessageRecevied += GamelogManagerOnMessageRecevied;
 
-            while (!DeepDungeon.StopPlz && Target.Unit != null && Target.Unit.IsValid && tries < 3)
+            while (!DeepDungeonCombined.StopPlz && Target.Unit != null && Target.Unit.IsValid && tries < 3)
             {
                 try
                 {
@@ -135,7 +135,7 @@ namespace Deep.TaskManager.Actions
                         Logger.Warn("Unable to open chest. Waiting for aura to end...");
                         await CommonTasks.StopMoving("Waiting on aura to end");
                         await Coroutine.Wait(TimeSpan.FromSeconds(30),
-                            () => !Constants.AuraTransformed || Core.Me.InCombat || DeepDungeon.StopPlz);
+                            () => !Constants.AuraTransformed || Core.Me.InCombat || DeepDungeonCombined.StopPlz);
                         return true;
                     }
 
@@ -182,7 +182,7 @@ namespace Deep.TaskManager.Actions
             if (SelectYesno.IsOpen)
             {
                 SelectYesno.ClickYes();
-                await Coroutine.Wait(TimeSpan.MaxValue, () => DeepDungeon.StopPlz || QuestLogManager.InCutscene || NowLoading.IsVisible);
+                await Coroutine.Wait(TimeSpan.MaxValue, () => DeepDungeonCombined.StopPlz || QuestLogManager.InCutscene || NowLoading.IsVisible);
                 return true;
             }
 
@@ -245,7 +245,7 @@ namespace Deep.TaskManager.Actions
             //wait for the chest or for us to get into combat.
             await Coroutine.Wait(TimeSpan.FromSeconds(5),
                 () =>
-                    Core.Me.InCombat || GameObjectManager.NumberOfAttackers > 0 || DeepDungeon.StopPlz ||
+                    Core.Me.InCombat || GameObjectManager.NumberOfAttackers > 0 || DeepDungeonCombined.StopPlz ||
                     GameObjectManager.GetObjectsOfType<EventObject>().Any(i => i.NpcId == EntityNames.BandedCoffer)
             );
 

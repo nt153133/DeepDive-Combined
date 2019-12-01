@@ -10,14 +10,14 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 
 using System.Threading.Tasks;
 using Buddy.Coroutines;
-using Deep.Helpers.Logging;
+using DeepCombined.Helpers.Logging;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Managers;
 using ff14bot.NeoProfiles;
 using ff14bot.Pathing;
 
-namespace Deep.TaskManager.Actions
+namespace DeepCombined.TaskManager.Actions
 {
     internal class GetToCaptain : ITask
     {

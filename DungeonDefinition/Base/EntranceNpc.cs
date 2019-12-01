@@ -11,7 +11,7 @@ Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden an
 using Clio.Utilities;
 using Newtonsoft.Json;
 
-namespace Deep.DungeonDefinition.Base
+namespace DeepCombined.DungeonDefinition.Base
 {
     public class EntranceNpc
     {
