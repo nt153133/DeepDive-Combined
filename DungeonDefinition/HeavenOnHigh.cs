@@ -14,6 +14,7 @@ using Buddy.Coroutines;
 using Clio.Utilities;
 using DeepCombined.DungeonDefinition.Base;
 using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using DeepCombined.TaskManager.Actions;
 using ff14bot;
 using ff14bot.Directors;
@@ -92,8 +93,9 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffBoss()
         {
-            if (DeepDungeonManager.GetMagiciteCount() > 1)
+            if (DeepDungeonManager.GetMagiciteCount() >= 1)
             {
+                Logger.Warn("Magicite >= 1");
                 DeepDungeonManager.CastMagicite();
                 await Coroutine.Sleep(500);
             }
@@ -104,8 +106,9 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffCurrentFloor()
         {
-            if (DeepDungeonManager.GetMagiciteCount() > 1)
+            if (DeepDungeonManager.GetMagiciteCount() >= 1)
             {
+                Logger.Warn("Magicite >= 1");
                 DeepDungeonManager.CastMagicite();
                 await Coroutine.Sleep(500);
             }
