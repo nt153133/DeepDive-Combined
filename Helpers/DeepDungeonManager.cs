@@ -8,6 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using DeepCombined.Windows;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Managers;
@@ -59,6 +60,19 @@ namespace DeepCombined.Helpers
         public static void PomanderChange()
         {
             _inventory = Director.DeepDungeonInventory;
+        }
+
+        public static int GetMagiciteCount()
+        {
+            return Core.Memory.Read<byte>(Director.Pointer + 5160 + 3);
+        }
+
+        public static void CastMagicite()
+        {
+            if (GetMagiciteCount() > 1)
+            {
+                DeepDungeonStatus.Instance.CastMagicite();
+            }
         }
     }
 }

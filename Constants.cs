@@ -144,6 +144,7 @@ namespace DeepCombined
         internal const string DDsave = "DeepDungeonSaveData";
         internal const string DDmap = "DeepDungeonMap";
         internal const string DDStatus = "DeepDungeonStatus";
+        internal const string DDResult = "DeepDungeonResult";
     }
 
     internal class Potion

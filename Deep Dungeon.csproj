@@ -175,7 +175,10 @@
     <Compile Include="Providers\DDCombatTargetingProvider.cs" />
     <Compile Include="Enums\SaveSlot.cs" />
     <Compile Include="Windows\DeepDungeonMenu.cs" />
+    <Compile Include="Windows\DeepDungeonResult.cs" />
     <Compile Include="Windows\DeepDungeonSaveData.cs" />
+    <Compile Include="Windows\DeepDungeonStatus.cs" />
+    <Compile Include="Windows\RemoteWindow.cs" />
     <EmbeddedResource Include="Forms\DungeonSlection.resx">
       <DependentUpon>DungeonSelection.cs</DependentUpon>
     </EmbeddedResource>

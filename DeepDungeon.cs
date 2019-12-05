@@ -20,6 +20,7 @@ using DeepCombined.Helpers.Logging;
 using DeepCombined.Providers;
 using DeepCombined.TaskManager;
 using DeepCombined.TaskManager.Actions;
+using DeepCombined.Windows;
 using ff14bot;
 using ff14bot.AClasses;
 using ff14bot.Behavior;
@@ -230,6 +231,8 @@ namespace DeepCombined
                 _root = new ActionAlwaysFail();
                 return;
             }
+            
+            Logger.Error($"DeepDungeon status agent id {DeepDungeonStatus.Agent}");
 
 
             //setup combat manager

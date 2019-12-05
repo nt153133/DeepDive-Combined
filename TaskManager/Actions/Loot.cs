@@ -16,6 +16,7 @@ using Buddy.Coroutines;
 using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
 using DeepCombined.Providers;
+using DeepCombined.Windows;
 using ff14bot;
 using ff14bot.Behavior;
 using ff14bot.Directors;
@@ -182,7 +183,16 @@ namespace DeepCombined.TaskManager.Actions
             if (SelectYesno.IsOpen)
             {
                 SelectYesno.ClickYes();
-                await Coroutine.Wait(TimeSpan.MaxValue, () => DeepDungeonCombined.StopPlz || QuestLogManager.InCutscene || NowLoading.IsVisible);
+                await Coroutine.Sleep(1000);
+                Logger.Verbose("Is window open : {0}", DeepDungeonResult.Instance.IsOpen );
+                if (DeepDungeonResult.Instance.IsOpen)
+                {
+                    Logger.Verbose("Calling Close");
+                    await Coroutine.Sleep(2000);
+                    DeepDungeonResult.Instance.SendAction(1, 3, uint.MaxValue);
+                }
+                await Coroutine.Wait(TimeSpan.MaxValue,
+                    () => DeepDungeonCombined.StopPlz ||QuestLogManager.InCutscene || NowLoading.IsVisible);
                 return true;
             }
 
