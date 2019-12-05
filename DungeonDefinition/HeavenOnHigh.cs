@@ -10,6 +10,7 @@ Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden an
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Buddy.Coroutines;
 using Clio.Utilities;
 using DeepCombined.DungeonDefinition.Base;
 using DeepCombined.Helpers;
@@ -91,11 +92,24 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffBoss()
         {
+            if (DeepDungeonManager.GetMagiciteCount() > 1)
+            {
+                DeepDungeonManager.CastMagicite();
+                await Coroutine.Sleep(500);
+            }
+
             return await UsePomander(Pomander.Frailty);
+            
         }
 
         public override async Task<bool> BuffCurrentFloor()
         {
+            if (DeepDungeonManager.GetMagiciteCount() > 1)
+            {
+                DeepDungeonManager.CastMagicite();
+                await Coroutine.Sleep(500);
+            }
+            
             if (DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 1)
                 return await UsePomander(Pomander.Frailty);
 

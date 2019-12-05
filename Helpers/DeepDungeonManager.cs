@@ -8,6 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using DeepCombined.Helpers.Logging;
 using DeepCombined.Windows;
 using ff14bot;
 using ff14bot.Directors;
@@ -69,10 +70,10 @@ namespace DeepCombined.Helpers
 
         public static void CastMagicite()
         {
-            if (GetMagiciteCount() > 1)
-            {
-                DeepDungeonStatus.Instance.CastMagicite();
-            }
+            if (GetMagiciteCount() <= 1) return;
+            
+            Logger.Warn("Casting Magicite");
+            DeepDungeonStatus.Instance.CastMagicite();
         }
     }
 }
