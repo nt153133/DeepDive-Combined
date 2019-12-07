@@ -137,6 +137,7 @@ namespace DeepCombined.Forms
             Logger.Info($"{classTarget}");
             Constants.ClassLevelTargets.Add(classTarget);
             listBox1.Refresh();
+            checkBox1.Checked = true;
         }
 
         private void classesCB_SelectedIndexChanged(object sender, EventArgs e)
@@ -151,8 +152,10 @@ namespace DeepCombined.Forms
 
         private void btnClear_Click(object sender, EventArgs e)
         {
+            listBox1.Items.Clear();
             Constants.ClassLevelTargets = null;
             Constants.ClassLevelTargets = new BindingList<ClassLevelTarget>();
+            checkBox1.Checked = false;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

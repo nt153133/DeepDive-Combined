@@ -100,6 +100,7 @@ namespace DeepCombined.TaskManager.Actions
             {
                 if (Constants.UseJobList)
                 {
+                    Logger.Info("Checking Joblist");
                     await CheckJobQueue();
                 }
                 
@@ -372,18 +373,23 @@ Aetherpool Armor: +{1}
             {
                 if (Core.Me.CurrentJob == classLevelTarget.Job)
                     if (Core.Me.ClassLevel >= classLevelTarget.Level)
+                    {
+                        Logger.Info("Current job >= level");
                         continue;
-                
+                    }
+
                 if (Core.Me.CurrentJob == classLevelTarget.Job)
                     if (Core.Me.Levels[Constants.ClassMap[classLevelTarget.classJobType]] < classLevelTarget.Level)
                     {
                         //GearsetManager.ChangeGearset(classLevelTarget.GearSlot);
+                        Logger.Info("Still under level target");
                         break;
                     }
                 
                 if (Core.Me.CurrentJob != classLevelTarget.Job)
                     if (Core.Me.Levels[Constants.ClassMap[classLevelTarget.classJobType]] < classLevelTarget.Level)
                     {
+                        Logger.Info($"Switching to {classLevelTarget.Job}");
                         GearsetManager.ChangeGearset(classLevelTarget.GearSlot);
                         break;
                     }
