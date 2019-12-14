@@ -314,9 +314,6 @@ namespace DeepCombined.TaskManager.Actions
         /// <returns></returns>
         private async Task<bool> UseWitching()
         {
-            if (GameObjectManager.NumberOfAttackers < 3)
-                return false;
-            
             if (
                 !DeepDungeonManager.BossFloor &&
                 DeepDungeonManager.GetInventoryItem(Pomander.Witching).Count > 0 &&
@@ -324,6 +321,7 @@ namespace DeepCombined.TaskManager.Actions
                 !GameObjectManager.Attackers.Any(i =>
                     i.HasAura(Auras.Frog) ||
                     i.HasAura(Auras.Imp) ||
+                    i.HasAura(Auras.Odder) ||
                     i.HasAura(Auras.Chicken)) //Toad
                 &&
                 (!PartyManager.IsInParty || PartyManager.IsPartyLeader)
@@ -336,11 +334,12 @@ namespace DeepCombined.TaskManager.Actions
                     !GameObjectManager.Attackers.Any(i =>
                         i.HasAura(Auras.Frog) ||
                         i.HasAura(Auras.Imp) ||
+                        i.HasAura(Auras.Odder) ||
                         i.HasAura(Auras.Chicken)),
                     !PartyManager.IsInParty || PartyManager.IsPartyLeader
                 );
                 await CommonTasks.StopMoving("Use Pomander");
-                var res = await Tasks.Common.UsePomander(Pomander.Witching);
+                bool res = await Tasks.Common.UsePomander(Pomander.Witching);
 
                 await Coroutine.Yield();
                 return res;

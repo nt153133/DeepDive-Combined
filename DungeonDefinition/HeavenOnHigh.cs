@@ -259,7 +259,7 @@ namespace DeepCombined.DungeonDefinition
             switch (obj.Type)
             {
                 case GameObjectType.Treasure:
-                    return !(DeepDungeonManager.PortalActive &&
+                    return !(HaveMainPomander() && DeepDungeonManager.PortalActive &&
                              FloorExit.location != Vector3.Zero);
                 case GameObjectType.EventObject:
                     return true;
@@ -284,6 +284,13 @@ namespace DeepCombined.DungeonDefinition
         public override string GetDDType()
         {
             return "HoH";
+        }
+        
+        private bool HaveMainPomander()
+        {
+            return DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 0 &&
+                   DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 0 &&
+                   DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 0;
         }
     }
 }

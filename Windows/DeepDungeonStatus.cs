@@ -1,4 +1,5 @@
-﻿using DeepCombined.Memory;
+﻿using DeepCombined.Helpers.Logging;
+using DeepCombined.Memory;
 using ff14bot.Managers;
 using LlamaLibrary.RemoteWindows;
 
@@ -22,11 +23,16 @@ namespace DeepCombined.Windows
 
         internal void CastMagicite()
         {
-            if (!IsOpen)
-                Open();
-
+            
             if (!IsOpen)
             {
+                //Logger.Error("Window not open");
+                Open();
+            }
+
+            if (IsOpen)
+            {
+                //Logger.Error("Send Action");
                 SendAction(2, 3, 0xC, 0x3, 0x0);
             }
         }
