@@ -8,6 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using DeepCombined.Helpers;
@@ -32,7 +33,7 @@ namespace DeepCombined.TaskManager.Actions
 
             await Coroutine.Sleep(5000);
 
-            _target = GameObjectManager.GetObjectByNPCId(EntityNames.LobbyExit);
+            _target = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.LobbyExit).OrderBy(r => r.Distance()).FirstOrDefault();
 
             Navigator.Stop();
             Navigator.Clear();

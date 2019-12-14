@@ -65,7 +65,9 @@ namespace DeepCombined.Helpers
 
         public static int GetMagiciteCount()
         {
-            return Core.Memory.Read<byte>(Director.Pointer + 5160 + 3);
+            int count = Core.Memory.Read<byte>(Director.Pointer + 5160 + 3);
+            Logger.Warn($"Magicite count={count}");
+            return count;
         }
 
         public static void CastMagicite()

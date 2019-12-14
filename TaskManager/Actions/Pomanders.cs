@@ -35,7 +35,7 @@ namespace DeepCombined.TaskManager.Actions
             if (!Constants.InDeepDungeon)
                 return false;
 
-            if (PortalPercent < 10)
+            if (PortalPercent < 20)
                 if (await BuffCurrentFloor())
                     return true;
 
