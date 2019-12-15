@@ -49,13 +49,15 @@ namespace DeepCombined.TaskManager.Actions
             // move closer plz
             if (_target.Location.Distance2D(Core.Me.Location) >= 4.4)
             {
-                Logger.Verbose("target range" + _target.Location.Distance2D(Core.Me.Location));
+                Logger.Verbose("target range " + _target.Location.Distance2D(Core.Me.Location));
 
                 Navigator.Stop();
+                Navigator.PlayerMover.MoveStop();
 
                 Navigator.PlayerMover.MoveTowards(_target.Location);
                 while (_target.Location.Distance2D(Core.Me.Location) >= 4.4)
                 {
+                    Logger.Verbose("Moving towards " + _target.Location);
                     Navigator.PlayerMover.MoveTowards(_target.Location);
                     await Coroutine.Sleep(100);
                 }
@@ -77,7 +79,8 @@ namespace DeepCombined.TaskManager.Actions
             if (_target != null && !_target.IsValid) _target = null;
             if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return;
 
-            _target = GameObjectManager.GetObjectByNPCId(EntityNames.LobbyExit);
+            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == EntityNames.LobbyExit)
+                .OrderBy(i => i.Distance2D(Core.Me.Location)).FirstOrDefault();
         }
     }
 }

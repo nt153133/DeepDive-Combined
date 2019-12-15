@@ -62,12 +62,17 @@ namespace DeepCombined.TaskManager.Actions
             //let the navigation task handle moving toward the object if we are too far away.
             if (Target.Location.Distance2D(Core.Me.Location) > 3) return false;
 
-            if (Target.Unit == null)
+            if (Target.Unit == null || !Target.Unit.IsValid)
             {
                 Poi.Clear("Target not found at location");
                 return true;
             }
-
+            
+            if (Target.Unit.NpcId == Constants.SelectedDungeon.LobbyExit)
+            {
+                Poi.Clear("This is lobby exit - clear to get lobby task to run");
+                return true;
+            }
             //let the user know we are trying to run a treasure task
             TreeRoot.StatusText = "Treasure";
             if (Target.Unit.IsValid)
