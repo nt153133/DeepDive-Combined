@@ -121,7 +121,7 @@ namespace DeepCombined.TaskManager.Actions
 
             if (location != Vector3.Zero)
             {
-                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
+                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage && !blackList.Contains(r.ObjectId))
                     .OrderBy(r => r.Distance()).FirstOrDefault();
                 if (ret != null)
                     if (Core.Me.Location.Distance2D(ret.Location) < location.Distance2D(ret.Location))
