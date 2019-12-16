@@ -15,6 +15,7 @@ using System.Linq;
 using Clio.Utilities;
 using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
+using DeepCombined.TaskManager.Actions;
 using ff14bot.Behavior;
 using ff14bot.Enums;
 using ff14bot.Helpers;
@@ -117,6 +118,11 @@ namespace DeepCombined.Providers
             if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
             {
                 Logger.Verbose($"Found {LastEntities.Count} Targets");
+                if (LastEntities.Count() == 0)
+                {
+                    if (!GameObjectManager.GameObjects.Any(r => r.NpcId == EntityNames.OfPassage && !FloorExit.blackList.Contains(r.ObjectId)))
+                        FloorExit.blackList.Clear();
+                }
                 _lastPulse = DateTime.Now;
             }
             

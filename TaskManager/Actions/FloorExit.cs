@@ -31,7 +31,7 @@ namespace DeepCombined.TaskManager.Actions
     {
         public static Vector3 location = Vector3.Zero;
         private readonly WaitTimer _moveTimer = new WaitTimer(TimeSpan.FromMinutes(5));
-        private List<uint> blackList = new List<uint>();
+        public static List<uint> blackList = new List<uint>();
 
         public static uint ExitObjectId = 0;
         private int Level;
