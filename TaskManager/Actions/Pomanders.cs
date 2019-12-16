@@ -89,11 +89,11 @@ namespace DeepCombined.TaskManager.Actions
             if (await UsePomander(Pomander.Intuition))
                 return true;
 
-            if (!Settings.Instance.SaveSteel || DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
+            if (DeepDungeonManager.GetInventoryItem(Pomander.Steel).Count > 1)
                 if (await UsePomander(Pomander.Steel, Auras.Steel))
                     return true;
 
-            if (!Settings.Instance.SaveStr || DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
+            if (DeepDungeonManager.GetInventoryItem(Pomander.Strength).Count > 1)
                 if (await UsePomander(Pomander.Strength, Auras.Strength))
                     return true;
 
