@@ -67,6 +67,7 @@ namespace DeepCombined.Forms
             startLevelBox.Checked = Settings.Instance.StartAt51;
             SilverChest.Checked = Settings.Instance.OpenSilver;
             HordeCheck.Checked = Settings.Instance.GoForTheHoard;
+            checkBox2.Checked = Settings.Instance.GoExit;
 
             checkBox1.Checked = Constants.UseJobList;
         }
@@ -161,6 +162,11 @@ namespace DeepCombined.Forms
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             Constants.UseJobList = checkBox1.Checked;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.GoExit = checkBox2.Checked;
         }
     }
 }

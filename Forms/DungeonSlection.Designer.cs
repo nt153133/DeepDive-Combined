@@ -46,6 +46,7 @@ namespace DeepCombined.Forms
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.btnClear = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // DungeonListCombo
@@ -124,7 +125,7 @@ namespace DeepCombined.Forms
             // StopCheck
             // 
             this.StopCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.StopCheck.Location = new System.Drawing.Point(174, 120);
+            this.StopCheck.Location = new System.Drawing.Point(136, 118);
             this.StopCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.StopCheck.Name = "StopCheck";
             this.StopCheck.Size = new System.Drawing.Size(111, 18);
@@ -187,7 +188,7 @@ namespace DeepCombined.Forms
             // checkBox1
             // 
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(174, 140);
+            this.checkBox1.Location = new System.Drawing.Point(136, 138);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(111, 18);
@@ -196,11 +197,24 @@ namespace DeepCombined.Forms
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.checkBox2.Location = new System.Drawing.Point(262, 118);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(66, 38);
+            this.checkBox2.TabIndex = 14;
+            this.checkBox2.Text = "GoExit";
+            this.checkBox2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
             // DungeonSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(340, 297);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.listBox1);
@@ -240,5 +254,6 @@ namespace DeepCombined.Forms
         private System.Windows.Forms.ComboBox classesCB;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

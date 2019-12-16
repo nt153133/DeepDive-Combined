@@ -8,10 +8,13 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
+using Clio.Utilities.Helpers;
 using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
 using DeepCombined.Providers;
@@ -27,6 +30,8 @@ namespace DeepCombined.TaskManager.Actions
     internal class FloorExit : ITask
     {
         public static Vector3 location = Vector3.Zero;
+        private readonly WaitTimer _moveTimer = new WaitTimer(TimeSpan.FromMinutes(5));
+        private List<uint> blackList = new List<uint>();
 
         public static uint ExitObjectId = 0;
         private int Level;
@@ -58,7 +63,32 @@ namespace DeepCombined.TaskManager.Actions
             Logger.Info($"Exit object id is {ExitObjectId}");
             await Coroutine.Wait(-1,
                 () => Core.Me.InCombat || _level != DeepDungeonManager.Level || CommonBehaviors.IsLoading ||
-                      QuestLogManager.InCutscene || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null);
+                      QuestLogManager.InCutscene || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null|| _moveTimer.IsFinished);
+            
+            if (_moveTimer.IsFinished)
+            {
+                if (Poi.Current.Unit != null)
+                {
+                    if (!Poi.Current.Unit.IsValid)
+                    {
+                        Logger.Warn("Waited 5 minutes at exit: Blacklisting current exit for 10min not valid");
+                        DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromMinutes(10),
+                            "Waited at exit(not valid) for 5 minutes");
+                    }
+                    else
+                    {
+                        Logger.Warn("Waited 5 minutes at exit: Blacklisting current exit for 5 min");
+                        DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromMinutes(5),
+                            "Waited at exit for 5 minutes");
+                    }
+                }
+                else
+                {
+                    Logger.Warn("Waited 5 minutes at exit but poi is null");
+                }
+                blackList.Add(ExitObjectId);
+            }
+            
             Poi.Clear("Floor has changed or we have entered combat");
             location = Vector3.Zero;
             Navigator.Clear();
@@ -74,8 +104,8 @@ namespace DeepCombined.TaskManager.Actions
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
                 //var ret = GameObjectManager.GetObjectByNPCId(EntityNames.FloorExit);
-                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
-                    .OrderBy(r => r.Distance()).FirstOrDefault();
+                var ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage && !blackList.Contains(r.ObjectId))
+                    .OrderBy(r => r.Distance() ).FirstOrDefault();
                 if (ret != null)
                 {
                     Level = DeepDungeonManager.Level;

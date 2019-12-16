@@ -130,16 +130,16 @@ namespace DeepCombined.DungeonDefinition
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
                             weight += 600;
-                    weight -= obj.Distance2D(PartyManager.PartyLeader.GameObject);
+                    weight -= obj.DistanceSqr(PartyManager.PartyLeader.GameObject.Location);
                 }
                 else
                 {
-                    weight -= obj.Distance2D();
+                    weight -= obj.DistanceSqr();
                 }
             }
             else
             {
-                weight -= obj.Distance2D();
+                weight -= obj.DistanceSqr();
             }
 
             switch (obj.Type)
@@ -168,20 +168,20 @@ namespace DeepCombined.DungeonDefinition
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
                             weight += 600;
-                    weight -= obj.Distance2D(PartyManager.PartyLeader.GameObject);
+                    weight -= obj.DistanceSqr(PartyManager.PartyLeader.GameObject.Location);
                 }
                 else
                 {
                     if (FloorExit.location != Vector3.Zero)
-                        weight -= Core.Me.Distance2D(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                        weight -= Core.Me.DistanceSqr(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
                 }
             }
             else
             {
                 if (FloorExit.location != Vector3.Zero)
-                    weight -= Core.Me.Distance2D(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                    weight -= Core.Me.DistanceSqr(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
                 else
-                    weight -= obj.Distance2D();
+                    weight -= obj.DistanceSqr();
             }
 
             switch (obj.Type)
