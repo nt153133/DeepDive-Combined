@@ -25,13 +25,25 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult") != null)
+            if (RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult") != null && Core.Me.IsDead)
             {
                 GameStatsManager.Died();
                 Logger.Warn("We have died...");
                 
                 DeepTracker.Died();
                 DeepTracker.EndRun(true);
+                RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult").SendAction(1, 3, uint.MaxValue);
+                await Coroutine.Sleep(250);
+                return true;
+            }
+            
+            if (RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult") != null)
+            {
+                //GameStatsManager.Died();
+                //Logger.Warn("We have died...");
+                
+                //DeepTracker.Died();
+                DeepTracker.EndRun(false);
                 RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult").SendAction(1, 3, uint.MaxValue);
                 await Coroutine.Sleep(250);
                 return true;

@@ -195,6 +195,7 @@ namespace DeepCombined.TaskManager.Actions
                     Logger.Verbose("Calling Close");
                     await Coroutine.Sleep(2000);
                     DeepDungeonResult.Instance.SendAction(1, 3, uint.MaxValue);
+                    DeepTracker.EndRun(false);
                 }
                 await Coroutine.Wait(TimeSpan.MaxValue,
                     () => DeepDungeonCombined.StopPlz ||QuestLogManager.InCutscene || NowLoading.IsVisible);
