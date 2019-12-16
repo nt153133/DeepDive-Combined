@@ -56,7 +56,7 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             await CommonTasks.StopMoving();
-
+            _moveTimer.Reset();
             var _level = DeepDungeonManager.Level;
             ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
                 .OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
@@ -115,6 +115,7 @@ namespace DeepCombined.TaskManager.Actions
                 {
                     Level = DeepDungeonManager.Level;
                     location = Vector3.Zero;
+                    blackList.Clear();
                 }
             }
 
