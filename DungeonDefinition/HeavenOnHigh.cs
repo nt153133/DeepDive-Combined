@@ -93,12 +93,13 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffBoss()
         {
-            if (DeepDungeonManager.GetMagiciteCount() >= 1)
-            {
-                Logger.Warn("Magicite >= 1");
-                DeepDungeonManager.CastMagicite();
-                await Coroutine.Sleep(500);
-            }
+            if ((PartyManager.IsInParty && PartyManager.IsPartyLeader) || !PartyManager.IsInParty)
+                if (DeepDungeonManager.GetMagiciteCount() >= 1)
+                {
+                    Logger.Warn("Magicite >= 1");
+                    DeepDungeonManager.CastMagicite();
+                    await Coroutine.Sleep(500);
+                }
 
             return await UsePomander(Pomander.Frailty);
             
@@ -106,13 +107,14 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffCurrentFloor()
         {
-            if (DeepDungeonManager.GetMagiciteCount() >= 1)
-            {
-                Logger.Warn("Magicite >= 1");
-                DeepDungeonManager.CastMagicite();
-                await Coroutine.Sleep(500);
-            }
-            
+            if ((PartyManager.IsInParty && PartyManager.IsPartyLeader) || !PartyManager.IsInParty)
+                if (DeepDungeonManager.GetMagiciteCount() >= 1)
+                {
+                    Logger.Warn("Magicite >= 1");
+                    DeepDungeonManager.CastMagicite();
+                    await Coroutine.Sleep(500);
+                }
+                
             if (DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 1)
                 return await UsePomander(Pomander.Frailty);
 
