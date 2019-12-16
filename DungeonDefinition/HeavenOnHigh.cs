@@ -83,7 +83,7 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffMe()
         {
-            if (CombatTargeting.Instance.LastEntities.Count > 4) return await UsePomander(Pomander.Petrification);
+            if ( GameObjectManager.Attackers.Count > 3) return await UsePomander(Pomander.Petrification);
 
             if (DeepDungeonManager.GetInventoryItem(Pomander.Petrification).Count == 3)
                 return await UsePomander(Pomander.Petrification);

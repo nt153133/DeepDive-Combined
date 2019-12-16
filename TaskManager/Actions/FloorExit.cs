@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Buddy.Coroutines;
 using Clio.Utilities;
 using DeepCombined.Helpers;
+using DeepCombined.Helpers.Logging;
 using DeepCombined.Providers;
 using ff14bot;
 using ff14bot.Behavior;
@@ -26,6 +27,8 @@ namespace DeepCombined.TaskManager.Actions
     internal class FloorExit : ITask
     {
         public static Vector3 location = Vector3.Zero;
+
+        public static uint ExitObjectId = 0;
         private int Level;
 
         private Poi Target => Poi.Current;
@@ -50,10 +53,14 @@ namespace DeepCombined.TaskManager.Actions
             await CommonTasks.StopMoving();
 
             var _level = DeepDungeonManager.Level;
+            ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
+                .OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
+            Logger.Info($"Exit object id is {ExitObjectId}");
             await Coroutine.Wait(-1,
                 () => Core.Me.InCombat || _level != DeepDungeonManager.Level || CommonBehaviors.IsLoading ||
-                      QuestLogManager.InCutscene);
+                      QuestLogManager.InCutscene || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null);
             Poi.Clear("Floor has changed or we have entered combat");
+            location = Vector3.Zero;
             Navigator.Clear();
             return true;
         }

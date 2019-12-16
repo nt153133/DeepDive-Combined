@@ -22,7 +22,6 @@ using ff14bot.Directors;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using ff14bot.Managers;
-using ff14bot.Navigation;
 using ff14bot.Objects;
 using ff14bot.Pathing;
 using TreeSharp;
@@ -72,6 +71,7 @@ namespace DeepCombined.TaskManager.Actions
                 {
                     await CommonTasks.StopMoving("Resting");
                     await Tasks.Common.UsePots();
+                    await Heal();
                     return true;
                 }
 
@@ -128,7 +128,7 @@ namespace DeepCombined.TaskManager.Actions
 
             //Logger.Info("======= OUT OF RANGE2");
             //we are outside of targeting range, walk to the mob
-            if ((Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach)&& !AvoidanceManager.IsRunningOutOfAvoid)
+            if ((Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach) && !AvoidanceManager.IsRunningOutOfAvoid)
             {
                 //Logger.Info("======= MoveAndStop======");
                 var dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
@@ -174,6 +174,26 @@ namespace DeepCombined.TaskManager.Actions
                 Core.Me.CurrentHealthPercent < 90)
                 if (await Tasks.Common.UsePots(true))
                     return true;
+
+
+            if (GameObjectManager.Attackers.Any(
+                i =>
+                    i.IsCasting &&
+                    i.CastingSpellId == 12174 ||
+                    i.CastingSpellId == 393))
+            {
+                Logger.Warn("Blinding Burst spell detected");
+                var npc =
+                    GameObjectManager.Attackers
+                        .FirstOrDefault(i => i.IsCasting && i.CastingSpellId == 12174|| i.CastingSpellId == 393);
+                //GameSettingsManager.FaceTargetOnAction = false;
+                while (npc != null && npc.IsCasting)
+                {
+                    MovementManager.SetFacing(npc.Heading);
+                    await Coroutine.Sleep(100);
+                }
+                // GameSettingsManager.FaceTargetOnAction = true;
+            }
 
             if (Core.Me.InRealCombat())
             {
@@ -339,7 +359,7 @@ namespace DeepCombined.TaskManager.Actions
                     !PartyManager.IsInParty || PartyManager.IsPartyLeader
                 );
                 await CommonTasks.StopMoving("Use Pomander");
-                bool res = await Tasks.Common.UsePomander(Pomander.Witching);
+                var res = await Tasks.Common.UsePomander(Pomander.Witching);
 
                 await Coroutine.Yield();
                 return res;

@@ -121,6 +121,7 @@ namespace DeepCombined
         internal const uint HpDown = 1089;
         internal const uint DamageDown = 1090;
         internal const uint Amnesia = 1092;
+        internal const uint UnMagicked = 1549;
 
         internal const uint ItemPenalty = 1094;
         internal const uint SprintPenalty = 1095;

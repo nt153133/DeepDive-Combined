@@ -113,9 +113,9 @@ namespace DeepCombined.TaskManager.Actions
             //do not buff the floor if there is a boss...
             if (DeepDungeonManager.BossFloor) return false;
 
-            if (PartyManager.IsPartyLeader &&
+            if ((!PartyManager.IsInParty || PartyManager.IsPartyLeader) &&
                 (Core.Me.HasAura(Auras.Amnesia) || Core.Me.HasAura(Auras.ItemPenalty) ||
-                 Core.Me.HasAura(Auras.NoAutoHeal)))
+                 Core.Me.HasAura(Auras.NoAutoHeal)) || (DeepDungeonManager.GetMagiciteCount() > 0 && Core.Me.HasAura(Auras.UnMagicked)))
                 await UsePomander(Pomander.Serenity);
 
             if (await Traps())
