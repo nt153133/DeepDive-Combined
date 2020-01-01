@@ -135,6 +135,7 @@ namespace DeepCombined.DungeonDefinition
 
                 Logger.Info("Party Lust status: {0} :: {1} :: {2}", !lust, !lustFound, PartyManager.IsPartyLeader);
                 if (!lust && !lustFound) lust = PartyManager.IsPartyLeader;
+                if (!PartyManager.IsPartyLeader && itm.Count > 0) lust = true;
             }
             else
             {

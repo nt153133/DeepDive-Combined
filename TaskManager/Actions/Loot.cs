@@ -259,7 +259,7 @@ namespace DeepCombined.TaskManager.Actions
             var org = Target.Unit;
 
             //wait for the chest or for us to get into combat.
-            await Coroutine.Wait(TimeSpan.FromSeconds(5),
+            await Coroutine.Wait(TimeSpan.FromSeconds(10),
                 () =>
                     Core.Me.InCombat || GameObjectManager.NumberOfAttackers > 0 || DeepDungeonCombined.StopPlz ||
                     GameObjectManager.GetObjectsOfType<EventObject>().Any(i => i.NpcId == EntityNames.BandedCoffer)

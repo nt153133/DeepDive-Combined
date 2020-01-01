@@ -139,7 +139,7 @@ namespace DeepCombined.DungeonDefinition
             {
                 case GameObjectType.Treasure:
                     return !(HaveMainPomander() && DeepDungeonManager.PortalActive &&
-                             FloorExit.location != Vector3.Zero);
+                             FloorExit.location != Vector3.Zero && obj.NpcId != EntityNames.BandedCoffer);
                 case GameObjectType.EventObject:
                     return true;
                 case GameObjectType.BattleNpc:

@@ -44,7 +44,7 @@ namespace DeepCombined.Helpers.Logging
                 
                 Constants.PerformanceStats[_blockName].Add(_stopwatch.Elapsed.TotalMilliseconds);
 
-                if (_stopwatch.Elapsed.TotalMilliseconds >= 5)
+                if (_stopwatch.Elapsed.TotalMilliseconds >= 10)
                     Logger.Error("[Performance] Execution of \"{0}\" took {1:00.00000}ms.", _blockName,
                         _stopwatch.Elapsed.TotalMilliseconds); 
             }
