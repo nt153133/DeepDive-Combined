@@ -30,7 +30,7 @@ namespace DeepCombined.TaskManager.Actions
     internal class FloorExit : ITask
     {
         public static Vector3 location = Vector3.Zero;
-        private readonly WaitTimer _moveTimer = new WaitTimer(TimeSpan.FromMinutes(5));
+        private readonly WaitTimer _moveTimer = new WaitTimer(TimeSpan.FromMinutes(1));
         public static List<uint> blackList = new List<uint>();
 
         public static uint ExitObjectId = 0;
@@ -58,35 +58,40 @@ namespace DeepCombined.TaskManager.Actions
             await CommonTasks.StopMoving();
             _moveTimer.Reset();
             var _level = DeepDungeonManager.Level;
-            ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage)
-                .OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
+            
+            if (!GameObjectManager.GameObjects.Any(r => r.NpcId == EntityNames.OfPassage))
+                blackList.Clear();
+            
+            ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage).OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
             Logger.Info($"Exit object id is {ExitObjectId}");
             await Coroutine.Wait(-1,
                 () => Core.Me.InCombat || _level != DeepDungeonManager.Level || CommonBehaviors.IsLoading ||
-                      QuestLogManager.InCutscene || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null|| _moveTimer.IsFinished);
+                      QuestLogManager.InCutscene || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null|| _moveTimer.IsFinished || !GameObjectManager.GetObjectByObjectId(ExitObjectId).IsVisible);
             
-            if (_moveTimer.IsFinished)
+            if (_moveTimer.IsFinished || GameObjectManager.GetObjectByObjectId(ExitObjectId) == null || !GameObjectManager.GetObjectByObjectId(ExitObjectId).IsVisible)
             {
                 if (Poi.Current.Unit != null)
                 {
                     if (!Poi.Current.Unit.IsValid)
                     {
-                        Logger.Warn("Waited 5 minutes at exit: Blacklisting current exit for 10min not valid");
+                        Logger.Warn("Waited 2 minutes at exit: Blacklisting current exit for 10min not valid");
                         DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromMinutes(10),
                             "Waited at exit(not valid) for 5 minutes");
                     }
                     else
                     {
-                        Logger.Warn("Waited 5 minutes at exit: Blacklisting current exit for 5 min");
+                        Logger.Warn("Waited 2 minutes at exit: Blacklisting current exit for 5 min");
                         DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromMinutes(5),
                             "Waited at exit for 5 minutes");
                     }
                 }
                 else
                 {
-                    Logger.Warn("Waited 5 minutes at exit but poi is null");
+                    Logger.Warn("Waited 2 minutes at exit but poi is null");
                 }
-                blackList.Add(ExitObjectId);
+                
+                if (PartyManager.IsInParty && PartyManager.AllMembers.All(i=> i.BattleCharacter.Location.Distance2D(GameObjectManager.GetObjectByObjectId(ExitObjectId).Location)<10))
+                    blackList.Add(ExitObjectId);
             }
             
             Poi.Clear("Floor has changed or we have entered combat");

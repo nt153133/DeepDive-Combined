@@ -244,9 +244,9 @@ Aetherpool Armor: +{1}
                     return;
 
                 Logger.Warn("Everyone is now in the zone");
-                for (var i = 0; i < 6; i++)
+                for (var i = 0; i < 3; i++)
                 {
-                    Logger.Warn("Giving them {0} seconds to do what they need to at the NPC", 60 - i * 10);
+                    Logger.Warn("Giving them {0} seconds to do what they need to at the NPC", 30 - i * 10);
                     await Coroutine.Sleep(TimeSpan.FromSeconds(10));
                     if (DeepDungeonCombined.StopPlz)
                         return;

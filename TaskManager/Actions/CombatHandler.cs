@@ -22,6 +22,7 @@ using ff14bot.Directors;
 using ff14bot.Enums;
 using ff14bot.Helpers;
 using ff14bot.Managers;
+using ff14bot.Navigation;
 using ff14bot.Objects;
 using ff14bot.Pathing;
 using TreeSharp;
@@ -193,6 +194,49 @@ namespace DeepCombined.TaskManager.Actions
                     await Coroutine.Sleep(100);
                 }
                 // GameSettingsManager.FaceTargetOnAction = true;
+            }
+            
+            if (GameObjectManager.Attackers.Any(
+                i =>
+                    i.IsCasting &&
+                    i.CastingSpellId == 6351 &&
+                    i.NpcId == 7268))
+            {
+                BattleCharacter npc =
+                    GameObjectManager.Attackers
+                        .FirstOrDefault(i => i.IsCasting && i.NpcId == 7268 && i.CastingSpellId == 6351);
+                while (npc != null && npc.IsCasting)
+                {
+                    MovementManager.SetFacing(npc.Heading);
+                    await Coroutine.Sleep(100);
+                }
+            }
+
+            if (GameObjectManager.Attackers.Any(
+                i =>
+                    i.IsCasting &&
+                    i.CastingSpellId == 11290 &&
+                    i.NpcId == 7478))
+            {
+                BattleCharacter npc =
+                    GameObjectManager.Attackers
+                        .FirstOrDefault(i => i.IsCasting && i.NpcId == 7478 && i.CastingSpellId == 11290);
+
+
+                while (npc != null && npc.IsCasting && npc.CastingSpellId == 11290)
+                {
+                    Clio.Utilities.Vector3 vector3 = new Clio.Utilities.Vector3(-299.9771f, -0.01531982f, -320.4548f);
+                    float dist = Core.Player.Location.Distance(vector3);
+                    Navigator.PlayerMover.MoveTowards(vector3);
+                    while (vector3.Distance2D(Core.Me.Location) >= 4.4)
+                    {
+                        Navigator.PlayerMover.MoveTowards(vector3);
+                        await Coroutine.Sleep(100);
+                    }
+
+                    Navigator.PlayerMover.MoveStop();
+                    await Coroutine.Sleep(9000);
+                }
             }
 
             if (Core.Me.InRealCombat())

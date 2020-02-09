@@ -155,6 +155,13 @@ namespace DeepCombined.Providers
         {
             var updated = false;
             var me = Core.Me.Location;
+
+            if (_walls == null)
+                return false;
+            
+            if (_walls.Count < 1)
+                return false;
+            
             foreach (var id in _walls.Where(i => i.Value[0].Distance2D(Core.Me.Location) < 50 && !Walls.ContainsKey(i.Key) && !activeWalls.Contains(i.Key)))
             {
                 var wall1 = id.Value[1];
