@@ -153,9 +153,11 @@ namespace DeepCombined.Forms
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
+            //listBox1.Items.Clear();
             Constants.ClassLevelTargets = null;
             Constants.ClassLevelTargets = new BindingList<ClassLevelTarget>();
+            listBox1.DataSource = Constants.ClassLevelTargets;
+            listBox1.ResetBindings();
             checkBox1.Checked = false;
         }
 
