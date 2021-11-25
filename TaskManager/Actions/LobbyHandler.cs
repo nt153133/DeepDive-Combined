@@ -29,7 +29,10 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return false;
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId)
+            {
+                return false;
+            }
 
             await Coroutine.Sleep(5000);
 
@@ -76,8 +79,15 @@ namespace DeepCombined.TaskManager.Actions
 
         public void Tick()
         {
-            if (_target != null && !_target.IsValid) _target = null;
-            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return;
+            if (_target != null && !_target.IsValid)
+            {
+                _target = null;
+            }
+
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId)
+            {
+                return;
+            }
 
             _target = GameObjectManager.GameObjects.Where(i => i.NpcId == EntityNames.LobbyExit)
                 .OrderBy(i => i.Distance2D(Core.Me.Location)).FirstOrDefault();

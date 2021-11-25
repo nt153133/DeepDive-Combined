@@ -27,9 +27,9 @@ namespace DeepCombined
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var selected = comboBox1.SelectedItem;
+            object selected = comboBox1.SelectedItem;
 
-            foreach (var id in (selected as IDeepDungeon).DeepDungeonRawIds)
+            foreach (uint id in (selected as IDeepDungeon).DeepDungeonRawIds)
             {
                 listBox1.Items.Add(id);
             }
@@ -39,14 +39,14 @@ namespace DeepCombined
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var selected = comboBox1.SelectedItem;
+            object selected = comboBox1.SelectedItem;
             //Constants.deepListType.First(i => i.Index == ((IDeepDungeon) comboBox1.SelectedItem).Index);//(IDeepDungeon) comboBox1.SelectedItem;
 
             richTextBox1.Text = selected.ToString();
 
             listBox2.Items.Clear();
 
-            foreach (var floor in (selected as IDeepDungeon).Floors)
+            foreach (FloorSetting floor in (selected as IDeepDungeon).Floors)
             {
                 listBox2.Items.Add(floor);
             }

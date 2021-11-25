@@ -9,7 +9,6 @@ Original work done by zzi, contributions by Omninewb, Freiheit, Kayla D'orden an
                                                                                  */
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Documents;
 using Clio.Utilities;
 using DeepCombined.DungeonDefinition.Base;
 using DeepCombined.Helpers;
@@ -34,8 +33,10 @@ namespace DeepCombined.DungeonDefinition
         public override List<GameObject> GetObjectsByWeight()
         {
             if (DeepDungeonManager.PortalActive)
+            {
                 return StartList().OrderByDescending(SortComplete)
                     .ToList();
+            }
 
             return StartList()
                 .OrderByDescending(Sort)
@@ -44,15 +45,20 @@ namespace DeepCombined.DungeonDefinition
 
         public override float Sort(GameObject obj)
         {
-            var weight = 150f;
+            float weight = 150f;
 
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader && !DeepDungeonManager.BossFloor)
             {
                 if (PartyManager.PartyLeader.IsInObjectManager && PartyManager.PartyLeader.CurrentHealth > 0)
                 {
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
+                    {
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
+                        {
                             weight += 600;
+                        }
+                    }
+
                     weight -= obj.Distance2D(PartyManager.PartyLeader.GameObject);
                 }
                 else
@@ -70,7 +76,10 @@ namespace DeepCombined.DungeonDefinition
                 case GameObjectType.BattleNpc:
                     weight /= 2;
                     if ((obj as BattleCharacter).IsTargetingMyPartyMember())
+                    {
                         weight += 100;
+                    }
+
                     break;
                 case GameObjectType.Treasure:
                     //weight += 10;
@@ -82,29 +91,40 @@ namespace DeepCombined.DungeonDefinition
 
         private float SortComplete(GameObject obj)
         {
-            var weight = 150f;
+            float weight = 150f;
 
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader && !DeepDungeonManager.BossFloor)
             {
                 if (PartyManager.PartyLeader.IsInObjectManager && PartyManager.PartyLeader.CurrentHealth > 0)
                 {
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
+                    {
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
+                        {
                             weight += 600;
+                        }
+                    }
+
                     weight -= obj.Distance2D(PartyManager.PartyLeader.GameObject);
                 }
                 else
                 {
                     if (FloorExit.location != Vector3.Zero)
+                    {
                         weight -= Core.Me.Distance2D(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                    }
                 }
             }
             else
             {
                 if (FloorExit.location != Vector3.Zero)
+                {
                     weight -= Core.Me.Distance2D(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                }
                 else
+                {
                     weight -= obj.Distance2D();
+                }
             }
 
             switch (obj.Type)
@@ -120,7 +140,9 @@ namespace DeepCombined.DungeonDefinition
             }
 
             if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            {
                 weight += 5;
+            }
 
             return weight;
         }
@@ -130,10 +152,14 @@ namespace DeepCombined.DungeonDefinition
             //Blacklists
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                 Constants.IgnoreEntity.Contains(obj.NpcId))
+            {
                 return false;
+            }
 
             if (obj.Location == Vector3.Zero)
+            {
                 return false;
+            }
 
             switch (obj.Type)
             {
@@ -143,26 +169,32 @@ namespace DeepCombined.DungeonDefinition
                 case GameObjectType.EventObject:
                     return true;
                 case GameObjectType.BattleNpc:
-                    return !((BattleCharacter) obj).IsDead;
+                    return !((BattleCharacter)obj).IsDead;
                 default:
                     return false;
             }
         }
-        
+
         public List<GameObject> StartList()
         {
-            var result = new List<GameObject>();
-            foreach (var obj in GameObjectManager.GameObjects)
+            List<GameObject> result = new List<GameObject>();
+            foreach (GameObject obj in GameObjectManager.GameObjects)
             {
                 if (obj.Location == Vector3.Zero)
+                {
                     continue;
-                
+                }
+
                 if (!obj.IsValid || !obj.IsVisible)
+                {
                     continue;
+                }
 
                 if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                     Constants.IgnoreEntity.Contains(obj.NpcId))
+                {
                     continue;
+                }
 
                 switch (obj.Type)
                 {
@@ -172,19 +204,27 @@ namespace DeepCombined.DungeonDefinition
                             result.Add(obj);
                             break;
                         }
-                        
+
                         if (!(HaveMainPomander() && DeepDungeonManager.PortalActive && FloorExit.location != Vector3.Zero))
+                        {
                             result.Add(obj);
-                        
+                        }
+
                         break;
                     case GameObjectType.EventObject:
                         result.Add(obj);
                         break;
                     case GameObjectType.BattleNpc:
-                        if (DeepDungeonManager.PortalActive && !((BattleCharacter) obj).InCombat && FloorExit.location != Vector3.Zero)
+                        if (DeepDungeonManager.PortalActive && !((BattleCharacter)obj).InCombat && FloorExit.location != Vector3.Zero)
+                        {
                             continue;
-                        if (!((BattleCharacter) obj).IsDead)
+                        }
+
+                        if (!((BattleCharacter)obj).IsDead)
+                        {
                             result.Add(obj);
+                        }
+
                         break;
                     default:
                         continue;

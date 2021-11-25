@@ -48,7 +48,7 @@ namespace DeepCombined.Helpers
         public static DDInventoryItem GetInventoryItem(Pomander pom)
         {
             //return Director.DeepDungeonInventory[(byte) pom - 1];
-            return _inventory[(byte) Constants.PomanderInventorySlot(pom)];
+            return _inventory[(byte)Constants.PomanderInventorySlot(pom)];
         }
 
         public static void UsePomander(Pomander pom)
@@ -70,8 +70,11 @@ namespace DeepCombined.Helpers
 
         public static void CastMagicite()
         {
-            if (GetMagiciteCount() < 1) return;
-            
+            if (GetMagiciteCount() < 1)
+            {
+                return;
+            }
+
             Logger.Warn("Casting Magicite");
             DeepDungeonStatus.Instance.CastMagicite();
         }

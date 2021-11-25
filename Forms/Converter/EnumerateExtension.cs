@@ -27,14 +27,18 @@ namespace DeepCombined.Forms.Converter
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (Type == null) throw new InvalidOperationException(Resources.EnumTypeNotSet);
+            if (Type == null)
+            {
+                throw new InvalidOperationException(Resources.EnumTypeNotSet);
+            }
 
-            var actualType = Nullable.GetUnderlyingType(Type) ?? Type;
+            Type actualType = Nullable.GetUnderlyingType(Type) ?? Type;
             TypeConverter typeConverter;
             ICollection standardValues;
 
             if ((typeConverter = TypeDescriptor.GetConverter(actualType)) == null ||
                 (standardValues = typeConverter.GetStandardValues(serviceProvider as ITypeDescriptorContext)) == null)
+            {
                 throw new ArgumentException(
                     string.Format(
                         CultureInfo.CurrentCulture,
@@ -43,29 +47,33 @@ namespace DeepCombined.Forms.Converter
                     ),
                     "value"
                 );
+            }
 
-            var items = Type == actualType
+            object[] items = Type == actualType
                 ? new object[standardValues.Count]
                 : new object[standardValues.Count + 1];
-            var index = 0;
+            int index = 0;
 
             if (Converter == null)
             {
-                foreach (var standardValue in standardValues)
+                foreach (object standardValue in standardValues)
                 {
                     items[index++] = standardValue;
                 }
             }
             else
             {
-                var culture = ConverterCulture ?? GetCulture(serviceProvider);
+                CultureInfo culture = ConverterCulture ?? GetCulture(serviceProvider);
 
-                foreach (var standardValue in standardValues)
+                foreach (object standardValue in standardValues)
                 {
                     items[index++] = Converter.Convert(standardValue, typeof(object), ConverterParameter, culture);
                 }
 
-                if (Type != actualType) items[index] = Converter.Convert(null, typeof(object), ConverterParameter, culture);
+                if (Type != actualType)
+                {
+                    items[index] = Converter.Convert(null, typeof(object), ConverterParameter, culture);
+                }
             }
 
             return items;
@@ -79,16 +87,15 @@ namespace DeepCombined.Forms.Converter
         {
             if (serviceProvider != null)
             {
-                var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-
-                if (provideValueTarget != null)
+                if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget)
                 {
-                    var targetObject = provideValueTarget.TargetObject as DependencyObject;
                     XmlLanguage language;
 
-                    if ((targetObject = provideValueTarget.TargetObject as DependencyObject) != null &&
-                        (language = (XmlLanguage) targetObject.GetValue(FrameworkElement.LanguageProperty)) != null)
+                    if (provideValueTarget.TargetObject is DependencyObject targetObject &&
+                        (language = (XmlLanguage)targetObject.GetValue(FrameworkElement.LanguageProperty)) != null)
+                    {
                         return language.GetSpecificCulture();
+                    }
                 }
             }
 
@@ -109,9 +116,7 @@ namespace DeepCombined.Forms.Converter
 
         public EnumerateExtension(Type type)
         {
-            if (type == null) throw new ArgumentNullException("type");
-
-            Type = type;
+            Type = type ?? throw new ArgumentNullException("type");
         }
 
         #endregion

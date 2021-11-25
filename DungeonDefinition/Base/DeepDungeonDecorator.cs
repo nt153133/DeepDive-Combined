@@ -32,7 +32,7 @@ namespace DeepCombined.DungeonDefinition.Base
             UnlockQuest = deepDungeon.UnlockQuest;
             Npc = deepDungeon.Npc;
             Floors = deepDungeon.Floors;
-            DisplayName = DataManager.ZoneNameResults[(uint) LobbyId].CurrentLocaleName;
+            DisplayName = DataManager.ZoneNameResults[(uint)LobbyId].CurrentLocaleName;
             //DeepDungeonRawIds = GetRawMapIds();
         }
 
@@ -48,14 +48,11 @@ namespace DeepCombined.DungeonDefinition.Base
 
         //DeepDive Used Properties
 
-        public uint EntranceAetheryte => (ushort) Npc.AetheryteId;
-        public uint CaptainNpcId => (uint) Npc.NpcId;
+        public uint EntranceAetheryte => (ushort)Npc.AetheryteId;
+        public uint CaptainNpcId => (uint)Npc.NpcId;
         public Vector3 CaptainNpcPosition => Npc.LocationVector;
 
-        public uint[] DeepDungeonRawIds
-        {
-            get { return Floors.Select(i => (uint) i.MapId).ToArray(); }
-        }
+        public uint[] DeepDungeonRawIds => Floors.Select(i => (uint)i.MapId).ToArray();
 
 
         public virtual string DisplayName { get; }
@@ -94,19 +91,28 @@ namespace DeepCombined.DungeonDefinition.Base
 
         public virtual float Sort(GameObject obj)
         {
-            var weight = 100f;
+            float weight = 100f;
 
             weight -= obj.Distance2D();
 
-            if (obj.Type == GameObjectType.BattleNpc) return weight / 2;
+            if (obj.Type == GameObjectType.BattleNpc)
+            {
+                return weight / 2;
+            }
 
             if (obj.NpcId == EntityNames.BandedCoffer)
+            {
                 weight += 500;
+            }
 
             if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            {
                 weight += 5;
+            }
             else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.OfPassage && PartyManager.IsInParty)
+            {
                 weight -= 10;
+            }
 
             return weight;
         }
@@ -114,19 +120,23 @@ namespace DeepCombined.DungeonDefinition.Base
         public virtual bool Filter(GameObject obj)
         {
             if (obj.Location == Vector3.Zero)
+            {
                 return false;
-
+            }
 
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) || Constants.IgnoreEntity.Contains(obj.NpcId))
+            {
                 return false;
-
+            }
 
             if (obj.Type == GameObjectType.BattleNpc)
             {
                 if (DeepDungeonManager.PortalActive)
+                {
                     return false;
+                }
 
-                var battleCharacter = (BattleCharacter) obj;
+                BattleCharacter battleCharacter = (BattleCharacter)obj;
                 return !battleCharacter.IsDead;
             }
 
@@ -135,34 +145,34 @@ namespace DeepCombined.DungeonDefinition.Base
 
         public virtual async Task<bool> BuffMe()
         {
-            return false;
+            return await Task.FromResult(false);
         }
 
         public virtual async Task<bool> BuffBoss()
         {
-            return false;
+            return await Task.FromResult(false);
         }
 
         public virtual async Task<bool> BuffCurrentFloor()
         {
-            return false;
+            return await Task.FromResult(false);
         }
 
         public virtual async Task<bool> BuffNextFloor()
         {
-            return false;
+            return await Task.FromResult(false);
         }
 
         protected virtual uint[] GetRawMapIds()
         {
-            var test = Floors.Select(i => (uint) i.MapId);
+            IEnumerable<uint> test = Floors.Select(i => (uint)i.MapId);
 
             return test.ToArray();
         }
 
         public override string ToString()
         {
-            var output =
+            string output =
                 $"{NameWithoutArticle} ({Index}) is {GetDDType()}\n" +
                 $"Lobby: {LobbyId}\n" +
                 $"UnlockQuest: {UnlockQuest}\n" +

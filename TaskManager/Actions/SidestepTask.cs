@@ -34,7 +34,7 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            var supportsCapabilities = RoutineManager.Current.SupportedCapabilities != CapabilityFlags.None;
+            bool supportsCapabilities = RoutineManager.Current.SupportedCapabilities != CapabilityFlags.None;
 
             if (AvoidanceManager.IsRunningOutOfAvoid && Core.Me.IsCasting)
             {
@@ -43,22 +43,27 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             if (AvoidanceManager.IsRunningOutOfAvoid && !supportsCapabilities)
+            {
                 return true;
-            var poiType = Poi.Current.Type;
+            }
+
+            PoiType poiType = Poi.Current.Type;
 
             // taken from HB
             // Special case: Bot will do a lot of fast stop n go when avoiding a mob that moves slowly and trying to
             // do something near the mob. To fix, a delay is added to slow down the 'Stop n go' behavior
             if (poiType == PoiType.Collect || poiType == PoiType.Gather || poiType == PoiType.Hotspot)
+            {
                 if (Core.Me.InCombat && AvoidanceManager.Avoids.Any(o => o.IsPointInAvoid(Poi.Current.Location)))
                 {
                     TreeRoot.StatusText = "Waiting for 'avoid' to move before attempting to interact " +
                                           Poi.Current.Name;
-                    var randomWaitTime = new Random().Next(3000, 8000);
+                    int randomWaitTime = new Random().Next(3000, 8000);
                     await Coroutine.Wait(randomWaitTime,
                         () => Core.Me.InCombat ||
                               !AvoidanceManager.Avoids.Any(o => o.IsPointInAvoid(Poi.Current.Location)));
                 }
+            }
 
             return false;
         }

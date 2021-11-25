@@ -18,17 +18,22 @@ namespace DeepCombined.Helpers
     {
         internal static bool WaitForAura(this GameObject obj, uint auraId, bool castbyme = false, double timeLeft = 0.0, bool checkTime = true)
         {
-            var character = obj as Character;
+            Character character = obj as Character;
             if (character != null && character.IsValid)
             {
-                var source = castbyme
+                System.Collections.Generic.IEnumerable<Aura> source = castbyme
                     ? from r in character.CharacterAuras
                       where r.CasterId == Core.Me.ObjectId && r.Id == auraId
                       select r
                     : character.CharacterAuras.Where(r => r.Id == auraId);
                 if (!checkTime)
+                {
                     if (source.Any(aura => aura.TimespanLeft.TotalMilliseconds < 0.0))
+                    {
                         return false;
+                    }
+                }
+
                 return source.Any(aura => aura.TimespanLeft.TotalMilliseconds >= timeLeft);
             }
 
@@ -37,10 +42,12 @@ namespace DeepCombined.Helpers
 
         internal static bool HasAnyAura(this Character c, params uint[] auras)
         {
-            foreach (var id in auras)
+            foreach (uint id in auras)
             {
                 if (c.HasAura(id))
+                {
                     return true;
+                }
             }
 
             return false;

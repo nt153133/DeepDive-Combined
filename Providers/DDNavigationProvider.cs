@@ -269,7 +269,7 @@ namespace DeepCombined.Providers
 
                 v7_location = v29 + 0xc;
                 v7 = Core.Memory.ReadArray<short>(v7_location, 5);
-                v29 = v29 + 0xc;
+                v29 += 0xc;
             }
 
             //_wallcache = wallset;

@@ -30,16 +30,32 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (!HasTrapAura) return false;
-            if (CombatTargeting.Instance.FirstEntity == null) return false;
+            if (!HasTrapAura)
+            {
+                return false;
+            }
 
-            if (Core.Me.InRealCombat()) return false;
+            if (CombatTargeting.Instance.FirstEntity == null)
+            {
+                return false;
+            }
+
+            if (Core.Me.InRealCombat())
+            {
+                return false;
+            }
+
             TreeRoot.StatusText = "Waiting on Trap Auras";
             Logger.Info("Trap auras detected");
 
             if (Core.Me.HasAura(Auras.Silence) && Settings.Instance.UseEchoDrops)
+            {
                 if (await Tasks.Common.UseItemById(Items.EchoDrops))
+                {
                     return true;
+                }
+            }
+
             Navigator.Clear();
 
             return true;

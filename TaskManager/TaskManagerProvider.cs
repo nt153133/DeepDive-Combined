@@ -27,7 +27,7 @@ namespace DeepCombined.TaskManager
     {
         public void Tick()
         {
-            foreach (var x in this)
+            foreach (ITask x in this)
             {
                 try
                 {
@@ -42,12 +42,14 @@ namespace DeepCombined.TaskManager
 
         public async Task<bool> Run()
         {
-            foreach (var x in this)
+            foreach (ITask x in this)
             {
                 try
                 {
                     if (await x.Run())
+                    {
                         return true;
+                    }
                 }
                 catch (Exception ex)
                 {

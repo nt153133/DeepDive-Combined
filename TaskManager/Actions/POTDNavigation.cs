@@ -37,22 +37,28 @@ namespace DeepCombined.TaskManager.Actions
         public async Task<bool> Run()
         {
             if (!DutyManager.InInstance || !Constants.InDeepDungeon)
+            {
                 return false;
+            }
 
             if (Target == null)
+            {
                 return false;
+            }
 
             if (Target.Location == Vector3.Zero)
+            {
                 return true;
+            }
 
             if (Navigator.InPosition(Core.Me.Location, Target.Location, 3f) &&
-                Target.Type == (PoiType) PoiTypes.ExplorePOI)
+                Target.Type == (PoiType)PoiTypes.ExplorePOI)
             {
                 Poi.Clear("We have reached our destination");
                 return true;
             }
 
-            var status =
+            string status =
                 $"Current Level {DeepDungeonManager.Level}. Level Status: {PortalPercent}% \"Done\": {DDTargetingProvider.Instance.LevelComplete}";
             TreeRoot.StatusText = status;
 
@@ -63,7 +69,7 @@ namespace DeepCombined.TaskManager.Actions
                 return true;
             }
 
-            var res = await CommonTasks.MoveAndStop(
+            bool res = await CommonTasks.MoveAndStop(
                 new MoveToParameters(Target.Location, "Moving toward POTD Objective:" + Target.Name), 1.5f);
 
             //if (Target.Unit != null)
@@ -83,7 +89,9 @@ namespace DeepCombined.TaskManager.Actions
         public void Tick()
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
+            {
                 return;
+            }
 
             if (level != DeepDungeonManager.Level)
             {
@@ -94,12 +102,15 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             if (!SafeSpots.Any(i => i.Distance2D(Core.Me.Location) < 5))
+            {
                 SafeSpots.Add(Core.Me.Location);
-
+            }
 
             if ((Poi.Current == null || Poi.Current.Type == PoiType.None) && !DeepDungeonManager.BossFloor)
+            {
                 Poi.Current = new Poi(SafeSpots.OrderByDescending(i => i.Distance2D(Core.Me.Location)).First(),
-                    (PoiType) PoiTypes.ExplorePOI);
+                    (PoiType)PoiTypes.ExplorePOI);
+            }
         }
     }
 }

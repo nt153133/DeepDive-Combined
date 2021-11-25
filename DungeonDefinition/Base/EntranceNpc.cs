@@ -35,16 +35,16 @@ namespace DeepCombined.DungeonDefinition.Base
 
         [field: JsonIgnore] public Vector3 LocationVector { get; }
 
-/*
-        public EntranceNpc(MappyNPC npc, int aetheryteId)
-        {
-            Location = new []{npc.CoordinateX, npc.CoordinateZ, npc.CoordinateY};
-            NpcId = npc.ENpcResidentID;
-            Name = npc.Name.Replace('"',' ').Trim();
-            MapId = npc.MapTerritoryID;
-            AetheryteId = aetheryteId;
-        }
-*/
+        /*
+                public EntranceNpc(MappyNPC npc, int aetheryteId)
+                {
+                    Location = new []{npc.CoordinateX, npc.CoordinateZ, npc.CoordinateY};
+                    NpcId = npc.ENpcResidentID;
+                    Name = npc.Name.Replace('"',' ').Trim();
+                    MapId = npc.MapTerritoryID;
+                    AetheryteId = aetheryteId;
+                }
+        */
         public override string ToString()
         {
             return $"NPC:\n\tNpcId: {NpcId}\n\tName: {Name}\n\tZoneId: {MapId}\n\tAetheryteId: {AetheryteId}\n\tLocation: {LocationVector}";

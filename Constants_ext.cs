@@ -19,7 +19,7 @@ namespace DeepCombined
         public static List<IDeepDungeon> DeepListType;
 
         public static IDeepDungeon SelectedDungeon;
-        
+
         public static BindingList<ClassLevelTarget> ClassLevelTargets = new BindingList<ClassLevelTarget>();
 
         public static bool UseJobList = false;
@@ -83,9 +83,9 @@ namespace DeepCombined
             {ClassJobType.Dancer, ClassJobType.Dancer}
         };
 
-        public static Dictionary<GearSet,int> GearSetLevels()
+        public static Dictionary<GearSet, int> GearSetLevels()
         {
-            Dictionary<GearSet,int> gearsets = GearsetManager.GearSets.Where(i => i.InUse).ToDictionary<GearSet, GearSet, int>(gs => gs, gs => Core.Me.Levels[ClassMap[gs.Class]]);
+            Dictionary<GearSet, int> gearsets = GearsetManager.GearSets.Where(i => i.InUse).ToDictionary<GearSet, GearSet, int>(gs => gs, gs => Core.Me.Levels[ClassMap[gs.Class]]);
             return gearsets;
         }
 
@@ -97,10 +97,10 @@ namespace DeepCombined
 
         public static void LoadList()
         {
-            var deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
+            List<DeepDungeonData> deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
 
             DeepListType = new List<IDeepDungeon>();
-            foreach (var dd in deepList)
+            foreach (DeepDungeonData dd in deepList)
             {
                 switch (GetDDEnum(dd.Index))
                 {
@@ -128,9 +128,12 @@ namespace DeepCombined
         {
             switch (index)
             {
-                case 0: return DeepDungeonType.Blank;
-                case 1: return DeepDungeonType.PotD;
-                case 2: return DeepDungeonType.HoH;
+                case 0:
+                    return DeepDungeonType.Blank;
+                case 1:
+                    return DeepDungeonType.PotD;
+                case 2:
+                    return DeepDungeonType.HoH;
 
                 default:
                     return DeepDungeonType.Unknown;
@@ -139,7 +142,7 @@ namespace DeepCombined
 
         public static int PomanderInventorySlot(Pomander p)
         {
-            return SelectedDungeon.PomanderMapping[(int) p];
+            return SelectedDungeon.PomanderMapping[(int)p];
         }
 
         public static bool IsExitObject(GameObject obj)

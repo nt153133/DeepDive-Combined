@@ -58,13 +58,19 @@ namespace DeepCombined.TaskManager.Actions
         public async Task<bool> Run()
         {
             if (!DutyManager.InInstance || DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+            {
                 return false;
+            }
             //dont try and do combat outside of the dungeon plz
             if (!Constants.InDeepDungeon)
+            {
                 return false;
+            }
 
             if (AvoidanceManager.IsRunningOutOfAvoid)
+            {
                 return true;
+            }
 
             if (!Core.Me.InRealCombat())
             {
@@ -77,7 +83,9 @@ namespace DeepCombined.TaskManager.Actions
                 }
 
                 if (await PreCombatBuff())
+                {
                     return true;
+                }
 
 
                 // For floors with auto heal penalty or item penalty we will engage normally until we hit
@@ -103,14 +111,17 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             if (Poi.Current == null || Poi.Current.Type != PoiType.Kill || Poi.Current.BattleCharacter == null)
+            {
                 return false;
+            }
+
             if (Poi.Current.BattleCharacter == null || !Poi.Current.BattleCharacter.IsValid || Poi.Current.BattleCharacter.IsDead)
             {
                 Poi.Clear("Target is dead");
                 return true;
             }
 
-            var target = Poi.Current;
+            Poi target = Poi.Current;
 
             TreeRoot.StatusText = $"Combat: {target.BattleCharacter.Name}";
 
@@ -125,30 +136,40 @@ namespace DeepCombined.TaskManager.Actions
 
             //Logger.Info("======= PRE COMBAT");
             if (await PreCombatBuff())
+            {
                 return true;
+            }
 
             //Logger.Info("======= OUT OF RANGE2");
             //we are outside of targeting range, walk to the mob
             if ((Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach) && !AvoidanceManager.IsRunningOutOfAvoid)
             {
                 //Logger.Info("======= MoveAndStop======");
-                var dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
+                float dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
                 if (dist > 30)
+                {
                     dist = 29;
+                }
 
                 await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name), Constants.ModifiedCombatReach, true);
                 return true;
             }
 
             if (await UseWitching())
+            {
                 return true;
+            }
 
             //used if we are transformed
             if (await UsePomanderSpell())
+            {
                 return true;
+            }
 
             if (await PreCombatLogic())
+            {
                 return true;
+            }
 
             //Logger.Info("======= PULL");
             //pull not in combat
@@ -173,9 +194,12 @@ namespace DeepCombined.TaskManager.Actions
                         i.CastingSpellId == 6334 &&
                         i.TargetCharacter == Core.Me) &&
                 Core.Me.CurrentHealthPercent < 90)
+            {
                 if (await Tasks.Common.UsePots(true))
+                {
                     return true;
-
+                }
+            }
 
             if (GameObjectManager.Attackers.Any(
                 i =>
@@ -184,9 +208,9 @@ namespace DeepCombined.TaskManager.Actions
                     i.CastingSpellId == 393))
             {
                 Logger.Warn("Blinding Burst spell detected");
-                var npc =
+                BattleCharacter npc =
                     GameObjectManager.Attackers
-                        .FirstOrDefault(i => i.IsCasting && i.CastingSpellId == 12174|| i.CastingSpellId == 393);
+                        .FirstOrDefault(i => i.IsCasting && i.CastingSpellId == 12174 || i.CastingSpellId == 393);
                 //GameSettingsManager.FaceTargetOnAction = false;
                 while (npc != null && npc.IsCasting)
                 {
@@ -195,7 +219,7 @@ namespace DeepCombined.TaskManager.Actions
                 }
                 // GameSettingsManager.FaceTargetOnAction = true;
             }
-            
+
             if (GameObjectManager.Attackers.Any(
                 i =>
                     i.IsCasting &&
@@ -242,20 +266,32 @@ namespace DeepCombined.TaskManager.Actions
             if (Core.Me.InRealCombat())
             {
                 if (await Tasks.Common.UseSustain())
+                {
                     return true;
+                }
 
                 if (Settings.Instance.UseAntidote)
+                {
                     if (Core.Me.HasAnyAura(Auras.Poisons) && await Tasks.Common.UseItemById(Items.Antidote))
+                    {
                         return true;
+                    }
+                }
 
                 if (await Heal())
+                {
                     return true;
+                }
 
                 if (await CombatBuff())
+                {
                     return true;
+                }
 
                 if (await Combat())
+                {
                     return true;
+                }
             }
 
             //Logger.Warn($"don't let anything else execute if we are running the kill poi");
@@ -266,17 +302,23 @@ namespace DeepCombined.TaskManager.Actions
         public void Tick()
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
+            {
                 return;
+            }
 
             if (!DutyManager.InInstance || DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+            {
                 return;
+            }
 
             CombatTargeting.Instance.Pulse();
             if (CombatTargeting.Instance.FirstUnit == null)
             {
-                var t = DDTargetingProvider.Instance.FirstEntity;
+                GameObject t = DDTargetingProvider.Instance.FirstEntity;
                 if (t == null)
+                {
                     return;
+                }
 
                 if (t.Type == GameObjectType.BattleNpc && Poi.Current.Type != PoiType.Kill)
                 {
@@ -289,9 +331,17 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             if (Poi.Current.Unit != null && Poi.Current.Unit.IsValid && Poi.Current.Type != PoiType.Kill)
+            {
                 if (!Core.Me.InRealCombat() && Poi.Current.Unit.Distance2D() < CombatTargeting.Instance.FirstUnit.Distance2D())
+                {
                     return;
-            if (Poi.Current.Unit == null || Poi.Current.Unit.Pointer != CombatTargeting.Instance.FirstUnit.Pointer) Poi.Current = new Poi(CombatTargeting.Instance.FirstUnit, PoiType.Kill);
+                }
+            }
+
+            if (Poi.Current.Unit == null || Poi.Current.Unit.Pointer != CombatTargeting.Instance.FirstUnit.Pointer)
+            {
+                Poi.Current = new Poi(CombatTargeting.Instance.FirstUnit, PoiType.Kill);
+            }
         }
 
         /// <summary>
@@ -300,10 +350,11 @@ namespace DeepCombined.TaskManager.Actions
         /// <returns></returns>
         private async Task<bool> UsePomanderSpell()
         {
-            var player = Core.Me;
+            LocalPlayer player = Core.Me;
             if (player.HasAura(Auras.Lust) || player.HasAura(Auras.Rage))
             {
                 if (DeepDungeonManager.BossFloor)
+                {
                     if ((Core.Target as Character)?.GetAuraById(714)?.Value == 5 && player.ClassLevel > 30 ||
                         player.CurrentHealthPercent < 65)
                     {
@@ -311,6 +362,7 @@ namespace DeepCombined.TaskManager.Actions
                         ActionManager.StopCasting();
                         return true;
                     }
+                }
 
                 if (player.IsCasting)
                 {
@@ -336,7 +388,11 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             // ReSharper disable once RedundantCheckBeforeAssignment
-            if (Tasks.Common.PomanderState != ItemState.None) Tasks.Common.PomanderState = ItemState.None;
+            if (Tasks.Common.PomanderState != ItemState.None)
+            {
+                Tasks.Common.PomanderState = ItemState.None;
+            }
+
             return false;
         }
 
@@ -347,11 +403,14 @@ namespace DeepCombined.TaskManager.Actions
         /// <returns></returns>
         private bool HasSpell(uint id)
         {
-            var hbs = HotbarManager.HotbarsSlot;
+            HotbarSlot[] hbs = HotbarManager.HotbarsSlot;
             for (uint i = 0; i < hbs.Length; i++)
             {
-                var hb = hbs[i];
-                if (hb.ActionId1 == id) return true;
+                HotbarSlot hb = hbs[i];
+                if (hb.ActionId1 == id)
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -361,9 +420,11 @@ namespace DeepCombined.TaskManager.Actions
         {
             if (!RoutineManager.IsAnyDisallowed(CapabilityFlags.Movement | CapabilityFlags.Facing))
             {
-                if (!ActionManager.CanCast(spell, Poi.Current.BattleCharacter) || Poi.Current.BattleCharacter.Distance2D() > (float) spell.Range + Poi.Current.BattleCharacter.CombatReach)
+                if (!ActionManager.CanCast(spell, Poi.Current.BattleCharacter) || Poi.Current.BattleCharacter.Distance2D() > (float)spell.Range + Poi.Current.BattleCharacter.CombatReach)
+                {
                     await CommonTasks.MoveAndStop(new MoveToParameters(Core.Target.Location, $"Moving to {Poi.Current.Name} to cast {spell.Name}"),
-                        (float) spell.Range + Poi.Current.BattleCharacter.CombatReach, true);
+                        (float)spell.Range + Poi.Current.BattleCharacter.CombatReach, true);
+                }
 
                 Poi.Current.BattleCharacter.Face2D();
             }
@@ -403,7 +464,7 @@ namespace DeepCombined.TaskManager.Actions
                     !PartyManager.IsInParty || PartyManager.IsPartyLeader
                 );
                 await CommonTasks.StopMoving("Use Pomander");
-                var res = await Tasks.Common.UsePomander(Pomander.Witching);
+                bool res = await Tasks.Common.UsePomander(Pomander.Witching);
 
                 await Coroutine.Yield();
                 return res;
@@ -429,8 +490,9 @@ namespace DeepCombined.TaskManager.Actions
         internal async Task<bool> Heal()
         {
             if (await Tasks.Common.UsePots())
+            {
                 return true;
-
+            }
 
             return await _heal.ExecuteCoroutine(context);
         }
@@ -438,7 +500,10 @@ namespace DeepCombined.TaskManager.Actions
         internal async Task<bool> PreCombatBuff()
         {
             if (!Core.Me.InCombat)
+            {
                 return await _preCombatBuff.ExecuteCoroutine(context);
+            }
+
             return false;
         }
 

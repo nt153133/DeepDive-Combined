@@ -51,7 +51,7 @@ namespace DeepCombined
         internal const uint Hidden = 2007542;
         internal const uint BandedCoffer = 2007543;
 
-        internal static readonly uint[] MimicCoffer = {2006020, 2006022};
+        internal static readonly uint[] MimicCoffer = { 2006020, 2006022 };
 
         internal static uint OfPassage => Constants.SelectedDungeon.OfPassage;
         internal static uint OfReturn => Constants.SelectedDungeon.OfReturn;
@@ -163,23 +163,25 @@ namespace DeepCombined
         [JsonProperty("Rate")] public float[] Rate;
 
         public float RecoverMax => Core.Me.MaxHealth * Rate[1];
-        public uint Recovery => (uint) Math.Min(RecoverMax, Max[1]);
+        public uint Recovery => (uint)Math.Min(RecoverMax, Max[1]);
 
         public float LevelScore => Max[1] / RecoverMax;
 
 
         public float EffectiveMax(float playerMaxHealth, bool hq)
         {
-            var index = hq ? 1 : 0;
+            int index = hq ? 1 : 0;
             return Math.Min(playerMaxHealth * Rate[index], Max[index]);
         }
 
         public float EffectiveHPS(float playerMaxHealth, bool hq)
         {
-            var effectiveMax = EffectiveMax(playerMaxHealth, hq);
+            float effectiveMax = EffectiveMax(playerMaxHealth, hq);
             float cooldown = ItemData[hq ? 1 : 0].Cooldown;
             if (hq)
-                cooldown = cooldown * .89f;
+            {
+                cooldown *= 0.89f;
+            }
 
 
             //Logger.Info($"{ItemData[hq ? 1 : 0]}  has a effective HPS of {effectiveMax / cooldown}");
@@ -222,7 +224,7 @@ namespace DeepCombined
         static Constants()
         {
             Pots = loadResource<Potion[]>(Resources.pots).ToDictionary(r => r.Id, r => r);
-            foreach (var pot in Pots)
+            foreach (KeyValuePair<uint, Potion> pot in Pots)
             {
                 PotionIds.Add(pot.Key);
                 pot.Value.Setup();
@@ -237,7 +239,7 @@ namespace DeepCombined
         internal static IEnumerable<uint> DeepDungeonRawIds => SelectedDungeon.DeepDungeonRawIds;
 
         internal static IEnumerable<uint> Exits =>
-            new[] {EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit};
+            new[] { EntityNames.OfPassage, EntityNames.BossExit, EntityNames.LobbyExit };
 
         /// <summary>
         ///     returns true if we are in any of the Deep Dungeon areas.
@@ -252,8 +254,10 @@ namespace DeepCombined
             get
             {
                 if (Core.Me.CurrentJob.IsMelee())
+                {
                     return Math.Max(12, RoutineManager.Current.PullRange + Core.Me.CombatReach);
-                
+                }
+
                 return Math.Min(15, RoutineManager.Current.PullRange + Core.Me.CombatReach);
             }
         }
@@ -268,7 +272,7 @@ namespace DeepCombined
 
         public static void INIT()
         {
-            var field = (Language) typeof(DataManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
+            Language field = (Language)typeof(DataManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
                 .First(i => i.FieldType == typeof(Language)).GetValue(null);
 
             Lang = field;

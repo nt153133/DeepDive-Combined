@@ -30,7 +30,7 @@ namespace DeepCombined.Tasks
 
         static Common()
         {
-            foreach (var item in Enum.GetValues(typeof(Pomander)).Cast<Pomander>())
+            foreach (Pomander item in Enum.GetValues(typeof(Pomander)).Cast<Pomander>())
             {
                 PomanderLockoutTimers.Add(item, new WaitTimer(TimeSpan.FromSeconds(3)));
             }
@@ -45,7 +45,7 @@ namespace DeepCombined.Tasks
         /// <returns></returns>
         internal static async Task<bool> CancelAura(uint aura)
         {
-            var auraname = $"\"{DataManager.GetAuraResultById(aura).CurrentLocaleName}\"";
+            string auraname = $"\"{DataManager.GetAuraResultById(aura).CurrentLocaleName}\"";
             while (Core.Me.HasAura(aura))
             {
                 Logger.Verbose("Cancel Aura {0}", auraname);
@@ -59,31 +59,43 @@ namespace DeepCombined.Tasks
         internal static async Task<bool> UsePomander(Pomander number, uint auraId = 0)
         {
             if (Core.Me.HasAura(Auras.ItemPenalty) && number != Pomander.Serenity)
+            {
                 return false;
+            }
 
             //cannot use pomander while under the auras of rage / lust
             if (Core.Me.HasAnyAura(Auras.Lust, Auras.Rage))
+            {
                 return false;
+            }
 
-            var data = DeepDungeonManager.GetInventoryItem(number);
+            DDInventoryItem data = DeepDungeonManager.GetInventoryItem(number);
             if (data.Count == 0)
+            {
                 return false;
+            }
 
             if (data.HasAura)
+            {
                 return false;
+            }
 
             if (Core.Me.HasAura(auraId) && Core.Me.GetAuraById(auraId).TimespanLeft > TimeSpan.FromMinutes(1))
+            {
                 return false;
+            }
 
-            var lockoutTimer = PomanderLockoutTimers[number];
+            WaitTimer lockoutTimer = PomanderLockoutTimers[number];
             if (!lockoutTimer.IsFinished)
+            {
                 return false;
+            }
 
             await Coroutine.Wait(5000, () => !DeepDungeonManager.IsCasting);
 
-            var cnt = data.Count;
+            byte cnt = data.Count;
             await Coroutine.Wait(5000, () => !DeepDungeonManager.IsCasting);
-            var wt = new WaitTimer(TimeSpan.FromSeconds(30));
+            WaitTimer wt = new WaitTimer(TimeSpan.FromSeconds(30));
             wt.Reset();
             while (cnt == data.Count && !wt.IsFinished)
             {
@@ -126,23 +138,39 @@ namespace DeepCombined.Tasks
         /// <returns></returns>
         internal static bool CanUsePot()
         {
-            var pot = InventoryManager.FilledSlots.FirstOrDefault(r => PotIDs.Contains(r.RawItemId));
+            BagSlot pot = InventoryManager.FilledSlots.FirstOrDefault(r => PotIDs.Contains(r.RawItemId));
             return pot != null && pot.CanUse();
         }
 
         internal static bool CanUseItem(int itemid)
         {
-            var pot = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == itemid);
+            BagSlot pot = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == itemid);
             return pot != null && pot.CanUse();
         }
 
         internal static async Task<bool> UseSustain()
         {
-            if (!Settings.Instance.UseSustain) return false;
-            if (Core.Me.CurrentHealthPercent > 50) return false;
-            if (Core.Me.HasAura(Auras.Sustain)) return false;
-            var i = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == Items.SustainingPotion);
-            if (i == null) return false;
+            if (!Settings.Instance.UseSustain)
+            {
+                return false;
+            }
+
+            if (Core.Me.CurrentHealthPercent > 50)
+            {
+                return false;
+            }
+
+            if (Core.Me.HasAura(Auras.Sustain))
+            {
+                return false;
+            }
+
+            BagSlot i = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == Items.SustainingPotion);
+            if (i == null)
+            {
+                return false;
+            }
+
             return i.CanUse() && await UseItem(i);
         }
 
@@ -153,18 +181,20 @@ namespace DeepCombined.Tasks
         /// <returns></returns>
         internal static async Task<bool> UsePots(bool force = false)
         {
-            var localPlayer = Core.Me;
+            ff14bot.Objects.LocalPlayer localPlayer = Core.Me;
             if (localPlayer.CurrentHealthPercent > 99)
-                return false;
+            {
+                return await Task.FromResult(false);
+            }
 
-            var currentHealth = localPlayer.CurrentHealth;
-            var maxHealth = localPlayer.MaxHealth;
-            var healthPercent = currentHealth / (float) maxHealth;
-            var healthDelta = 100 - healthPercent;
+            uint currentHealth = localPlayer.CurrentHealth;
+            uint maxHealth = localPlayer.MaxHealth;
+            float healthPercent = currentHealth / (float)maxHealth;
+            float healthDelta = 100 - healthPercent;
             healthPercent *= 100;
             if (healthPercent <= 80)
             {
-                var strongestPotion = InventoryManager.FilledSlots.ToList().Where(r => Constants.Pots.ContainsKey(r.RawItemId)).Select(r => new Tuple<Potion, BagSlot>(Constants.Pots[r.RawItemId], r))
+                Tuple<Potion, BagSlot> strongestPotion = InventoryManager.FilledSlots.ToList().Where(r => Constants.Pots.ContainsKey(r.RawItemId)).Select(r => new Tuple<Potion, BagSlot>(Constants.Pots[r.RawItemId], r))
                     .OrderByDescending(r => r.Item1.EffectiveHPS(maxHealth, r.Item2.IsHighQuality)).FirstOrDefault();
 
                 if (strongestPotion != null)
@@ -172,7 +202,7 @@ namespace DeepCombined.Tasks
                     if (!force && healthDelta < strongestPotion.Item1.Rate[strongestPotion.Item2.IsHighQuality ? 1 : 0])
                     {
                         Logger.Info($"Waiting for health to drop lower before we use {strongestPotion.Item2.Item} to recover {strongestPotion.Item1.EffectiveMax(maxHealth, strongestPotion.Item2.IsHighQuality)} hp");
-                        return false;
+                        return await Task.FromResult(false);
                     }
 
                     if (strongestPotion.Item2.CanUse())
@@ -180,18 +210,22 @@ namespace DeepCombined.Tasks
                         Logger.Info($"Attempting to recover: {strongestPotion.Item1.EffectiveMax(maxHealth, strongestPotion.Item2.IsHighQuality)} hp via {strongestPotion.Item2.Item}");
 
                         strongestPotion.Item2.UseItem();
-                        return true;
+                        return await Task.FromResult(true);
                     }
                 }
             }
 
-            return false;
+            return await Task.FromResult(false);
         }
 
         internal static async Task<bool> UseItemById(int id)
         {
-            var pot = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == id);
-            if (pot != null && pot.CanUse() && await UseItem(pot)) return true;
+            BagSlot pot = InventoryManager.FilledSlots.FirstOrDefault(r => r.RawItemId == id);
+            if (pot != null && pot.CanUse() && await UseItem(pot))
+            {
+                return true;
+            }
+
             return false;
         }
 

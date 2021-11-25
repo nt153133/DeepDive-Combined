@@ -28,7 +28,7 @@ namespace DeepCombined.Helpers
         {
             get
             {
-                var frameCount = Core.Memory.Executor.FrameCount;
+                uint frameCount = Core.Memory.Executor.FrameCount;
                 if (_lastFrame != frameCount)
                 {
                     _cached = _producer();

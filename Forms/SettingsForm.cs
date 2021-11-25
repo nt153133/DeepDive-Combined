@@ -43,7 +43,7 @@ namespace DeepCombined.Forms
         private void changelevel(object sender, EventArgs e)
         {
             Logger.Verbose("Changing the selected floor to run");
-            Settings.Instance.SelectedLevel = (FloorSetting) Levels.SelectedItem;
+            Settings.Instance.SelectedLevel = (FloorSetting)Levels.SelectedItem;
         }
 
         private void solostop_CheckStateChanged(object sender, EventArgs e)

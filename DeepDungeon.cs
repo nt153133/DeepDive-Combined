@@ -11,8 +11,6 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Globalization;
-using System.Threading;
 using Buddy.Coroutines;
 using DeepCombined.Forms;
 using DeepCombined.Helpers;
@@ -80,12 +78,12 @@ namespace DeepCombined
         {
             if (_settings == null)
             {
-/*#if RB_CN
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
-                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN");
-                CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-CN");
-#endif*/
+                /*#if RB_CN
+                                Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-CN");
+                                Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
+                                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN");
+                                CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-CN");
+                #endif*/
 
                 _settings = new DungeonSelection
                 {
@@ -113,17 +111,17 @@ namespace DeepCombined
 
         public override void Stop()
         {
-            foreach (var block in Constants.PerformanceStats)
+            foreach (System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<double>> block in Constants.PerformanceStats)
             {
                 Logger.Verbose($"[Performance] {block.Key}");
-                Logger.Verbose(block.Value.ToArray().ToString() );
+                Logger.Verbose(block.Value.ToArray().ToString());
                 double sum = 0;
-                foreach (var stat in block.Value)
+                foreach (double stat in block.Value)
                 {
                     sum += stat;
                 }
-                
-                Logger.Verbose($"Average {sum/block.Value.Count()} Count {block.Value.Count()}");
+
+                Logger.Verbose($"Average {sum / block.Value.Count()} Count {block.Value.Count()}");
             }
             _root = null;
             StopPlz = true;
@@ -138,33 +136,38 @@ namespace DeepCombined
 
         private Composite _root;
 
-        private bool ShowDebug = true;
-        private DungeonSelection _debug;
-
-        //private DDServiceNavigationProvider serviceProvider = new DDServiceNavigationProvider();
         public override void Pulse()
         {
             if (Constants.SelectedDungeon == null)
+            {
                 return;
+            }
 
             if (Constants.InDeepDungeon)
             {
                 if (Constants.IgnoreEntity == null)
+                {
                     Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
+                }
                 //force a pulse on the director if we are hitting "start" inside of the dungeon
                 if (DirectorManager.ActiveDirector == null)
+                {
                     DirectorManager.Update();
+                }
+
                 DDTargetingProvider.Instance.Pulse();
             }
 
             if (_tasks != null)
+            {
                 _tasks.Tick();
+            }
         }
 
         public override void Start()
         {
             Poi.Current = null;
-            
+
             if (DutyManager.InInstance && !Constants.SelectedDungeon.DeepDungeonRawIds.Contains(WorldManager.ZoneId))
             {
                 Constants.SelectedDungeon = Constants.GetDeepDungeonByMapid(WorldManager.ZoneId);
@@ -191,38 +194,38 @@ namespace DeepCombined
             Navigator.PlayerMover = new SlideMover();
 
             TreeHooks.Instance.ClearAll();
-            
+
             DeepTracker.InitializeTracker(Core.Me.ClassLevel);
 
-            _tasks = new TaskManagerProvider();
+            _tasks = new TaskManagerProvider
+            {
+                new LoadingHandler(),
+                new DeathWindowHandler(),
+                new SideStepTask(),
+                //not sure if i want the trap handler to be above combat or not
+                new TrapHandler(),
+
+                //pomanders for sure need to happen before combat so that we can correctly apply Lust for bosses
+                new Pomanders(),
+
+                new CombatHandler(),
+
+                new LobbyHandler(),
+                new GetToCaptain(),
+                new POTDEntrance(),
 
 
-            _tasks.Add(new LoadingHandler());
-            _tasks.Add(new DeathWindowHandler());
-            _tasks.Add(new SideStepTask());
-            //not sure if i want the trap handler to be above combat or not
-            _tasks.Add(new TrapHandler());
-
-            //pomanders for sure need to happen before combat so that we can correctly apply Lust for bosses
-            _tasks.Add(new Pomanders());
-
-            _tasks.Add(new CombatHandler());
-
-            _tasks.Add(new LobbyHandler());
-            _tasks.Add(new GetToCaptain());
-            _tasks.Add(new POTDEntrance());
+                new CairnOfReturn(),
+                new FloorExit(),
+                new Loot(),
 
 
-            _tasks.Add(new CairnOfReturn());
-            _tasks.Add(new FloorExit());
-            _tasks.Add(new Loot());
+                new StuckDetection(),
+                new POTDNavigation(),
 
 
-            _tasks.Add(new StuckDetection());
-            _tasks.Add(new POTDNavigation());
-
-
-            _tasks.Add(new BaseLogicHandler());
+                new BaseLogicHandler()
+            };
 
             Settings.Instance.Stop = false;
             if (!Core.Me.IsDow())
@@ -231,7 +234,7 @@ namespace DeepCombined
                 _root = new ActionAlwaysFail();
                 return;
             }
-            
+
             Logger.Error($"DeepDungeon status agent id {DeepDungeonStatus.Agent}");
 
 
@@ -242,6 +245,7 @@ namespace DeepCombined
 
 
             if (Constants.Lang == Language.Chn)
+            {
                 //回避 - sidestep
                 //Zekken 
                 if (PluginManager.Plugins.Any(i => (i.Plugin.Name.Contains("Zekken") || i.Plugin.Name.Contains("技能躲避")) && i.Enabled))
@@ -250,6 +254,7 @@ namespace DeepCombined
                     _root = new ActionAlwaysFail();
                     return;
                 }
+            }
 
             if (PluginManager.Plugins.Any(i => i.Plugin.Name == "Zekken" && i.Enabled))
             {
@@ -287,7 +292,10 @@ namespace DeepCombined
                 new ActionRunCoroutine(async x =>
                 {
                     if (StopPlz)
+                    {
                         return false;
+                    }
+
                     if (!_init)
                     {
                         Logging.Write("DeepDive is waiting on Initialization to finish");
@@ -311,7 +319,10 @@ namespace DeepCombined
         public override async Task AsyncRoot()
         {
             if (StopPlz)
+            {
                 return;
+            }
+
             if (!_init)
             {
                 Logging.Write("DeepDive is waiting on Initialization to finish");
@@ -339,13 +350,17 @@ namespace DeepCombined
             {
                 //if we have mimics remove them from our ignore list
                 if (Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                {
                     Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(EntityNames.MimicCoffer).ToArray();
+                }
             }
             else
             {
                 //if we don't have mimics add them to our ignore list
                 if (!Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                {
                     Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(EntityNames.MimicCoffer).ToArray();
+                }
             }
 
             //Exploding Coffers
@@ -353,29 +368,39 @@ namespace DeepCombined
             {
                 //if we have traps remove them
                 if (Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] {EntityNames.TrapCoffer}).ToArray();
+                {
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.TrapCoffer }).ToArray();
+                }
             }
             else
             {
                 if (!Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.TrapCoffer}).ToArray();
+                {
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.TrapCoffer }).ToArray();
+                }
             }
 
             if (Settings.Instance.OpenSilver)
             {
                 //if we have traps remove them
                 if (Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] {EntityNames.SilverCoffer}).ToArray();
+                {
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.SilverCoffer }).ToArray();
+                }
             }
             else
             {
                 if (!Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.SilverCoffer}).ToArray();
+                {
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
+                }
             }
 
             //Add the current Dungeon's Ignores
             if (!Constants.BaseIgnoreEntity.Contains(EntityNames.OfPassage))
-                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] {EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance}).ToArray();
+            {
+                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+            }
 
             Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);
 
