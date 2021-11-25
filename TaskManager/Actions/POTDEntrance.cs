@@ -437,6 +437,13 @@ Aetherpool Armor: +{1}
                         Logger.Info($"Switching to {classLevelTarget.Job}");
                         GearsetManager.ChangeGearset(classLevelTarget.GearSlot);
 
+                        // If weapon missing and prompted to substitute with another, click yes
+                        await Coroutine.Wait(3000, () => SelectYesno.IsOpen);
+                        if (SelectYesno.IsOpen)
+                        {
+                            SelectYesno.ClickYes();
+                        }
+
                         break;
                     }
                 }
