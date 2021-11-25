@@ -53,7 +53,7 @@ namespace DeepCombined.TaskManager.Actions
 
             //wait if the barrier is still up
             if (DirectorManager.ActiveDirector is InstanceContentDirector activeAsInstance)
-                if (activeAsInstance.TimeLeftInDungeon == TimeSpan.Zero)
+                if (activeAsInstance.TimeLeftInDungeon == TimeSpan.Zero|| activeAsInstance.TimeLeftInDungeon > TimeSpan.FromHours(1))
                     return true;
 
             return false;
