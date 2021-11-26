@@ -236,31 +236,24 @@ namespace DeepCombined.TaskManager.Actions
                 }
             }
 
-            if (GameObjectManager.Attackers.Any(
-                i =>
-                    i.IsCasting &&
-                    i.CastingSpellId == 11290 &&
-                    i.NpcId == 7478))
+            // Handle HOH 30 boss Hiruko's Cloud Call mechanic
+            BattleCharacter hiruko = GameObjectManager.Attackers.FirstOrDefault(npc =>
+                npc.IsCasting && npc.NpcId == Mobs.Hiruko && npc.CastingSpellId == 11290
+            );
+
+            while (hiruko != null && hiruko.IsCasting && hiruko.CastingSpellId == 11290)
             {
-                BattleCharacter npc =
-                    GameObjectManager.Attackers
-                        .FirstOrDefault(i => i.IsCasting && i.NpcId == 7478 && i.CastingSpellId == 11290);
+                Clio.Utilities.Vector3 safeCloud = new Clio.Utilities.Vector3(-299.9771f, -0.01531982f, -320.4548f);
+                const double safeDistance = 2.5f;
 
-
-                while (npc != null && npc.IsCasting && npc.CastingSpellId == 11290)
+                while (safeCloud.Distance2D(Core.Me.Location) >= safeDistance)
                 {
-                    Clio.Utilities.Vector3 vector3 = new Clio.Utilities.Vector3(-299.9771f, -0.01531982f, -320.4548f);
-                    float dist = Core.Player.Location.Distance(vector3);
-                    Navigator.PlayerMover.MoveTowards(vector3);
-                    while (vector3.Distance2D(Core.Me.Location) >= 4.4)
-                    {
-                        Navigator.PlayerMover.MoveTowards(vector3);
-                        await Coroutine.Sleep(100);
-                    }
-
-                    Navigator.PlayerMover.MoveStop();
-                    await Coroutine.Sleep(9000);
+                    Navigator.PlayerMover.MoveTowards(safeCloud);
+                    await Coroutine.Sleep(100);
                 }
+
+                Navigator.PlayerMover.MoveStop();
+                await Coroutine.Wait(100_000, () => GameObjectManager.GetObjectsByNPCId(Mobs.Raiun).Any());
             }
 
             if (Core.Me.InRealCombat())
@@ -446,7 +439,7 @@ namespace DeepCombined.TaskManager.Actions
                 !GameObjectManager.Attackers.Any(i =>
                     i.HasAura(Auras.Frog) ||
                     i.HasAura(Auras.Imp) ||
-                    i.HasAura(Auras.Odder) ||
+                    i.HasAura(Auras.Otter) ||
                     i.HasAura(Auras.Chicken)) //Toad
                 &&
                 (!PartyManager.IsInParty || PartyManager.IsPartyLeader)
@@ -459,7 +452,7 @@ namespace DeepCombined.TaskManager.Actions
                     !GameObjectManager.Attackers.Any(i =>
                         i.HasAura(Auras.Frog) ||
                         i.HasAura(Auras.Imp) ||
-                        i.HasAura(Auras.Odder) ||
+                        i.HasAura(Auras.Otter) ||
                         i.HasAura(Auras.Chicken)),
                     !PartyManager.IsInParty || PartyManager.IsPartyLeader
                 );

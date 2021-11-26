@@ -23,7 +23,7 @@ namespace DeepCombined.TaskManager.Actions
     /// <returns></returns>
     internal class TrapHandler : ITask
     {
-        private bool HasTrapAura => Core.Me.HasAnyAura(Auras.Pacification, Auras.Silence, Auras.Toad, Auras.Frog, Auras.Toad2, Auras.Odder);
+        private bool HasTrapAura => Core.Me.HasAnyAura(Auras.Pacification, Auras.Silence, Auras.Toad, Auras.Frog, Auras.Toad2, Auras.Otter);
 
 
         public string Name => "TrapHandler";

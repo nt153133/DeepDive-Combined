@@ -88,7 +88,7 @@ namespace DeepCombined
 
     internal static partial class Auras
     {
-        internal const uint Odder = 1546;
+        internal const uint Otter = 1546;
         internal const uint Frog = 1101;
         internal const uint Toad = 439;
         internal const uint Toad2 = 441;

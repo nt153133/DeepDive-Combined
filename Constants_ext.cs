@@ -91,7 +91,7 @@ namespace DeepCombined
 
         public static bool AuraTransformed => Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) ||
                                               Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
-                                              Core.Me.HasAura(Auras.Odder);
+                                              Core.Me.HasAura(Auras.Otter);
 
         public static Dictionary<string, List<double>> PerformanceStats = new Dictionary<string, List<double>>();
 
@@ -167,14 +167,51 @@ namespace DeepCombined
     internal static partial class Mobs
     {
         internal const uint HeavenlyShark = 7272;
-        internal const uint CatThing = 7398;
+
+        /// <summary>
+        /// Heaven on High friendly lion-dog. Grants <see cref="Auras.KomainusFavor"/>.
+        /// </summary>
+        internal const uint Komainu = 7396;
+
+        /// <summary>
+        /// Heaven on High friendly mameshiba. Grants <see cref="Auras.InugamisFavor"/>.
+        /// </summary>
         internal const uint Inugami = 7397;
+
+        /// <summary>
+        /// Heaven on High friendly fat cat. Grants <see cref="Auras.SenrisFavor"/>.
+        /// </summary>
+        internal const uint Senri = 7398;
+
+        /// <summary>
+        /// Heaven on High floor 30 boss.
+        /// </summary>
+        internal const uint Hiruko = 7478;
+
+        /// <summary>
+        /// Heaven on High floor 30 cloud add.
+        /// </summary>
         internal const uint Raiun = 7479;
     }
 
     internal static partial class Auras
     {
-        internal const uint Haste = 1091; //Buff
-        internal const uint HpBoost = 1093; //Buff
+        internal const uint Haste = 1091;  // Buff
+        internal const uint HpMpBoost = 1093;  // Buff
+
+        /// <summary>
+        /// Heaven on High lion-dog buff. Damage dealt is increased.
+        /// </summary>
+        internal const uint KomainusFavor = 1584;
+
+        /// <summary>
+        /// Heaven on High mameshiba buff. Damage taken is decreased.
+        /// </summary>
+        internal const uint InugamisFavor = 1585;
+
+        /// <summary>
+        /// Heaven on High fat cat buff. Regenerating HP over time.
+        /// </summary>
+        internal const uint SenrisFavor = 1586;
     }
 }

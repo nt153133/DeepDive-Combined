@@ -38,7 +38,7 @@ namespace DeepCombined.DungeonDefinition
 
         private readonly uint[] _ignoreEntity =
         {
-            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.CatThing, Mobs.Inugami, Mobs.Raiun, 377, 7396, 7395
+            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.Senri, Mobs.Inugami, Mobs.Raiun, 377, Mobs.Komainu, 7395
         };
 
         public HeavenOnHigh(DeepDungeonData deep) : base(deep)
