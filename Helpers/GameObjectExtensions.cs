@@ -11,6 +11,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
 using System;
 using System.Linq;
 using ff14bot;
+using ff14bot.Helpers;
 using ff14bot.Objects;
 
 namespace DeepCombined.Helpers
@@ -66,10 +67,10 @@ namespace DeepCombined.Helpers
         /// <param name="obj"><see cref="GameObject"/> to face away from.</param>
         internal static void FaceAway(this LocalPlayer player, GameObject obj)
         {
-            // Look at target, then flip to inverse
-            obj.Face2D();
-            float inverse = (float)(player.Heading - Math.PI);
-            player.SetFacing(inverse);
+            // "Look" at target, then flip to inverse
+            float towards = MathHelper.CalculateHeading(obj.Location, player.Location);
+            float away = (float)(towards - Math.PI);
+            player.SetFacing(away);
         }
     }
 }
