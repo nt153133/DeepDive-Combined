@@ -152,7 +152,7 @@ namespace DeepCombined.TaskManager.Actions
 
             if ((!PartyManager.IsInParty || PartyManager.IsPartyLeader) &&
                 (Core.Me.HasAura(Auras.Amnesia) || Core.Me.HasAura(Auras.ItemPenalty) ||
-                 Core.Me.HasAura(Auras.NoAutoHeal)) || (DeepDungeonManager.GetMagiciteCount() > 0 && Core.Me.HasAura(Auras.UnMagicked)))
+                 Core.Me.HasAura(Auras.NoAutoHeal)) || (DeepDungeonManager.GetMagiciteCount() > 0 && Core.Me.HasAura(Auras.Unmagicked)))
             {
                 await UsePomander(Pomander.Serenity);
             }

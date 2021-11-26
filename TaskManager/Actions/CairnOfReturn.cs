@@ -46,7 +46,7 @@ namespace DeepCombined.TaskManager.Actions
                 return false;
             }
 
-            ff14bot.Objects.GameObject unit = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
+            ff14bot.Objects.GameObject unit = GameObjectManager.GetObjectByNPCId(Entities.OfReturn);
             if (unit == null)
             {
                 Logger.Warn("Cairn of return could not be found at this location");
@@ -111,7 +111,7 @@ namespace DeepCombined.TaskManager.Actions
 
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
-                ff14bot.Objects.GameObject ret = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
+                ff14bot.Objects.GameObject ret = GameObjectManager.GetObjectByNPCId(Entities.OfReturn);
                 if (ret != null)
                 {
                     Level = DeepDungeonManager.Level;

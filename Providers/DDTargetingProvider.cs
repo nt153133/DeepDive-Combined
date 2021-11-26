@@ -62,7 +62,7 @@ namespace DeepCombined.Providers
                     if (Settings.Instance.GoForTheHoard)
                     {
                         return !LastEntities.Any(i =>
-                            (i.NpcId == EntityNames.Hidden || i.NpcId == EntityNames.BandedCoffer) &&
+                            (i.NpcId == Entities.Hidden || i.NpcId == Entities.BandedCoffer) &&
                             !Blacklist.Contains(i.ObjectId, (BlacklistFlags)DeepDungeonManager.Level));
                     }
 
@@ -75,7 +75,7 @@ namespace DeepCombined.Providers
                     if (Settings.Instance.GoForTheHoard)
                     {
                         return !LastEntities.Any(i =>
-                            (i.NpcId == EntityNames.Hidden || i.NpcId == EntityNames.BandedCoffer) &&
+                            (i.NpcId == Entities.Hidden || i.NpcId == Entities.BandedCoffer) &&
                             !Blacklist.Contains(i.ObjectId, (BlacklistFlags)DeepDungeonManager.Level));
                     }
 
@@ -136,7 +136,7 @@ namespace DeepCombined.Providers
                 Logger.Verbose($"Found {LastEntities.Count} Targets");
                 if (!LastEntities.Any())
                 {
-                    if (!GameObjectManager.GameObjects.Any(r => r.NpcId == EntityNames.OfPassage && !FloorExit.blackList.Contains(r.ObjectId)))
+                    if (!GameObjectManager.GameObjects.Any(r => r.NpcId == Entities.OfPassage && !FloorExit.blackList.Contains(r.ObjectId)))
                     {
                         FloorExit.blackList.Clear();
                     }

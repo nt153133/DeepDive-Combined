@@ -36,7 +36,7 @@ namespace DeepCombined.Tasks
             }
         }
 
-        private static List<uint> PotIDs => Constants.Pots.Keys.ToList();
+        private static List<uint> PotIDs => Constants.Potions.Keys.ToList();
 
         /// <summary>
         ///     Cancel player aura
@@ -194,7 +194,7 @@ namespace DeepCombined.Tasks
             healthPercent *= 100;
             if (healthPercent <= 80)
             {
-                Tuple<Potion, BagSlot> strongestPotion = InventoryManager.FilledSlots.ToList().Where(r => Constants.Pots.ContainsKey(r.RawItemId)).Select(r => new Tuple<Potion, BagSlot>(Constants.Pots[r.RawItemId], r))
+                Tuple<Potion, BagSlot> strongestPotion = InventoryManager.FilledSlots.ToList().Where(r => Constants.Potions.ContainsKey(r.RawItemId)).Select(r => new Tuple<Potion, BagSlot>(Constants.Potions[r.RawItemId], r))
                     .OrderByDescending(r => r.Item1.EffectiveHPS(maxHealth, r.Item2.IsHighQuality)).FirstOrDefault();
 
                 if (strongestPotion != null)

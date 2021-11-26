@@ -26,7 +26,7 @@ namespace DeepCombined.TaskManager.Actions
         public async Task<bool> Run()
         {
             //we are inside POTD
-            if (Constants.InDeepDungeon || Constants.InExitLevel)
+            if (Constants.InDeepDungeon || Constants.InExitLobby)
             {
                 return false;
             }

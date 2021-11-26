@@ -9,9 +9,11 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
+using Clio.Utilities;
 using DeepCombined.Enums;
 using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
@@ -33,6 +35,12 @@ namespace DeepCombined.TaskManager.Actions
     {
         private readonly SpellData LustSpell = DataManager.GetSpellData(Spells.LustSpell);
         private readonly SpellData PummelSpell = DataManager.GetSpellData(Spells.RageSpell);
+
+        private readonly HashSet<uint> GazeAttacks = new HashSet<uint>
+        {
+            Spells.BlindingBurst1, Spells.BlindingBurst2,
+            Spells.StoneGaze
+        };
 
         public CombatHandler()
         {
@@ -61,6 +69,7 @@ namespace DeepCombined.TaskManager.Actions
             {
                 return false;
             }
+
             //dont try and do combat outside of the dungeon plz
             if (!Constants.InDeepDungeon)
             {
@@ -145,12 +154,6 @@ namespace DeepCombined.TaskManager.Actions
             if ((Core.Me.PrimaryTargetPtr == IntPtr.Zero || target.Location.Distance2D(Core.Me.Location) > Constants.ModifiedCombatReach) && !AvoidanceManager.IsRunningOutOfAvoid)
             {
                 //Logger.Info("======= MoveAndStop======");
-                float dist = Core.Player.CombatReach + RoutineManager.Current.PullRange + (target.Unit != null ? target.Unit.CombatReach : 0);
-                if (dist > 30)
-                {
-                    dist = 29;
-                }
-
                 await CommonTasks.MoveAndStop(new MoveToParameters(target.Location, target.Name), Constants.ModifiedCombatReach, true);
                 return true;
             }
@@ -186,74 +189,52 @@ namespace DeepCombined.TaskManager.Actions
                 return true;
             }
 
-            //6334 - Final Sting
-            if (
-                GameObjectManager.Attackers.Any(
-                    i =>
-                        i.IsCasting &&
-                        i.CastingSpellId == 6334 &&
-                        i.TargetCharacter == Core.Me) &&
-                Core.Me.CurrentHealthPercent < 90)
+            IEnumerable<BattleCharacter> castingEnemies = GameObjectManager.GetObjectsOfType<BattleCharacter>()
+                .Where(bc => bc.IsNpc && bc.IsCasting && bc.InCombat);
+
+            foreach (BattleCharacter enemy in castingEnemies)
             {
-                if (await Tasks.Common.UsePots(true))
+                if (enemy.CastingSpellId == Spells.FinalSting && Core.Me.CurrentHealthPercent < 90)
                 {
+                    if (await Tasks.Common.UsePots(force: true))
+                    {
+                        return true;
+                    }
+                }
+
+                if (GazeAttacks.Contains(enemy.CastingSpellId))
+                {
+                    while (enemy != null && enemy.IsCasting)
+                    {
+                        Core.Me.FaceAway(enemy);
+                        await Coroutine.Sleep(100);
+                    }
+
                     return true;
                 }
             }
 
-            if (GameObjectManager.Attackers.Any(
-                i =>
-                    i.IsCasting &&
-                    i.CastingSpellId == 12174 ||
-                    i.CastingSpellId == 393))
+            if (DeepDungeonManager.Level == 30)
             {
-                Logger.Warn("Blinding Burst spell detected");
-                BattleCharacter npc =
-                    GameObjectManager.Attackers
-                        .FirstOrDefault(i => i.IsCasting && i.CastingSpellId == 12174 || i.CastingSpellId == 393);
-                //GameSettingsManager.FaceTargetOnAction = false;
-                while (npc != null && npc.IsCasting)
+                // Handle HoH 30 boss Hiruko's Cloud Call mechanic
+                BattleCharacter hiruko = GameObjectManager.Attackers.FirstOrDefault(npc =>
+                    npc.IsCasting && npc.NpcId == Mobs.Hiruko && npc.CastingSpellId == Spells.CloudCall
+                );
+
+                while (hiruko != null && hiruko.IsCasting && hiruko.CastingSpellId == Spells.CloudCall)
                 {
-                    MovementManager.SetFacing(npc.Heading);
-                    await Coroutine.Sleep(100);
+                    Vector3 safeCloud = new Vector3(-299.9771f, -0.01531982f, -320.4548f);
+                    const double safeDistance = 1.0f;
+
+                    while (safeCloud.Distance2D(Core.Me.Location) >= safeDistance)
+                    {
+                        Navigator.PlayerMover.MoveTowards(safeCloud);
+                        await Coroutine.Sleep(100);
+                    }
+
+                    Navigator.PlayerMover.MoveStop();
+                    await Coroutine.Wait(10_000, () => GameObjectManager.GetObjectsByNPCId(Mobs.Raiun).Any());
                 }
-                // GameSettingsManager.FaceTargetOnAction = true;
-            }
-
-            if (GameObjectManager.Attackers.Any(
-                i =>
-                    i.IsCasting &&
-                    i.CastingSpellId == 6351 &&
-                    i.NpcId == 7268))
-            {
-                BattleCharacter npc =
-                    GameObjectManager.Attackers
-                        .FirstOrDefault(i => i.IsCasting && i.NpcId == 7268 && i.CastingSpellId == 6351);
-                while (npc != null && npc.IsCasting)
-                {
-                    MovementManager.SetFacing(npc.Heading);
-                    await Coroutine.Sleep(100);
-                }
-            }
-
-            // Handle HOH 30 boss Hiruko's Cloud Call mechanic
-            BattleCharacter hiruko = GameObjectManager.Attackers.FirstOrDefault(npc =>
-                npc.IsCasting && npc.NpcId == Mobs.Hiruko && npc.CastingSpellId == 11290
-            );
-
-            while (hiruko != null && hiruko.IsCasting && hiruko.CastingSpellId == 11290)
-            {
-                Clio.Utilities.Vector3 safeCloud = new Clio.Utilities.Vector3(-299.9771f, -0.01531982f, -320.4548f);
-                const double safeDistance = 2.5f;
-
-                while (safeCloud.Distance2D(Core.Me.Location) >= safeDistance)
-                {
-                    Navigator.PlayerMover.MoveTowards(safeCloud);
-                    await Coroutine.Sleep(100);
-                }
-
-                Navigator.PlayerMover.MoveStop();
-                await Coroutine.Wait(100_000, () => GameObjectManager.GetObjectsByNPCId(Mobs.Raiun).Any());
             }
 
             if (Core.Me.InRealCombat())
@@ -348,7 +329,7 @@ namespace DeepCombined.TaskManager.Actions
             {
                 if (DeepDungeonManager.BossFloor)
                 {
-                    if ((Core.Target as Character)?.GetAuraById(714)?.Value == 5 && player.ClassLevel > 30 ||
+                    if ((Core.Target as Character)?.GetAuraById(Auras.LustVulnerabilityUp)?.Value == 5 && player.ClassLevel > 30 ||
                         player.CurrentHealthPercent < 65)
                     {
                         await Tasks.Common.CancelAura(Auras.Lust);

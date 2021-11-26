@@ -63,12 +63,12 @@ namespace DeepCombined.TaskManager.Actions
             _moveTimer.Reset();
             int _level = DeepDungeonManager.Level;
 
-            if (!GameObjectManager.GameObjects.Any(r => r.NpcId == EntityNames.OfPassage))
+            if (!GameObjectManager.GameObjects.Any(r => r.NpcId == Entities.OfPassage))
             {
                 blackList.Clear();
             }
 
-            ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage).OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
+            ExitObjectId = GameObjectManager.GameObjects.Where(r => r.NpcId == Entities.OfPassage).OrderBy(r => r.Distance()).FirstOrDefault().ObjectId;
             Logger.Info($"Exit object id is {ExitObjectId}");
             await Coroutine.Wait(-1,
                 () => Core.Me.InCombat || _level != DeepDungeonManager.Level || CommonBehaviors.IsLoading ||
@@ -119,7 +119,7 @@ namespace DeepCombined.TaskManager.Actions
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
                 //var ret = GameObjectManager.GetObjectByNPCId(EntityNames.FloorExit);
-                ff14bot.Objects.GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage && !blackList.Contains(r.ObjectId))
+                ff14bot.Objects.GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == Entities.OfPassage && !blackList.Contains(r.ObjectId))
                     .OrderBy(r => r.Distance()).FirstOrDefault();
                 if (ret != null)
                 {
@@ -136,7 +136,7 @@ namespace DeepCombined.TaskManager.Actions
 
             if (location != Vector3.Zero)
             {
-                ff14bot.Objects.GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.OfPassage && !blackList.Contains(r.ObjectId))
+                ff14bot.Objects.GameObject ret = GameObjectManager.GameObjects.Where(r => r.NpcId == Entities.OfPassage && !blackList.Contains(r.ObjectId))
                     .OrderBy(r => r.Distance()).FirstOrDefault();
                 if (ret != null)
                 {

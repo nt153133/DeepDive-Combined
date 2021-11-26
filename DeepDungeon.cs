@@ -349,17 +349,17 @@ namespace DeepCombined
             if (Settings.Instance.OpenMimics)
             {
                 //if we have mimics remove them from our ignore list
-                if (Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                if (Constants.BaseIgnoreEntity.Contains(Entities.MimicCoffer[0]))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(EntityNames.MimicCoffer).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(Entities.MimicCoffer).ToArray();
                 }
             }
             else
             {
                 //if we don't have mimics add them to our ignore list
-                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.MimicCoffer[0]))
+                if (!Constants.BaseIgnoreEntity.Contains(Entities.MimicCoffer[0]))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(EntityNames.MimicCoffer).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(Entities.MimicCoffer).ToArray();
                 }
             }
 
@@ -367,39 +367,39 @@ namespace DeepCombined
             if (Settings.Instance.OpenTraps)
             {
                 //if we have traps remove them
-                if (Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
+                if (Constants.BaseIgnoreEntity.Contains(Entities.TrapCoffer))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.TrapCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { Entities.TrapCoffer }).ToArray();
                 }
             }
             else
             {
-                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.TrapCoffer))
+                if (!Constants.BaseIgnoreEntity.Contains(Entities.TrapCoffer))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.TrapCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { Entities.TrapCoffer }).ToArray();
                 }
             }
 
             if (Settings.Instance.OpenSilver)
             {
                 //if we have traps remove them
-                if (Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
+                if (Constants.BaseIgnoreEntity.Contains(Entities.SilverCoffer))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { EntityNames.SilverCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Except(new[] { Entities.SilverCoffer }).ToArray();
                 }
             }
             else
             {
-                if (!Constants.BaseIgnoreEntity.Contains(EntityNames.SilverCoffer))
+                if (!Constants.BaseIgnoreEntity.Contains(Entities.SilverCoffer))
                 {
-                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.SilverCoffer }).ToArray();
+                    Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { Entities.SilverCoffer }).ToArray();
                 }
             }
 
             //Add the current Dungeon's Ignores
-            if (!Constants.BaseIgnoreEntity.Contains(EntityNames.OfPassage))
+            if (!Constants.BaseIgnoreEntity.Contains(Entities.OfPassage))
             {
-                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { EntityNames.OfPassage, EntityNames.OfReturn, EntityNames.LobbyEntrance }).ToArray();
+                Constants.BaseIgnoreEntity = Constants.BaseIgnoreEntity.Concat(new[] { Entities.OfPassage, Entities.OfReturn, Entities.LobbyEntrance }).ToArray();
             }
 
             Constants.IgnoreEntity = Constants.SelectedDungeon.GetIgnoreEntity(Constants.BaseIgnoreEntity);

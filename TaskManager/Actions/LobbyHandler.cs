@@ -36,7 +36,7 @@ namespace DeepCombined.TaskManager.Actions
 
             await Coroutine.Sleep(5000);
 
-            _target = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.LobbyExit).OrderBy(r => r.Distance()).FirstOrDefault();
+            _target = GameObjectManager.GameObjects.Where(r => r.NpcId == Entities.LobbyExit).OrderBy(r => r.Distance()).FirstOrDefault();
 
             Navigator.Stop();
             Navigator.Clear();
@@ -89,7 +89,7 @@ namespace DeepCombined.TaskManager.Actions
                 return;
             }
 
-            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == EntityNames.LobbyExit)
+            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == Entities.LobbyExit)
                 .OrderBy(i => i.Distance2D(Core.Me.Location)).FirstOrDefault();
         }
     }

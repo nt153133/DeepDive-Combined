@@ -139,7 +139,7 @@ namespace DeepCombined.DungeonDefinition
                     break;
             }
 
-            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == Entities.Hidden)
             {
                 weight += 5;
             }
@@ -165,7 +165,7 @@ namespace DeepCombined.DungeonDefinition
             {
                 case GameObjectType.Treasure:
                     return !(HaveMainPomander() && DeepDungeonManager.PortalActive &&
-                             FloorExit.location != Vector3.Zero && obj.NpcId != EntityNames.BandedCoffer);
+                             FloorExit.location != Vector3.Zero && obj.NpcId != Entities.BandedCoffer);
                 case GameObjectType.EventObject:
                     return true;
                 case GameObjectType.BattleNpc:
@@ -199,7 +199,7 @@ namespace DeepCombined.DungeonDefinition
                 switch (obj.Type)
                 {
                     case GameObjectType.Treasure:
-                        if (obj.NpcId == EntityNames.BandedCoffer)
+                        if (obj.NpcId == Entities.BandedCoffer)
                         {
                             result.Add(obj);
                             break;

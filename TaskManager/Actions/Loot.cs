@@ -82,7 +82,7 @@ namespace DeepCombined.TaskManager.Actions
             TreeRoot.StatusText = "Treasure";
             if (Target.Unit.IsValid)
             {
-                if (Target.Unit?.NpcId == EntityNames.Hidden)
+                if (Target.Unit?.NpcId == Entities.Hidden)
                 {
                     return await HandleCacheOfTheHoard();
                 }
@@ -174,7 +174,7 @@ namespace DeepCombined.TaskManager.Actions
                     Logger.Verbose("Attempting to interact with: {0} ({1} / 3)", Target.Name, tries + 1);
 
                     if (!PartyManager.IsInParty || PartyManager.IsPartyLeader ||
-                        PartyManager.IsInParty && Constants.IsExitObject(Target.Unit))
+                        PartyManager.IsInParty && Constants.IsFloorExit(Target.Unit))
                     {
                         await CommonTasks.StopMoving("Interacting with chest");
                         if (!await ObjectInteraction(Target.Unit))
@@ -297,7 +297,7 @@ namespace DeepCombined.TaskManager.Actions
             await Coroutine.Wait(TimeSpan.FromSeconds(10),
                 () =>
                     Core.Me.InCombat || GameObjectManager.NumberOfAttackers > 0 || DeepDungeonCombined.StopPlz ||
-                    GameObjectManager.GetObjectsOfType<EventObject>().Any(i => i.NpcId == EntityNames.BandedCoffer)
+                    GameObjectManager.GetObjectsOfType<EventObject>().Any(i => i.NpcId == Entities.BandedCoffer)
             );
 
             if (Core.Me.InCombat || GameObjectManager.NumberOfAttackers > 0)

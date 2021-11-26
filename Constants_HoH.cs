@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using DeepCombined.DungeonDefinition;
 using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
 using DeepCombined.Properties;
 using DeepCombined.Structure;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Enums;
 using ff14bot.Managers;
-using ff14bot.Objects;
 
 namespace DeepCombined
 {
@@ -97,7 +97,7 @@ namespace DeepCombined
 
         public static void LoadList()
         {
-            List<DeepDungeonData> deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
+            List<DeepDungeonData> deepList = ResourceHelpers.LoadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
 
             DeepListType = new List<IDeepDungeon>();
             foreach (DeepDungeonData dd in deepList)
@@ -145,11 +145,6 @@ namespace DeepCombined
             return SelectedDungeon.PomanderMapping[(int)p];
         }
 
-        public static bool IsExitObject(GameObject obj)
-        {
-            return Exits.Any(exit => obj.NpcId == exit);
-        }
-
         public static IDeepDungeon GetDeepDungeonByMapid(uint mapId)
         {
             return DeepListType.FirstOrDefault(deepDungeon => deepDungeon.Floors.Any(i => i.MapId == mapId));
@@ -166,52 +161,64 @@ namespace DeepCombined
 
     internal static partial class Mobs
     {
-        internal const uint HeavenlyShark = 7272;
-
         /// <summary>
-        /// Heaven on High friendly lion-dog. Grants <see cref="Auras.KomainusFavor"/>.
-        /// </summary>
-        internal const uint Komainu = 7396;
-
-        /// <summary>
-        /// Heaven on High friendly mameshiba. Grants <see cref="Auras.InugamisFavor"/>.
-        /// </summary>
-        internal const uint Inugami = 7397;
-
-        /// <summary>
-        /// Heaven on High friendly fat cat. Grants <see cref="Auras.SenrisFavor"/>.
-        /// </summary>
-        internal const uint Senri = 7398;
-
-        /// <summary>
-        /// Heaven on High floor 30 boss.
+        /// HoH floor 30 boss.
         /// </summary>
         internal const uint Hiruko = 7478;
 
         /// <summary>
-        /// Heaven on High floor 30 cloud add.
+        /// HoH floor 30 cloud add.
         /// </summary>
         internal const uint Raiun = 7479;
     }
 
-    internal static partial class Auras
+    internal static partial class Entities
     {
-        internal const uint Haste = 1091;  // Buff
-        internal const uint HpMpBoost = 1093;  // Buff
+        /// <summary>
+        /// HoH friendly lion-dog. Grants <see cref="Auras.KomainusFavor"/>.
+        /// </summary>
+        internal const uint Komainu = 7396;
 
         /// <summary>
-        /// Heaven on High lion-dog buff. Damage dealt is increased.
+        /// HoH friendly mameshiba. Grants <see cref="Auras.InugamisFavor"/>.
+        /// </summary>
+        internal const uint Inugami = 7397;
+
+        /// <summary>
+        /// HoH friendly fat cat. Grants <see cref="Auras.SenrisFavor"/>.
+        /// </summary>
+        internal const uint Senri = 7398;
+    }
+
+    internal static partial class Auras
+    {
+        #region Auspice Auras
+        /// <summary>
+        /// HoH lion-dog buff. Damage dealt is increased.
         /// </summary>
         internal const uint KomainusFavor = 1584;
 
         /// <summary>
-        /// Heaven on High mameshiba buff. Damage taken is decreased.
+        /// HoH mameshiba buff. Damage taken is decreased.
         /// </summary>
         internal const uint InugamisFavor = 1585;
 
         /// <summary>
-        /// Heaven on High fat cat buff. Regenerating HP over time.
+        /// HoH fat cat buff. Regenerating HP over time.
         /// </summary>
         internal const uint SenrisFavor = 1586;
+        #endregion
+
+        #region Floor Auras
+        /// <summary>
+        /// Unmagicked. Floor is preventing use of magicite.
+        /// </summary>
+        internal const uint Unmagicked = 1549;
+        #endregion
+    }
+
+    internal static partial class Spells
+    {
+        internal const uint CloudCall = 11290;
     }
 }

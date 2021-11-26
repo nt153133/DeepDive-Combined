@@ -38,7 +38,9 @@ namespace DeepCombined.DungeonDefinition
 
         private readonly uint[] _ignoreEntity =
         {
-            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.Senri, Mobs.Inugami, Mobs.Raiun, 377, Mobs.Komainu, 7395
+            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance,
+            Entities.Senri, Entities.Inugami, Mobs.Raiun, Entities.Komainu,
+            7395
         };
 
         public HeavenOnHigh(DeepDungeonData deep) : base(deep)
@@ -228,7 +230,7 @@ namespace DeepCombined.DungeonDefinition
                     break;
             }
 
-            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == Entities.Hidden)
             {
                 weight += 5;
             }
@@ -259,7 +261,7 @@ namespace DeepCombined.DungeonDefinition
                 switch (obj.Type)
                 {
                     case GameObjectType.Treasure:
-                        if (obj.NpcId == EntityNames.BandedCoffer)
+                        if (obj.NpcId == Entities.BandedCoffer)
                         {
                             result.Add(obj);
                             break;

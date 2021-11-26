@@ -100,16 +100,16 @@ namespace DeepCombined.DungeonDefinition.Base
                 return weight / 2;
             }
 
-            if (obj.NpcId == EntityNames.BandedCoffer)
+            if (obj.NpcId == Entities.BandedCoffer)
             {
                 weight += 500;
             }
 
-            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == Entities.Hidden)
             {
                 weight += 5;
             }
-            else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != EntityNames.OfPassage && PartyManager.IsInParty)
+            else if (DeepDungeonManager.PortalActive && Settings.Instance.GoExit && obj.NpcId != Entities.OfPassage && PartyManager.IsInParty)
             {
                 weight -= 10;
             }

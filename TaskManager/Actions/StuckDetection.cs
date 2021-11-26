@@ -42,7 +42,7 @@ namespace DeepCombined.TaskManager.Actions
                 }
 
                 Logger.Warn("No activity was detected for {0} seconds. Adding target to the blacklist and trying again", MoveTimer.WaitTime.TotalSeconds);
-                if (Poi.Current.Unit != null && !Constants.IsExitObject(Poi.Current.Unit))
+                if (Poi.Current.Unit != null && !Constants.IsFloorExit(Poi.Current.Unit))
                 {
                     DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
                 }
