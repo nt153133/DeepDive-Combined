@@ -22,8 +22,12 @@ namespace DeepCombined.Windows
 
         internal static async Task OpenSaveMenu()
         {
-            var menu = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDmenu);
-            if (menu == null) return;
+            AtkAddonControl menu = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDmenu);
+            if (menu == null)
+            {
+                return;
+            }
+
             try
             {
                 menu.SendAction(1, 3, 0);
@@ -37,9 +41,12 @@ namespace DeepCombined.Windows
 
         internal static async Task OpenResetMenu()
         {
-            var wind = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDmenu);
+            AtkAddonControl wind = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDmenu);
             if (wind == null)
+            {
                 throw new Exception("Open Reset Menu Failed. POTD Menu is not open. (The bot will attempt to correct this issue)");
+            }
+
             wind.SendAction(1, 3, 1);
             await Coroutine.Wait(3000, () => DeepDungeonSaveData.IsOpen);
         }

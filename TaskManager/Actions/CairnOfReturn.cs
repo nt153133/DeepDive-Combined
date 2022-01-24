@@ -35,13 +35,18 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (Target.Type != (PoiType) PoiTypes.UseCairnOfReturn)
+            if (Target.Type != (PoiType)PoiTypes.UseCairnOfReturn)
+            {
                 return false;
+            }
 
             //let the navigation task handle moving toward the object if we are too far away.
-            if (Target.Location.Distance2D(Core.Me.Location) > 3) return false;
+            if (Target.Location.Distance2D(Core.Me.Location) > 3)
+            {
+                return false;
+            }
 
-            var unit = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
+            ff14bot.Objects.GameObject unit = GameObjectManager.GetObjectByNPCId(Entities.OfReturn);
             if (unit == null)
             {
                 Logger.Warn("Cairn of return could not be found at this location");
@@ -72,7 +77,11 @@ namespace DeepCombined.TaskManager.Actions
 
             await Coroutine.Yield();
 
-            if (Core.Me.HasAura(Auras.Lust)) await Tasks.Common.CancelAura(Auras.Lust);
+            if (Core.Me.HasAura(Auras.Lust))
+            {
+                await Tasks.Common.CancelAura(Auras.Lust);
+            }
+
             Logger.Verbose("Attempting to interact with: {0}", unit.Name);
             unit.Target();
             unit.Interact();
@@ -96,11 +105,13 @@ namespace DeepCombined.TaskManager.Actions
         public void Tick()
         {
             if (!Constants.InDeepDungeon || CommonBehaviors.IsLoading || QuestLogManager.InCutscene)
+            {
                 return;
+            }
 
             if (location == Vector3.Zero || Level != DeepDungeonManager.Level)
             {
-                var ret = GameObjectManager.GetObjectByNPCId(EntityNames.OfReturn);
+                ff14bot.Objects.GameObject ret = GameObjectManager.GetObjectByNPCId(Entities.OfReturn);
                 if (ret != null)
                 {
                     Level = DeepDungeonManager.Level;
@@ -109,13 +120,17 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             //if we are in combat don't move toward the cairn of return
-            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType) PoiTypes.UseCairnOfReturn))
+            if (Poi.Current != null && (Poi.Current.Type == PoiType.Kill || Poi.Current.Type == (PoiType)PoiTypes.UseCairnOfReturn))
+            {
                 return;
+            }
 
 
             //party member is dead & we have the location of the cairn and it's active
             if (DeepDungeonManager.ReturnActive && PartyManager.AllMembers.Any(member => member.CurrentHealth == 0) && location != Vector3.Zero && Level == DeepDungeonManager.Level)
-                Poi.Current = new Poi(location, (PoiType) PoiTypes.UseCairnOfReturn);
+            {
+                Poi.Current = new Poi(location, (PoiType)PoiTypes.UseCairnOfReturn);
+            }
         }
     }
 }

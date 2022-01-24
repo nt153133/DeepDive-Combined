@@ -19,7 +19,7 @@ namespace DeepCombined.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -93,10 +93,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -372.510681,
         ///      &quot;Y&quot;: 21.7968826,
-        ///      &quot;Z&quot;: 372.9993
-        ///    }
-        ///  ],
-        ///   [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _1 {
             get {
@@ -137,10 +134,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -337.3164,
         ///      &quot;Y&quot;: 21.0,
-        ///      &quot;Z&quot;: 260.704041
-        ///    }
-        ///  ],
-        ///  &quot;6288809&quot; [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 2 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _2 {
             get {
@@ -181,10 +175,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -337.3164,
         ///      &quot;Y&quot;: 21.0,
-        ///      &quot;Z&quot;: 260.704041
-        ///    }
-        ///  ],
-        ///  &quot;6288881&quot; [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 2 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _3 {
             get {
@@ -225,11 +216,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -337.082855,
         ///      &quot;Y&quot;: 22.0,
-        ///      &quot;Z&quot;: 256.001984
-        ///    }
-        ///  ],
-        ///  &quot;6288996&quot;: [
-        /// [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 256.0 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _4 {
             get {
@@ -270,12 +257,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -218.004929,
         ///      &quot;Y&quot;: 10.0,
-        ///      &quot;Z&quot;: 375.783569
-        ///    }
-        ///  ],
-        ///  &quot;6429962&quot;: [
-        ///    {
-        /// [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot;: 375.783569        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _5 {
             get {
@@ -316,10 +298,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -372.871155,
         ///      &quot;Y&quot;: 12.4296875,
-        ///      &quot;Z&quot;: 252.516953
-        ///    }
-        ///  ],
-        /// [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _6 {
             get {
@@ -365,10 +344,7 @@ namespace DeepCombined.Properties {
         ///  ],
         ///  &quot;6418713&quot;: [
         ///    {
-        ///      &quot;X&quot;: -299.75,
-        ///      &quot;Y&quot;: 5.0,
-        ///      &quot;Z&quot;: 300.0
-        ///     [rest of string was truncated]&quot;;.
+        ///      &quot;X&quot;: -299.75,        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _7 {
             get {
@@ -418,10 +394,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -339.220276,
         ///      &quot;Y&quot;: 10.0546875,
-        ///      &quot;Z&quot;: 262.042664
-        ///    }
-        ///  ],
-        ///  &quot;64345 [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _8 {
             get {
@@ -462,10 +435,7 @@ namespace DeepCombined.Properties {
         ///    {
         ///      &quot;X&quot;: -339.220276,
         ///      &quot;Y&quot;: 10.0546875,
-        ///      &quot;Z&quot;: 262.042664
-        ///    }
-        ///  ],
-        ///  &quot;64416 [rest of string was truncated]&quot;;.
+        ///      &quot;Z&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string _9 {
             get {
@@ -511,8 +481,7 @@ namespace DeepCombined.Properties {
         ///    &quot;UnlockQuest&quot;: 67092,
         ///    &quot;Npc&quot;: {
         ///      &quot;Location&quot;: [
-        ///        187.548584,
-        ///        7 [rest of string was truncated]&quot;;.
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DeepDungeonData {
             get {
@@ -572,9 +541,9 @@ namespace DeepCombined.Properties {
         ///  }
         ///].
         /// </summary>
-        public static string pots {
+        public static string Potions {
             get {
-                return ResourceManager.GetString("pots", resourceCulture);
+                return ResourceManager.GetString("Potions", resourceCulture);
             }
         }
         

@@ -28,7 +28,7 @@ namespace DeepCombined.Structure
 
         public ClassLevelTarget(ClassJobType job, int level, int gearSlot)
         {
-            this.classJobType = job;
+            classJobType = job;
             _level = level;
             _gearSlot = gearSlot;
         }
@@ -39,6 +39,6 @@ namespace DeepCombined.Structure
         {
             return $"Want to get {Job} to level {Level}";
         }
-        
+
     }
 }

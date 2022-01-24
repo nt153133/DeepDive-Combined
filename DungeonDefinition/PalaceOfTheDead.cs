@@ -95,7 +95,11 @@ namespace DeepCombined.DungeonDefinition
         public override async Task<bool> BuffMe()
         {
             if (Settings.Instance.UsePomRage && CombatTargeting.Instance.LastEntities.Count() > 5 &&
-                !Core.Me.HasAura(Auras.Rage)) return await UsePomander(Pomander.Rage, Auras.Lust);
+                !Core.Me.HasAura(Auras.Rage))
+            {
+                return await UsePomander(Pomander.Rage, Auras.Lust);
+            }
+
             return true;
         }
 
@@ -113,29 +117,39 @@ namespace DeepCombined.DungeonDefinition
 
         private static async Task LustLogic()
         {
-            var lust = false;
-            var itm = DeepDungeonManager.GetInventoryItem(Pomander.Lust);
+            bool lust = false;
+            DDInventoryItem itm = DeepDungeonManager.GetInventoryItem(Pomander.Lust);
             Logger.Info("[LUST] Item Count: {0}", itm.Count);
 
             //we are inside the dungeon, should be ok to use InParty here.
             if (PartyManager.IsInParty)
             {
                 Logger.Info("In A Party. Doing Lust Logic...");
-                var lustFound = false;
-                foreach (var k in PartyManager.AllMembers)
+                bool lustFound = false;
+                foreach (PartyMember k in PartyManager.AllMembers)
                 {
                     if (!k.Class.IsHealer() && !k.Class.IsTank())
                     {
                         lustFound = true;
                         if (k.IsMe)
+                        {
                             lust = true;
+                        }
+
                         break;
                     }
                 }
 
                 Logger.Info("Party Lust status: {0} :: {1} :: {2}", !lust, !lustFound, PartyManager.IsPartyLeader);
-                if (!lust && !lustFound) lust = PartyManager.IsPartyLeader;
-                if (!PartyManager.IsPartyLeader && itm.Count > 0) lust = true;
+                if (!lust && !lustFound)
+                {
+                    lust = PartyManager.IsPartyLeader;
+                }
+
+                if (!PartyManager.IsPartyLeader && itm.Count > 0)
+                {
+                    lust = true;
+                }
             }
             else
             {

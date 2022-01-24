@@ -38,7 +38,9 @@ namespace DeepCombined.DungeonDefinition
 
         private readonly uint[] _ignoreEntity =
         {
-            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance, Mobs.CatThing, Mobs.Inugami, Mobs.Raiun, 377, 7396, 7395
+            _BeaconOfPassage, _BeaconOfReturn, _LobbyEntrance,
+            Entities.Senri, Entities.Inugami, Mobs.Raiun, Entities.Komainu,
+            7395
         };
 
         public HeavenOnHigh(DeepDungeonData deep) : base(deep)
@@ -83,10 +85,15 @@ namespace DeepCombined.DungeonDefinition
 
         public override async Task<bool> BuffMe()
         {
-            if ( GameObjectManager.Attackers.Count > 3) return await UsePomander(Pomander.Petrification);
+            if (GameObjectManager.Attackers.Count > 3)
+            {
+                return await UsePomander(Pomander.Petrification);
+            }
 
             if (DeepDungeonManager.GetInventoryItem(Pomander.Petrification).Count == 3)
+            {
                 return await UsePomander(Pomander.Petrification);
+            }
 
             return false;
         }
@@ -94,44 +101,55 @@ namespace DeepCombined.DungeonDefinition
         public override async Task<bool> BuffBoss()
         {
             if ((PartyManager.IsInParty && PartyManager.IsPartyLeader) || !PartyManager.IsInParty)
+            {
                 if (DeepDungeonManager.GetMagiciteCount() >= 1)
                 {
                     Logger.Warn("Magicite >= 1");
                     DeepDungeonManager.CastMagicite();
                     await Coroutine.Sleep(500);
                 }
+            }
 
             return await UsePomander(Pomander.Frailty);
-            
+
         }
 
         public override async Task<bool> BuffCurrentFloor()
         {
             if ((PartyManager.IsInParty && PartyManager.IsPartyLeader) || !PartyManager.IsInParty)
+            {
                 if (DeepDungeonManager.GetMagiciteCount() >= 1)
                 {
                     Logger.Warn("Magicite >= 1");
                     DeepDungeonManager.CastMagicite();
                     await Coroutine.Sleep(500);
                 }
-                
+            }
+
             if (DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 1)
+            {
                 return await UsePomander(Pomander.Frailty);
+            }
 
             return false;
         }
 
         public override float Sort(GameObject obj)
         {
-            var weight = 150f;
+            float weight = 150f;
 
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader && !DeepDungeonManager.BossFloor)
             {
                 if (PartyManager.PartyLeader.IsInObjectManager && PartyManager.PartyLeader.CurrentHealth > 0)
                 {
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
+                    {
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
+                        {
                             weight += 600;
+                        }
+                    }
+
                     weight -= obj.DistanceSqr(PartyManager.PartyLeader.GameObject.Location);
                 }
                 else
@@ -149,7 +167,10 @@ namespace DeepCombined.DungeonDefinition
                 case GameObjectType.BattleNpc:
                     weight /= 2;
                     if ((obj as BattleCharacter).IsTargetingMyPartyMember())
+                    {
                         weight += 100;
+                    }
+
                     break;
                 case GameObjectType.Treasure:
                     //weight += 10;
@@ -158,32 +179,43 @@ namespace DeepCombined.DungeonDefinition
 
             return weight;
         }
-        
+
         private float SortComplete(GameObject obj)
         {
-            var weight = 150f;
+            float weight = 150f;
 
             if (PartyManager.IsInParty && !PartyManager.IsPartyLeader && !DeepDungeonManager.BossFloor)
             {
                 if (PartyManager.PartyLeader.IsInObjectManager && PartyManager.PartyLeader.CurrentHealth > 0)
                 {
                     if (PartyManager.PartyLeader.BattleCharacter.HasTarget)
+                    {
                         if (obj.ObjectId == PartyManager.PartyLeader.BattleCharacter.TargetGameObject.ObjectId)
+                        {
                             weight += 600;
+                        }
+                    }
+
                     weight -= obj.DistanceSqr(PartyManager.PartyLeader.GameObject.Location);
                 }
                 else
                 {
                     if (FloorExit.location != Vector3.Zero)
+                    {
                         weight -= Core.Me.DistanceSqr(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                    }
                 }
             }
             else
             {
                 if (FloorExit.location != Vector3.Zero)
+                {
                     weight -= Core.Me.DistanceSqr(Vector3.Lerp(obj.Location, FloorExit.location, 0.25f));
+                }
                 else
+                {
                     weight -= obj.DistanceSqr();
+                }
             }
 
             switch (obj.Type)
@@ -198,47 +230,63 @@ namespace DeepCombined.DungeonDefinition
                     break;
             }
 
-            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == EntityNames.Hidden)
+            if (DeepDungeonManager.PortalActive && Settings.Instance.GoForTheHoard && obj.NpcId == Entities.Hidden)
+            {
                 weight += 5;
+            }
 
             return weight;
         }
         public List<GameObject> StartList()
         {
-            var result = new List<GameObject>();
-            foreach (var obj in GameObjectManager.GameObjects)
+            List<GameObject> result = new List<GameObject>();
+            foreach (GameObject obj in GameObjectManager.GameObjects)
             {
                 if (obj.Location == Vector3.Zero)
+                {
                     continue;
-                
+                }
+
                 if (!obj.IsValid || !obj.IsVisible)
+                {
                     continue;
+                }
 
                 if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                     Constants.IgnoreEntity.Contains(obj.NpcId))
+                {
                     continue;
+                }
 
                 switch (obj.Type)
                 {
                     case GameObjectType.Treasure:
-                        if (obj.NpcId == EntityNames.BandedCoffer)
+                        if (obj.NpcId == Entities.BandedCoffer)
                         {
                             result.Add(obj);
                             break;
                         }
-                        
+
                         if (!DeepDungeonManager.PortalActive && FloorExit.location != Vector3.Zero)
+                        {
                             result.Add(obj);
-                        
+                        }
+
                         break;
                     case GameObjectType.EventObject:
                         result.Add(obj);
                         break;
                     case GameObjectType.BattleNpc:
-                        if (DeepDungeonManager.PortalActive && !((BattleCharacter) obj).InCombat && FloorExit.location != Vector3.Zero)
+                        if (DeepDungeonManager.PortalActive && !((BattleCharacter)obj).InCombat && FloorExit.location != Vector3.Zero)
+                        {
                             continue;
-                        if (!((BattleCharacter) obj).IsDead)
+                        }
+
+                        if (!((BattleCharacter)obj).IsDead)
+                        {
                             result.Add(obj);
+                        }
+
                         break;
                     default:
                         continue;
@@ -247,16 +295,20 @@ namespace DeepCombined.DungeonDefinition
             //Blacklists
             return result;
         }
-        
+
         public override bool Filter(GameObject obj)
         {
             //Blacklists
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                 Constants.IgnoreEntity.Contains(obj.NpcId))
+            {
                 return false;
+            }
 
             if (obj.Location == Vector3.Zero)
+            {
                 return false;
+            }
 
             switch (obj.Type)
             {
@@ -266,28 +318,30 @@ namespace DeepCombined.DungeonDefinition
                 case GameObjectType.EventObject:
                     return true;
                 case GameObjectType.BattleNpc:
-                    return !((BattleCharacter) obj).IsDead;
+                    return !((BattleCharacter)obj).IsDead;
                 default:
                     return false;
             }
         }
-        
+
         public override List<GameObject> GetObjectsByWeight()
         {
             if (DeepDungeonManager.PortalActive)
+            {
                 return StartList().OrderByDescending(SortComplete)
                     .ToList();
+            }
 
             return StartList()
                 .OrderByDescending(Sort)
                 .ToList();
         }
-        
+
         public override string GetDDType()
         {
             return "HoH";
         }
-        
+
         private bool HaveMainPomander()
         {
             return DeepDungeonManager.GetInventoryItem(Pomander.Frailty).Count > 0 &&

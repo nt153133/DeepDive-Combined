@@ -48,17 +48,23 @@ namespace DeepCombined.Providers
             get
             {
                 if (!DeepDungeonManager.PortalActive)
+                {
                     return false;
+                }
 
                 if (Settings.Instance.GoExit && PartyManager.IsInParty)
                 {
                     if (PartyManager.AllMembers.Any(i => i.CurrentHealth == 0))
+                    {
                         return false;
+                    }
 
                     if (Settings.Instance.GoForTheHoard)
+                    {
                         return !LastEntities.Any(i =>
-                            (i.NpcId == EntityNames.Hidden || i.NpcId == EntityNames.BandedCoffer) &&
-                            !Blacklist.Contains(i.ObjectId, (BlacklistFlags) DeepDungeonManager.Level));
+                            (i.NpcId == Entities.Hidden || i.NpcId == Entities.BandedCoffer) &&
+                            !Blacklist.Contains(i.ObjectId, (BlacklistFlags)DeepDungeonManager.Level));
+                    }
 
                     //Logger.Instance.Verbose("Full Explore : {0} {1}", _levelComplete, !NotMobs().Any());
                     return true;
@@ -67,9 +73,11 @@ namespace DeepCombined.Providers
                 if (Settings.Instance.GoExit)
                 {
                     if (Settings.Instance.GoForTheHoard)
+                    {
                         return !LastEntities.Any(i =>
-                            (i.NpcId == EntityNames.Hidden || i.NpcId == EntityNames.BandedCoffer) &&
-                            !Blacklist.Contains(i.ObjectId, (BlacklistFlags) DeepDungeonManager.Level));
+                            (i.NpcId == Entities.Hidden || i.NpcId == Entities.BandedCoffer) &&
+                            !Blacklist.Contains(i.ObjectId, (BlacklistFlags)DeepDungeonManager.Level));
+                    }
 
                     return true;
                 }
@@ -91,41 +99,51 @@ namespace DeepCombined.Providers
         internal void Pulse()
         {
             if (CommonBehaviors.IsLoading)
+            {
                 return;
-            
+            }
+
             if (!DutyManager.InInstance)
+            {
                 return;
+            }
 
             if (DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
+            {
                 return;
+            }
 
             if (!Constants.InDeepDungeon)
+            {
                 return;
+            }
 
             if (_floor != DeepDungeonManager.Level)
             {
                 Logger.Info("Level has Changed. Clearing Targets");
                 _floor = DeepDungeonManager.Level;
-                Blacklist.Clear(i => i.Flags == (BlacklistFlags) DeepDungeonManager.Level);
+                Blacklist.Clear(i => i.Flags == (BlacklistFlags)DeepDungeonManager.Level);
                 DeepDungeonManager.PomanderChange();
             }
 
-            using (new PerformanceLogger("Targeting Pulse",true))
+            using (new PerformanceLogger("Targeting Pulse", true))
             {
                 LastEntities = new ReadOnlyCollection<GameObject>(GetObjectsByWeight());
             }
-            
+
             if (_lastPulse + TimeSpan.FromSeconds(5) < DateTime.Now)
             {
                 Logger.Verbose($"Found {LastEntities.Count} Targets");
                 if (!LastEntities.Any())
                 {
-                    if (!GameObjectManager.GameObjects.Any(r => r.NpcId == EntityNames.OfPassage && !FloorExit.blackList.Contains(r.ObjectId)))
+                    if (!GameObjectManager.GameObjects.Any(r => r.NpcId == Entities.OfPassage && !FloorExit.blackList.Contains(r.ObjectId)))
+                    {
                         FloorExit.blackList.Clear();
+                    }
                 }
                 _lastPulse = DateTime.Now;
             }
-            
+
         }
 
         internal void AddToBlackList(GameObject obj, string reason)
@@ -135,18 +153,22 @@ namespace DeepCombined.Providers
 
         internal void AddToBlackList(GameObject obj, TimeSpan time, string reason)
         {
-            Blacklist.Add(obj, (BlacklistFlags) _floor, time, reason);
+            Blacklist.Add(obj, (BlacklistFlags)_floor, time, reason);
             Poi.Clear(reason);
         }
 
         public static bool FilterKnown(GameObject obj)
         {
             if (obj.Location == Vector3.Zero)
+            {
                 return false;
+            }
             //Blacklists
             if (Blacklist.Contains(obj) || Constants.TrapIds.Contains(obj.NpcId) ||
                 Constants.IgnoreEntity.Contains(obj.NpcId))
+            {
                 return false;
+            }
 
             switch (obj.Type)
             {

@@ -33,11 +33,13 @@ namespace DeepCombined.Helpers
         {
             try
             {
-                var resource = LoadAndTransformXamlFile<ResourceDictionary>(filename);
+                ResourceDictionary resource = LoadAndTransformXamlFile<ResourceDictionary>(filename);
                 foreach (DictionaryEntry res in resource)
                 {
                     if (!control.Resources.Contains(res.Key))
+                    {
                         control.Resources.Add(res.Key, res.Value);
+                    }
                 }
             }
             catch (Exception ex)
@@ -55,7 +57,7 @@ namespace DeepCombined.Helpers
         {
             try
             {
-                var windowContent = LoadAndTransformXamlFile<UserControl>(xamlFilePath);
+                UserControl windowContent = LoadAndTransformXamlFile<UserControl>(xamlFilePath);
                 //if (File.Exists(Path.Combine(Path.GetDirectoryName(xamlFilePath), "Dictionary.xaml")))
                 //    LoadResourceForWindow(Path.Combine(Path.GetDirectoryName(xamlFilePath), "Dictionary.xaml"), windowContent);
                 return windowContent;
@@ -86,12 +88,12 @@ namespace DeepCombined.Helpers
                 xamlText = Regex.Replace(xamlText,
                     "<ResourceDictionary.MergedDictionaries>.*</ResourceDictionary.MergedDictionaries>", string.Empty,
                     RegexOptions.Compiled | RegexOptions.Singleline);
-                result = (T) XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(xamlText)));
+                result = (T)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(xamlText)));
             }
             catch (Exception exception)
             {
                 Logger.Error("Error loading/transforming XAML\n{0}", exception);
-                result = default(T);
+                result = default;
             }
 
             return result;

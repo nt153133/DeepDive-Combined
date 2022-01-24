@@ -48,7 +48,7 @@ namespace DeepCombined.DungeonDefinition.Base
 
         public override string ToString()
         {
-            var output =
+            string output =
                 $"{NameWithoutArticle} ({Index})\n" +
                 $"Lobby: {LobbyId}\n" +
                 $"UnlockQuest: {UnlockQuest}\n" +
@@ -100,7 +100,7 @@ namespace DeepCombined.DungeonDefinition.Base
             QuestName = DataManager.GetLocalizedQuestName(questId);
         }
 
-        [JsonIgnore] public string DisplayName => DataManager.InstanceContentResults[(uint) ContentFinderId].CurrentLocaleName;
+        [JsonIgnore] public string DisplayName => DataManager.InstanceContentResults[(uint)ContentFinderId].CurrentLocaleName;
 
         public override string ToString()
         {
@@ -110,7 +110,10 @@ namespace DeepCombined.DungeonDefinition.Base
         public override bool Equals(object obj)
         {
             if (obj != null && obj.GetType() == typeof(FloorSetting))
-                return ((FloorSetting) obj).InstanceId == InstanceId;
+            {
+                return ((FloorSetting)obj).InstanceId == InstanceId;
+            }
+
             return base.Equals(obj);
         }
 

@@ -1,11 +1,10 @@
-﻿using DeepCombined.Helpers.Logging;
-using DeepCombined.Memory;
+﻿using DeepCombined.Memory;
 using ff14bot.Managers;
 using LlamaLibrary.RemoteWindows;
 
 namespace DeepCombined.Windows
 {
-    internal class DeepDungeonStatus: RemoteWindow
+    internal class DeepDungeonStatus : RemoteWindow
     {
         public DeepDungeonStatus() : base(WindowNames.DDStatus)
         {
@@ -18,12 +17,14 @@ namespace DeepCombined.Windows
         internal void Open()
         {
             if (!IsOpen)
+            {
                 AgentModule.ToggleAgentInterfaceById(Agent);
+            }
         }
 
         internal void CastMagicite()
         {
-            
+
             if (!IsOpen)
             {
                 //Logger.Error("Window not open");

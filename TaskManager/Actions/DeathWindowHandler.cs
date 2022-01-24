@@ -29,19 +29,19 @@ namespace DeepCombined.TaskManager.Actions
             {
                 GameStatsManager.Died();
                 Logger.Warn("We have died...");
-                
+
                 DeepTracker.Died();
                 DeepTracker.EndRun(true);
                 RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult").SendAction(1, 3, uint.MaxValue);
                 await Coroutine.Sleep(250);
                 return true;
             }
-            
+
             if (RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult") != null)
             {
                 //GameStatsManager.Died();
                 //Logger.Warn("We have died...");
-                
+
                 //DeepTracker.Died();
                 DeepTracker.EndRun(false);
                 RaptureAtkUnitManager.GetWindowByName("DeepDungeonResult").SendAction(1, 3, uint.MaxValue);

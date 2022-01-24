@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using DeepCombined.DungeonDefinition;
 using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
 using DeepCombined.Properties;
 using DeepCombined.Structure;
 using ff14bot;
 using ff14bot.Directors;
 using ff14bot.Enums;
 using ff14bot.Managers;
-using ff14bot.Objects;
 
 namespace DeepCombined
 {
@@ -19,7 +19,7 @@ namespace DeepCombined
         public static List<IDeepDungeon> DeepListType;
 
         public static IDeepDungeon SelectedDungeon;
-        
+
         public static BindingList<ClassLevelTarget> ClassLevelTargets = new BindingList<ClassLevelTarget>();
 
         public static bool UseJobList = false;
@@ -83,24 +83,24 @@ namespace DeepCombined
             {ClassJobType.Dancer, ClassJobType.Dancer}
         };
 
-        public static Dictionary<GearSet,int> GearSetLevels()
+        public static Dictionary<GearSet, int> GearSetLevels()
         {
-            Dictionary<GearSet,int> gearsets = GearsetManager.GearSets.Where(i => i.InUse).ToDictionary<GearSet, GearSet, int>(gs => gs, gs => Core.Me.Levels[ClassMap[gs.Class]]);
+            Dictionary<GearSet, int> gearsets = GearsetManager.GearSets.Where(i => i.InUse).ToDictionary<GearSet, GearSet, int>(gs => gs, gs => Core.Me.Levels[ClassMap[gs.Class]]);
             return gearsets;
         }
 
         public static bool AuraTransformed => Core.Me.HasAura(Auras.Toad) || Core.Me.HasAura(Auras.Frog) ||
                                               Core.Me.HasAura(Auras.Toad2) || Core.Me.HasAura(Auras.Lust) ||
-                                              Core.Me.HasAura(Auras.Odder);
+                                              Core.Me.HasAura(Auras.Otter);
 
         public static Dictionary<string, List<double>> PerformanceStats = new Dictionary<string, List<double>>();
 
         public static void LoadList()
         {
-            var deepList = loadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
+            List<DeepDungeonData> deepList = ResourceHelpers.LoadResource<List<DeepDungeonData>>(Resources.DeepDungeonData);
 
             DeepListType = new List<IDeepDungeon>();
-            foreach (var dd in deepList)
+            foreach (DeepDungeonData dd in deepList)
             {
                 switch (GetDDEnum(dd.Index))
                 {
@@ -128,9 +128,12 @@ namespace DeepCombined
         {
             switch (index)
             {
-                case 0: return DeepDungeonType.Blank;
-                case 1: return DeepDungeonType.PotD;
-                case 2: return DeepDungeonType.HoH;
+                case 0:
+                    return DeepDungeonType.Blank;
+                case 1:
+                    return DeepDungeonType.PotD;
+                case 2:
+                    return DeepDungeonType.HoH;
 
                 default:
                     return DeepDungeonType.Unknown;
@@ -139,12 +142,7 @@ namespace DeepCombined
 
         public static int PomanderInventorySlot(Pomander p)
         {
-            return SelectedDungeon.PomanderMapping[(int) p];
-        }
-
-        public static bool IsExitObject(GameObject obj)
-        {
-            return Exits.Any(exit => obj.NpcId == exit);
+            return SelectedDungeon.PomanderMapping[(int)p];
         }
 
         public static IDeepDungeon GetDeepDungeonByMapid(uint mapId)
@@ -163,15 +161,64 @@ namespace DeepCombined
 
     internal static partial class Mobs
     {
-        internal const uint HeavenlyShark = 7272;
-        internal const uint CatThing = 7398;
-        internal const uint Inugami = 7397;
+        /// <summary>
+        /// HoH floor 30 boss.
+        /// </summary>
+        internal const uint Hiruko = 7478;
+
+        /// <summary>
+        /// HoH floor 30 cloud add.
+        /// </summary>
         internal const uint Raiun = 7479;
+    }
+
+    internal static partial class Entities
+    {
+        /// <summary>
+        /// HoH friendly lion-dog. Grants <see cref="Auras.KomainusFavor"/>.
+        /// </summary>
+        internal const uint Komainu = 7396;
+
+        /// <summary>
+        /// HoH friendly mameshiba. Grants <see cref="Auras.InugamisFavor"/>.
+        /// </summary>
+        internal const uint Inugami = 7397;
+
+        /// <summary>
+        /// HoH friendly fat cat. Grants <see cref="Auras.SenrisFavor"/>.
+        /// </summary>
+        internal const uint Senri = 7398;
     }
 
     internal static partial class Auras
     {
-        internal const uint Haste = 1091; //Buff
-        internal const uint HpBoost = 1093; //Buff
+        #region Auspice Auras
+        /// <summary>
+        /// HoH lion-dog buff. Damage dealt is increased.
+        /// </summary>
+        internal const uint KomainusFavor = 1584;
+
+        /// <summary>
+        /// HoH mameshiba buff. Damage taken is decreased.
+        /// </summary>
+        internal const uint InugamisFavor = 1585;
+
+        /// <summary>
+        /// HoH fat cat buff. Regenerating HP over time.
+        /// </summary>
+        internal const uint SenrisFavor = 1586;
+        #endregion
+
+        #region Floor Auras
+        /// <summary>
+        /// Unmagicked. Floor is preventing use of magicite.
+        /// </summary>
+        internal const uint Unmagicked = 1549;
+        #endregion
+    }
+
+    internal static partial class Spells
+    {
+        internal const uint CloudCall = 11290;
     }
 }

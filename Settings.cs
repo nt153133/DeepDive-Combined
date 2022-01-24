@@ -82,10 +82,15 @@ namespace DeepCombined
             get
             {
                 if (_settings != null)
+                {
                     return _settings;
-                _settings = new Settings();
-                //_settings.LoadFrom(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")));
-                _settings._initialized = true;
+                }
+
+                _settings = new Settings
+                {
+                    //_settings.LoadFrom(Path.Combine(GetSettingsFilePath(Core.Me.Name, "DeepDive.json")));
+                    _initialized = true
+                };
 
                 return _settings;
             }
@@ -360,7 +365,11 @@ namespace DeepCombined
             set
             {
                 _stop = value;
-                if (_initialized) Logger.Verbose($"Stop state has changed to: {value}");
+                if (_initialized)
+                {
+                    Logger.Verbose($"Stop state has changed to: {value}");
+                }
+
                 Save();
             }
         }
@@ -401,7 +410,7 @@ namespace DeepCombined
                 Save();
             }
         }
-        
+
         [Browsable(false)]
         [DefaultValue(0)]
         [JsonProperty("SelectedDungeon")]
@@ -452,13 +461,16 @@ namespace DeepCombined
 
         internal List<Structure.FloorSetting> EnsureFloorSettings()
         {
-            if (!_initialized) return _floorSettings;
+            if (!_initialized)
+            {
+                return _floorSettings;
+            }
 
             if (_floorSettings == null || !_floorSettings.Any())
             {
-                var llnext = new List<Structure.FloorSetting>();
+                List<Structure.FloorSetting> llnext = new List<Structure.FloorSetting>();
 
-                for (var i = 10; i <= 100; i += 10)
+                for (int i = 10; i <= 100; i += 10)
                 {
                     llnext.Add(new Structure.FloorSetting
                     {
@@ -470,7 +482,9 @@ namespace DeepCombined
             }
 
             if (SelectedLevel == null)
+            {
                 SelectedLevel = FloorSettings.First();
+            }
 
             return _floorSettings;
         }

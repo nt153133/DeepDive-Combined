@@ -26,7 +26,10 @@ namespace DeepCombined.TaskManager.Actions
         public async Task<bool> Run()
         {
             //we are inside POTD
-            if (Constants.InDeepDungeon || Constants.InExitLevel) return false;
+            if (Constants.InDeepDungeon || Constants.InExitLobby)
+            {
+                return false;
+            }
 
             if (WorldManager.ZoneId != Constants.EntranceZoneId ||
                 GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) == null ||
@@ -57,13 +60,19 @@ namespace DeepCombined.TaskManager.Actions
             }
 
             if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) != null &&
-                !(Constants.EntranceNpcPosition.Distance2D(Core.Me.Location) > 5f)) return false;
+                !(Constants.EntranceNpcPosition.Distance2D(Core.Me.Location) > 5f))
+            {
+                return false;
+            }
+
             Logger.Verbose("at Move");
 
             if (GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId) != null)
+            {
                 return await CommonTasks.MoveAndStop(
                     new MoveToParameters(GameObjectManager.GetObjectByNPCId(Constants.EntranceNpcId).Location,
                         "Moving toward NPC"), 5f, true);
+            }
 
             return await CommonTasks.MoveAndStop(
                 new MoveToParameters(Constants.EntranceNpcPosition, "Moving toward NPC"), 5f, true);

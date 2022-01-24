@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using DeepCombined.Helpers;
 using DeepCombined.DungeonDefinition.Base;
+using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
 using DeepCombined.Structure;
 using ff14bot.Enums;
-using ff14bot.Helpers;
 using ff14bot.Managers;
-using FloorSetting = DeepCombined.DungeonDefinition.Base.FloorSetting;
 
 namespace DeepCombined.Forms
 {
@@ -31,37 +29,44 @@ namespace DeepCombined.Forms
 
 
             if (Constants.SelectedDungeon != null)
+            {
                 DungeonListCombo.SelectedItem = Constants.SelectedDungeon;
+            }
             else
+            {
                 DungeonListCombo.SelectedItem = Constants.DeepListType[0];
+            }
 
             FloorCombo.DataSource = Constants.SelectedDungeon.Floors;
             FloorCombo.DisplayMember = "DisplayName";
 
-            if (Settings.Instance.BetterSelectedLevel != null) FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.Equals(Settings.Instance.BetterSelectedLevel));
+            if (Settings.Instance.BetterSelectedLevel != null)
+            {
+                FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.Equals(Settings.Instance.BetterSelectedLevel));
+            }
 
             if (FloorCombo.SelectedItem == null)
             {
                 FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors[0];
-                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
+                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting)FloorCombo.SelectedItem;
             }
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
-            var list = new List<KeyValuePair<string, int>>();
-            foreach (var gs in GearsetManager.GearSets.Where(i=> i.InUse && i.Class.IsDow()))
+            List<KeyValuePair<string, int>> list = new List<KeyValuePair<string, int>>();
+            foreach (GearSet gs in GearsetManager.GearSets.Where(i => i.InUse && i.Class.IsDow()))
             {
-                list.Add(new KeyValuePair<string, int>(gs.Class.ToString(),gs.Index));
+                list.Add(new KeyValuePair<string, int>(gs.Class.ToString(), gs.Index));
             }
-            
+
             classesCB.DataSource = list;
-            
-            
+
+
             //classesCB.ValueMember = "Value";
             classesCB.DisplayMember = "Key";
-            
+
             listBox1.DataSource = Constants.ClassLevelTargets;
             listBox1.DisplayMember = "DisplayString";
-            
+
 
             FloorCombo.SelectionChangeCommitted += ChangeLevel;
             startLevelBox.Checked = Settings.Instance.StartAt51;
@@ -75,13 +80,17 @@ namespace DeepCombined.Forms
         private void ChangeDungeon(object sender, EventArgs e)
         {
             Logger.Verbose("Changing the selected deep dungeon to run");
-            Constants.SelectedDungeon = (IDeepDungeon) DungeonListCombo.SelectedItem;
+            Constants.SelectedDungeon = (IDeepDungeon)DungeonListCombo.SelectedItem;
             FloorCombo.DataSource = Constants.SelectedDungeon.Floors;
-            if (Settings.Instance.BetterSelectedLevel != null) FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.Equals(Settings.Instance.BetterSelectedLevel));
+            if (Settings.Instance.BetterSelectedLevel != null)
+            {
+                FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors.FirstOrDefault(i => i.Equals(Settings.Instance.BetterSelectedLevel));
+            }
+
             if (FloorCombo.SelectedItem == null)
             {
                 FloorCombo.SelectedItem = Constants.SelectedDungeon.Floors[0];
-                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
+                Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting)FloorCombo.SelectedItem;
             }
 
             startLevelBox.Text = $"Start at floor {Constants.SelectedDungeon.CheckPointLevel}";
@@ -90,7 +99,7 @@ namespace DeepCombined.Forms
         private void ChangeLevel(object sender, EventArgs e)
         {
             Logger.Verbose("Changing the selected floor to run");
-            Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting) FloorCombo.SelectedItem;
+            Settings.Instance.BetterSelectedLevel = (DungeonDefinition.Base.FloorSetting)FloorCombo.SelectedItem;
         }
 
         private void DungeonSelection_Closed(object sender, FormClosedEventArgs e)
@@ -132,9 +141,8 @@ namespace DeepCombined.Forms
         private void addClassBtn_Click(object sender, EventArgs e)
         {
             int level = int.Parse(levelTxt.Text.Trim());
-            ClassJobType test;
-            Enum.TryParse(((KeyValuePair<string, int>)classesCB.SelectedValue).Key,out test);
-            var classTarget = new ClassLevelTarget(test, level,((KeyValuePair<string, int>)classesCB.SelectedValue).Value);
+            Enum.TryParse(((KeyValuePair<string, int>)classesCB.SelectedValue).Key, out ClassJobType test);
+            ClassLevelTarget classTarget = new ClassLevelTarget(test, level, ((KeyValuePair<string, int>)classesCB.SelectedValue).Value);
             Logger.Info($"{classTarget}");
             Constants.ClassLevelTargets.Add(classTarget);
             listBox1.Refresh();
@@ -148,7 +156,7 @@ namespace DeepCombined.Forms
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnClear_Click(object sender, EventArgs e)

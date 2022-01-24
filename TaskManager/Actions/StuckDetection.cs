@@ -34,17 +34,23 @@ namespace DeepCombined.TaskManager.Actions
         {
             if (MoveTimer.IsFinished && Poi.Current != null && Poi.Current.Type != PoiType.None)
             {
-                var path = StraightPathHelper.RealStraightPath();
+                System.Collections.Generic.List<Vector3> path = StraightPathHelper.RealStraightPath();
                 Logger.Info("Dump path:");
-                foreach (var x in path)
+                foreach (Vector3 x in path)
                 {
                     Logger.Info(x.ToString());
                 }
 
                 Logger.Warn("No activity was detected for {0} seconds. Adding target to the blacklist and trying again", MoveTimer.WaitTime.TotalSeconds);
-                if (Poi.Current.Unit != null && !Constants.IsExitObject(Poi.Current.Unit)) DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
+                if (Poi.Current.Unit != null && !Constants.IsFloorExit(Poi.Current.Unit))
+                {
+                    DDTargetingProvider.Instance.AddToBlackList(Poi.Current.Unit, TimeSpan.FromSeconds(30), "Navigation Error");
+                }
+
                 if (Poi.Current.Type != PoiType.None)
+                {
                     Poi.Clear("No activity detected");
+                }
 
                 MoveTimer.Reset();
                 return true;
@@ -64,7 +70,7 @@ namespace DeepCombined.TaskManager.Actions
 
         public void Tick()
         {
-            var location = Core.Me.Location;
+            Vector3 location = Core.Me.Location;
             if (location.DistanceSqr(_location) > DISTANCE)
             {
                 _location = location;

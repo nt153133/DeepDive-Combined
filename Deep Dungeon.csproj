@@ -73,16 +73,14 @@
   <!-- RB 64 & rb32 -->
   <!-- Condition="'$(Configuration)|$(Platform)' == 'Release|x64' Or '$(Configuration)|$(Platform)' == 'Debug|x64'"-->
   <ItemGroup>
-    <Reference Include="RebornBuddy, Version=1.0.201.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RebornBuddy.exe</HintPath>
-    </Reference>
-    <Reference Include="GreyMagic, Version=1.0.41.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GreyMagic.dll</HintPath>
+    <Reference Include="GreyMagic, Version=1.0.48.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=AMD64">
+      <HintPath>packages\RebornBuddy.Assemblies.1.0.436\lib\net461\GreyMagic.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RebornBuddy, Version=1.0.436.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=AMD64">
+      <HintPath>packages\RebornBuddy.Assemblies.1.0.436\lib\net461\RebornBuddy.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -96,8 +94,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants_ext.cs" />
-    <Compile Include="DeepTest.cs" />
+    <Compile Include="Constants_HoH.cs" />
+    <Compile Include="DeepTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DeepTest.Designer.cs" />
     <Compile Include="DungeonDefinition\Base\DeepDungeonData.cs" />
     <Compile Include="DungeonDefinition\Base\DeepDungeonDecorator.cs" />
@@ -136,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ResourceHelpers.cs" />
     <Compile Include="Structure\ClassLevelTarget.cs" />
     <Compile Include="TaskManager\Actions\BaseLogicHandler.cs" />
     <Compile Include="TaskManager\Actions\CairnOfReturn.cs" />
@@ -195,7 +196,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
-    <EmbeddedResource Include="Resources\Pots.json" />
+    <EmbeddedResource Include="Resources\Potions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Walls\1.json" />
     <EmbeddedResource Include="Resources\Walls\2.json" />
     <EmbeddedResource Include="Resources\Walls\3.json" />

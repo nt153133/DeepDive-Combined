@@ -28,7 +28,6 @@ namespace DeepCombined.Helpers
         private static uint _xpNeeded;
 
         public static HashSet<Vector3> Traps = new HashSet<Vector3>();
-        //public static Form1 _debug;
 
         private static TimeSpan CurrentRunTime()
         {
@@ -47,7 +46,6 @@ namespace DeepCombined.Helpers
         public static void Reset()
         {
             _isMeasuring = false;
-            // GameStatsManager.uint_2 = Experience.CurrentExperience; GameStatsManager.uint_1 = Experience.ExperienceRequired;
 
             _deaths = 0;
             _xpPerHour = 0.0f;
@@ -69,12 +67,16 @@ namespace DeepCombined.Helpers
         public static void StartRun(int currentLevel)
         {
             if (_isMeasuring)
+            {
                 EndRun(true);
+            }
 
             StartMeasuring();
 
             if (_startingLevel == 0)
+            {
                 _startingLevel = currentLevel;
+            }
 
             _currentLevel = currentLevel;
         }
@@ -82,14 +84,20 @@ namespace DeepCombined.Helpers
         public static void EndRun(bool failed)
         {
             if (_isMeasuring == false)
+            {
                 return;
+            }
 
             StopMeasuring();
 
             if (failed)
+            {
                 _failedRuns++;
+            }
             else
+            {
                 _successfulRuns++;
+            }
 
             _lastRunTime = _currentRunEndTime.Subtract(_currentRunStarTime);
             _runEndXP = Experience.CurrentExperience;
@@ -105,7 +113,10 @@ namespace DeepCombined.Helpers
 
         private static void UpdateXP(int realLevel)
         {
-            if (realLevel > _currentLevel) _totalXPGain += _xpNeeded;
+            if (realLevel > _currentLevel)
+            {
+                _totalXPGain += _xpNeeded;
+            }
         }
 
         public static void RunReport()

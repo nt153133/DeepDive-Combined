@@ -36,20 +36,26 @@ namespace DeepCombined.Windows
         internal static async Task ClickSaveSlot(uint number)
         {
             if (number >= 2)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             if (IsOpen && SD.Reset)
+            {
                 await Close();
+            }
 
             if (DeepDungeonMenu.IsOpen)
+            {
                 await DeepDungeonMenu.OpenSaveMenu();
+            }
 
             Logger.Info("Clicking Save slot {0} // {1}", number + 1, SD.Reset);
 
 
             await Coroutine.Wait(5000, () => IsOpen);
 
-            var window = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDsave);
+            AtkAddonControl window = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDsave);
             window.SendAction(1, 3, number);
 
             await Coroutine.Yield();
@@ -61,23 +67,30 @@ namespace DeepCombined.Windows
         internal static async Task ClickReset(uint number)
         {
             if (number >= 2)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             if (IsOpen && !SD.Reset)
+            {
                 await Close();
+            }
 
             if (DeepDungeonMenu.IsOpen)
+            {
                 await DeepDungeonMenu.OpenResetMenu();
-
+            }
 
             Logger.Info("Clicking Reset slot {0} // {1}", number + 1, SD.Reset);
             await Coroutine.Wait(5000, () => IsOpen);
-            var window = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDsave);
+            AtkAddonControl window = RaptureAtkUnitManager.GetWindowByName(WindowNames.DDsave);
             window.SendAction(2, 3, number, 3, 2);
             await Coroutine.Wait(500, () => SelectYesno.IsOpen);
             //confirm that we want to delete this data.
             if (SelectYesno.IsOpen)
+            {
                 SelectYesno.ClickYes();
+            }
         }
 
 
@@ -87,7 +100,9 @@ namespace DeepCombined.Windows
         public static async Task Close()
         {
             if (IsOpen)
+            {
                 RaptureAtkUnitManager.GetWindowByName(WindowNames.DDsave).SendAction(1, 3, uint.MaxValue);
+            }
             //await Coroutine.Sleep(1000); //these windows take a second
             await Coroutine.Wait(1500, () => DeepDungeonMenu.IsOpen);
         }

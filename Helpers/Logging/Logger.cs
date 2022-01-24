@@ -30,11 +30,15 @@ namespace DeepCombined.Helpers.Logging
 
         private static void Log(Color c, string message, params object[] args)
         {
-            var str = Resources.ResourceManager.GetString(message);
+            string str = Resources.ResourceManager.GetString(message);
             if (string.IsNullOrEmpty(str))
+            {
                 rLogging.Write(c, Prefix + string.Format(message, args));
+            }
             else
+            {
                 rLogging.Write(c, Prefix + string.Format(str, args));
+            }
         }
 
         [StringFormatMethod("format")]
@@ -47,9 +51,13 @@ namespace DeepCombined.Helpers.Logging
         internal static void Verbose(string format, params object[] args)
         {
             if (Settings.Instance.VerboseLogging)
+            {
                 Log(LogColors.Verbose, format, args);
+            }
             else
+            {
                 rLogging.WriteToFileSync(LogLevel.Verbose, format, args);
+            }
         }
 
 

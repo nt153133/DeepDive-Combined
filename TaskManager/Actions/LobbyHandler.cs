@@ -29,11 +29,14 @@ namespace DeepCombined.TaskManager.Actions
 
         public async Task<bool> Run()
         {
-            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return false;
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId)
+            {
+                return false;
+            }
 
             await Coroutine.Sleep(5000);
 
-            _target = GameObjectManager.GameObjects.Where(r => r.NpcId == EntityNames.LobbyExit).OrderBy(r => r.Distance()).FirstOrDefault();
+            _target = GameObjectManager.GameObjects.Where(r => r.NpcId == Entities.LobbyExit).OrderBy(r => r.Distance()).FirstOrDefault();
 
             Navigator.Stop();
             Navigator.Clear();
@@ -76,10 +79,17 @@ namespace DeepCombined.TaskManager.Actions
 
         public void Tick()
         {
-            if (_target != null && !_target.IsValid) _target = null;
-            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId) return;
+            if (_target != null && !_target.IsValid)
+            {
+                _target = null;
+            }
 
-            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == EntityNames.LobbyExit)
+            if (WorldManager.ZoneId != Constants.SelectedDungeon.LobbyId)
+            {
+                return;
+            }
+
+            _target = GameObjectManager.GameObjects.Where(i => i.NpcId == Entities.LobbyExit)
                 .OrderBy(i => i.Distance2D(Core.Me.Location)).FirstOrDefault();
         }
     }
