@@ -208,7 +208,7 @@ namespace DeepCombined
         //2002872 = some random thing that the bot tries to target in boss rooms. actual purpose unknown
         internal static uint[] BaseIgnoreEntity =
         {
-            5042, 5402, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
+            10261, 5042, 5402, 2002872, EntityNames.RubyCarby, EntityNames.EmeraldCarby, EntityNames.TopazCarby, EntityNames.Garuda,
             EntityNames.Titan, EntityNames.Ifrit, EntityNames.Eos, EntityNames.Selene, EntityNames.Rook,
             EntityNames.Bishop
         };
