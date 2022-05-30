@@ -9,6 +9,7 @@ Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy.Coroutines;
@@ -17,6 +18,7 @@ using DeepCombined.Helpers;
 using DeepCombined.Helpers.Logging;
 using DeepCombined.Providers;
 using ff14bot;
+using ff14bot.AClasses;
 using ff14bot.Behavior;
 using ff14bot.Directors;
 using ff14bot.Enums;
@@ -25,6 +27,7 @@ using ff14bot.Managers;
 using ff14bot.Navigation;
 using ff14bot.Objects;
 using ff14bot.Pathing;
+using ff14bot.RemoteAgents;
 using TreeSharp;
 
 namespace DeepCombined.TaskManager.Actions
@@ -55,6 +58,11 @@ namespace DeepCombined.TaskManager.Actions
 
         public string Name => "Combat Handler";
 
+        public uint[] fearSpells = new uint[] {1280, 2782, 6429, 7141};
+        
+
+
+        private HashSet<uint> avoidobjs = new HashSet<uint>();
         public async Task<bool> Run()
         {
             if (!DutyManager.InInstance || DeepDungeonManager.Director.TimeLeftInDungeon == TimeSpan.Zero)
@@ -207,7 +215,7 @@ namespace DeepCombined.TaskManager.Actions
                         .FirstOrDefault(i => i.IsCasting && i.NpcId == 7268 && i.CastingSpellId == 6351);
                 while (npc != null && npc.IsCasting)
                 {
-                    MovementManager.SetFacing(npc.Heading);
+                    Core.Me.FaceAway(npc);
                     await Coroutine.Sleep(100);
                 }
             }
@@ -237,6 +245,117 @@ namespace DeepCombined.TaskManager.Actions
                     Navigator.PlayerMover.MoveStop();
                     await Coroutine.Sleep(9000);
                 }
+            }
+
+            if (DeepDungeonManager.Level == 50)
+            {
+                if (GameObjectManager.GetObjectsOfType<BattleCharacter>().Any(
+                        i =>
+                            i.NpcId == 5038 &&
+                            !i.IsAlive
+                    ))
+                {
+                    AvoidanceManager.RemoveAllAvoids(i => i.CanRun);
+                }
+                
+                if (GameObjectManager.Attackers.Any(
+                        i =>
+                            i.IsCasting &&
+                            i.CastingSpellId == 6403 &&
+                            i.NpcId == 5038))
+                {
+                    BattleCharacter npc = GameObjectManager.Attackers.FirstOrDefault(i => i.IsCasting && i.NpcId == 5038 && i.CastingSpellId == 6403);
+                    ActionManager.StopCasting();
+                    while (npc != null && npc.IsCasting)
+                    {
+                        Core.Me.FaceAway(npc);
+                        await Coroutine.Sleep(100);
+                    }
+                }
+                
+                if (GameObjectManager.Attackers.Any(
+                        i =>
+                            i.NpcId == 5038 &&
+                            i.IsCasting &&
+                            i.CastingSpellId== 6399
+                    ))
+                {
+                    ActionManager.StopCasting();
+                    BattleCharacter npc =
+                        GameObjectManager.Attackers
+                            .FirstOrDefault(i => i.IsCasting && i.NpcId == 5038);
+                    
+                    while (npc != null && npc.IsCasting && npc.CastingSpellId== 6399)
+                    {
+                        Navigator.PlayerMover.MoveTowards(npc.Location);
+                        while (npc.Location.Distance2D(Core.Me.Location) >= 3)
+                        {
+                            Navigator.PlayerMover.MoveTowards(npc.Location);
+                            await Coroutine.Sleep(100);
+                        }
+
+                        Navigator.PlayerMover.MoveStop();
+
+
+                        await Coroutine.Wait(15000, () => !npc.IsCasting);
+                    }
+                }
+            }
+
+            if (DeepDungeonManager.Level == 30)
+            {
+                if (GameObjectManager.GetObjectsOfType<BattleCharacter>().Any(
+                        i =>
+                            i.NpcId == 5012 &&
+                            !i.IsAlive
+                    ))
+                {
+                    AvoidanceManager.RemoveAllAvoids(i => i.CanRun);
+                }
+
+                if (GameObjectManager.Attackers.Any(
+                        i =>
+                            i.NpcId == 5012 &&
+                            i.IsCasting &&
+                            fearSpells.Contains(i.CastingSpellId)
+                    ))
+                {
+                    BattleCharacter npc =
+                        GameObjectManager.Attackers
+                            .FirstOrDefault(i => i.IsCasting && i.NpcId == 5012);
+
+                    Clio.Utilities.Vector3 vector3 = npc.Location;
+                    while (npc != null && npc.IsCasting && fearSpells.Contains(npc.CastingSpellId))
+                    {
+                        var mr = await CommonTasks.MoveTo(new MoveToParameters(vector3));
+                        if (mr == MoveResult.PathGenerationFailed)
+                        {
+                            Navigator.PlayerMover.MoveTowards(vector3);
+                            while (vector3.Distance2D(Core.Me.Location) >= 3)
+                            {
+                                Navigator.PlayerMover.MoveTowards(vector3);
+                                await Coroutine.Sleep(100);
+                            }
+
+                            Navigator.PlayerMover.MoveStop();
+                        }
+
+                        await Coroutine.Wait(15000, () => !npc.IsCasting);
+                    }
+                }
+
+                if (GameObjectManager.GameObjects.Any(i => i.NpcId == 2002331 && !avoidobjs.Contains(i.ObjectId)))
+                {
+                    AvoidanceManager.RemoveAllAvoids(i=> i.CanRun);
+
+                    var ids = GameObjectManager.GetObjectsByNPCId(2002331).Select(i => i.ObjectId).ToArray();
+                    AvoidanceManager.AddAvoidObject<GameObject>(()=> true, 6f, ids);
+                    foreach (var id in ids)
+                    {
+                        avoidobjs.Add(id);
+                    }
+                }
+
             }
 
             if (Core.Me.InRealCombat())

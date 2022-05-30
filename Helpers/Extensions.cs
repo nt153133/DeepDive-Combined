@@ -8,6 +8,7 @@ work. If not, see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
 Orginal work done by zzi, contibutions by Omninewb, Freiheit, and mastahg
                                                                                  */
 
+using System;
 using ff14bot.Enums;
 using ff14bot.Objects;
 
@@ -113,6 +114,19 @@ namespace DeepCombined.Helpers
         internal static bool IsDow(this LocalPlayer player)
         {
             return player.CurrentJob.IsDow();
+        }
+        
+        /// <summary>
+        /// Faces the player away from the specified <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="player">Local player.</param>
+        /// <param name="obj"><see cref="GameObject"/> to face away from.</param>
+        internal static void FaceAway(this LocalPlayer player, GameObject obj)
+        {
+            // Look at target, then flip to inverse
+            obj.Face2D();
+            float inverse = (float)(player.Heading - Math.PI);
+            player.SetFacing(inverse);
         }
     }
 }
