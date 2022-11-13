@@ -40,8 +40,10 @@ namespace DeepCombined.Memory
         [OffsetCN("Search 42 0F B6 8C 28 ? ? ? ? 84 0E Add 5 Read32")]
         internal static int WallGroupEnabled;
         
+        /*
         [Offset("Search 41 8B 96 ? ? ? ? 84 C9 Add 3 Read32")] //0x13c
         internal static int UNK_StartingCircle;
+        */
 
         [Offset("Search 48 8D 05 ? ? ? ? 48 C7 43 ? ? ? ? ? 48 89 03 48 8B C3 48 83 C4 ? 5B C3 ? ? ? ? ? ? ? 48 8D 05 ? ? ? ? 48 89 01 E9 ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 40 57 Add 3 TraceRelative")] //0x1860
         internal static IntPtr DeepDungeonStatusVtable;
