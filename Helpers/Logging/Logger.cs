@@ -19,7 +19,7 @@ namespace DeepCombined.Helpers.Logging
 {
     internal static class Logger
     {
-        internal static string Name => Constants.Lang == Language.Chn ? "深层迷宫" : "DeepDive";
+        internal static string Name => Constants.Lang == Language.Chn ? "深层迷宫" : "DeepDiveCombined";
         private static string Prefix => $"[{Name}] ";
 
         [StringFormatMethod("format")]
