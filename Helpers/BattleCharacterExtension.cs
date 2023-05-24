@@ -1,4 +1,6 @@
-﻿using ff14bot.Enums;
+﻿using System.Linq;
+using ff14bot.Enums;
+using ff14bot.Managers;
 using ff14bot.Objects;
 
 namespace DeepCombined.Helpers
@@ -8,7 +10,7 @@ namespace DeepCombined.Helpers
     {
         public static bool IsTargetingMyPartyMember(this BattleCharacter bc)
         {
-            return bc.TargetCharacter != null && (bc.TargetCharacter.IsMe || (bc.TargetCharacter.StatusFlags & (StatusFlags.AllianceMember | StatusFlags.PartyMember)) != 0);
+            return bc.TargetCharacter != null && PartyManager.RawMembers.Any(i => i.ObjectId == bc.TargetCharacter.ObjectId);
         }
 
         public static bool IsBoss(this BattleCharacter bc)
