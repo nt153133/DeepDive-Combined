@@ -25,10 +25,10 @@ namespace DeepCombined.Memory
         internal static void Init()
         {
             var types = typeof(Offsets).GetFields(BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-
+            using var pf = new PatternFinder(Core.Memory);
             Parallel.ForEach(types, type =>
                 {
-                    var pf = new PatternFinder(Core.Memory);
+                    
                     if (type.FieldType.IsClass)
                     {
                         var instance = Activator.CreateInstance(type.FieldType);

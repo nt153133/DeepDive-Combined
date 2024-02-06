@@ -19,6 +19,7 @@ using DeepCombined.Helpers.Logging;
 using DeepCombined.Memory;
 using DeepCombined.Properties;
 using ff14bot;
+using ff14bot.Buddy.Offsets;
 using ff14bot.Enums;
 using ff14bot.Managers;
 using ff14bot.Navigation;
@@ -190,7 +191,7 @@ namespace DeepCombined.Providers
             if (director == IntPtr.Zero)
                 return new HashSet<uint>();
 
-            var v187A = Core.Memory.Read<byte>(director + Offsets.DDMapGroup);
+            var v187A = Core.Memory.Read<byte>(director + PublicOffsets.DeepDungeonOffsets.DDMapGroup);
             Logger.Info($"v187A {v187A}");
 
             if (v187A == 0)
@@ -200,8 +201,8 @@ namespace DeepCombined.Providers
             
             //var v187A = Core.Memory.Read<byte>(director + Offsets.DDMapGroup);
 
-            var v3 = director + Offsets.Map5xStart + v187A * Offsets.Map5xSize;
-            var v332 = Core.Memory.Read<ushort>(v3 + Offsets.WallStartingPoint);
+            var v3 = director + PublicOffsets.DeepDungeonOffsets.Map5xStart + v187A * PublicOffsets.DeepDungeonOffsets.Map5xSize;
+            var v332 = Core.Memory.Read<ushort>(v3 + PublicOffsets.DeepDungeonOffsets.WallStartingPoint);
             Logger.Info($"v332 {v332}");
 
             var v29 = v3 + 0x10;
@@ -227,8 +228,8 @@ namespace DeepCombined.Providers
                         // var wall = Core.Memory.Read<uint>(v9 + Offsets.UNK_StartingCircle);
                         //wallset.Add(wall);
 
-                        var @byte = Core.Memory.Read<byte>(director + v5 + Offsets.WallGroupEnabled);
-                        var walls = Core.Memory.ReadArray<uint>(v9 + Offsets.Starting, 4);
+                        var @byte = Core.Memory.Read<byte>(director + v5 + PublicOffsets.DeepDungeonOffsets.WallGroupEnabled);
+                        var walls = Core.Memory.ReadArray<uint>(v9 + PublicOffsets.DeepDungeonOffsets.Starting, 4);
                         //Logger.Info($"Walls count {walls.Length}");
                         //Logger.Info($"Walls byte {@byte}");
                         for (var v16 = 0; v16 < 4; v16++)
