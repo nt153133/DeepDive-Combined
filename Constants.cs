@@ -268,10 +268,7 @@ namespace DeepCombined
 
         public static void INIT()
         {
-            var field = (Language) typeof(DataManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
-                .First(i => i.FieldType == typeof(Language)).GetValue(null);
-
-            Lang = field;
+            Lang = DataManager.CurrentLanguage;
 
             OffsetManager.Init();
         }
