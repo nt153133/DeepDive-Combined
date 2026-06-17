@@ -228,7 +228,11 @@ namespace DeepCombined.Providers
                         // var wall = Core.Memory.Read<uint>(v9 + Offsets.UNK_StartingCircle);
                         //wallset.Add(wall);
 
-                        var @byte = Core.Memory.Read<byte>(director + v5 + PublicOffsets.DeepDungeonOffsets.WallGroupEnabled);
+#if RB_TC
+                        var @byte = Core.Memory.Read<byte>(director + (v5) + PublicOffsets.DeepDungeonOffsets.WallGroupEnabled);
+#else
+                        var @byte = Core.Memory.Read<byte>(director + (2 * v5) + PublicOffsets.DeepDungeonOffsets.WallGroupEnabled);
+#endif 
                         var walls = Core.Memory.ReadArray<uint>(v9 + PublicOffsets.DeepDungeonOffsets.Starting, 4);
                         //Logger.Info($"Walls count {walls.Length}");
                         //Logger.Info($"Walls byte {@byte}");
